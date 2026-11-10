@@ -1,0 +1,22 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const context=vm.createContext({fetch:()=>{},AbortController,setTimeout,clearTimeout});vm.runInContext(fs.readFileSync('dist/cloud-client.js','utf8'),context);
+const calls=[],queue=[];const response=(status,data)=>({ok:status>=200&&status<300,status,json:async()=>data});
+const fetchMock=async(url,options)=>{calls.push({url,options});if(!queue.length)throw Error('Unexpected request');const r=queue.shift();if(r instanceof Error)throw r;return r;};
+const api=context.TeaCloud.createClient({url:'https://test.supabase.co',publishableKey:'sb_publishable_test'},fetchMock);
+(async()=>{
+await assert.rejects(api.load('test'),e=>e.code==='LOGIN_REQUIRED');
+queue.push(response(200,{access_token:'private-test-token',user:{id:'uid',email:'admin@example.test'}}),response(200,[{user_id:'uid',active:true}]));await api.login('admin@example.test','private-test-password');assert.equal(api.getUser().id,'uid');assert.equal(calls[0].options.headers.Authorization,undefined);assert.equal(JSON.parse(calls[0].options.body).password,'private-test-password');
+queue.push(response(200,[{store_key:'test',revision:1,document:{brand:{name:'得正'},items:[]}}]));const r=await api.load('test');assert.equal(r.revision,1);assert.equal(calls.at(-1).options.headers.Authorization,'Bearer private-test-token');
+queue.push(response(200,[{revision:2}]));await api.save('test',{price:0},1);assert(calls.at(-1).url.includes('revision=eq.1'));assert.equal(calls.at(-1).options.method,'PATCH');assert.equal(JSON.parse(calls.at(-1).options.body).document.price,0);
+queue.push(response(200,[{id:'pub1',is_current:true}]));assert.equal((await api.listPublications('test'))[0].id,'pub1');assert(calls.at(-1).url.includes('menu_publications'));
+queue.push(response(200,[{id:'pub2',source_revision:2}]));assert.equal((await api.publish('test',2)).id,'pub2');assert.deepEqual(JSON.parse(calls.at(-1).options.body),{p_store_key:'test',p_expected_revision:2});
+queue.push(response(200,[{store_key:'test',revision:3}]));assert.equal((await api.restorePublication('pub1',2)).revision,3);assert.deepEqual(JSON.parse(calls.at(-1).options.body),{p_publication_id:'pub1',p_expected_revision:2});
+queue.push(response(400,{code:'40001'}));await assert.rejects(api.publish('test',2),e=>e.code==='CONFLICT');
+queue.push(response(200,[]));await assert.rejects(api.save('test',{},1),e=>e.code==='CONFLICT');
+queue.push(response(409,{}));await assert.rejects(api.save('test',{},null),e=>e.code==='CONFLICT');
+queue.push(response(401,{}));await assert.rejects(api.load('test'),e=>e.code==='LOGIN_REQUIRED');assert.equal(api.getUser(),null);
+queue.push(response(200,{access_token:'other',user:{id:'other'}}),response(200,[]),response(204,null));await assert.rejects(api.login('other','pw'),e=>e.code==='FORBIDDEN');assert.equal(api.getUser(),null);
+queue.push(response(400,{}));await assert.rejects(api.login('bad','pw'),e=>e.code==='LOGIN_FAILED');
+queue.push(new TypeError('network'));await assert.rejects(api.login('bad','pw'),e=>e.code==='NETWORK');
+const ui=fs.readFileSync('dist/cloud.js','utf8');assert(ui.includes("price===''?null:Number(price)"));assert(!/localStorage|sessionStorage/.test(fs.readFileSync('dist/cloud-client.js','utf8')+ui));console.log('PASS: Auth/API client, allowlist, expiry, CAS/conflicts, zero/null, no browser token storage');
+})().catch(e=>{console.error(e);process.exitCode=1;});

@@ -1,0 +1,14 @@
+// Lightweight DOM event harness, not browser/layout verification.
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const helper=fs.readFileSync('tests/dialog-structure.cjs','utf8');const code=helper.slice(helper.indexOf('class Element'),helper.indexOf('const nodes='));
+const ctx=vm.createContext({console,setTimeout,crypto:require('node:crypto').webcrypto,confirm:()=>true,Blob,URL});vm.runInContext(code+';globalThis.Element=Element;',ctx);
+const nodes=Object.fromEntries(['admin-root','admin-status','editor','preview'].map(id=>[id,new ctx.Element('div')])),saved={};ctx.localStorage={getItem:k=>saved[k]??null,setItem:(k,v)=>saved[k]=v};ctx.document={getElementById:id=>nodes[id],createElement:tag=>new ctx.Element(tag),createTextNode:text=>Object.assign(new ctx.Element('#text'),{textContent:text})};ctx.window={addEventListener:()=>{}};
+for(const p of ['data.js','real-data.js','admin-model.js','admin.js'])vm.runInContext(fs.readFileSync('dist/'+p,'utf8'),ctx);
+const all=n=>[n,...n.children.flatMap(all)],find=(root,text)=>{const n=all(root).find(x=>x.tagName==='button'&&x.textContent===text);assert(n,'Button '+text);return n;};
+const cards=all(nodes['admin-root']).filter(n=>n.className==='store-tile');assert.equal(cards.length,2);find(cards[0],'管理菜單 →').onclick();assert(all(nodes['admin-root']).some(n=>n.textContent==='得正'));
+find(nodes['admin-root'],'編輯').onclick();const name=all(nodes.editor).find(n=>n.tagName==='label'&&n.textContent==='品名').children[0];name.value='紅茶流程測試';const form=all(nodes.editor).find(n=>n.tagName==='form');form.onsubmit({preventDefault(){}});assert.equal(nodes.editor.open,false);let state=JSON.parse(saved['tea-admin-prototype-v1']).stores;assert.equal(state['得正'].draft.items[0].name,'紅茶流程測試');assert.equal(state['得正'].published.items[0].name,'紅茶');assert.equal(state.WUWIN.draft.items.length,64);
+find(nodes['admin-root'],'模擬發布這家店').onclick();find(nodes.preview,'確認模擬發布').onclick();state=JSON.parse(saved['tea-admin-prototype-v1']).stores;assert.equal(state['得正'].published.items[0].name,'紅茶流程測試');assert.equal(state['得正'].history.length,2);
+find(nodes['admin-root'],'查看模擬發布版').onclick();assert(all(nodes.preview).some(n=>n.textContent==='紅茶流程測試'));nodes.preview.close();
+find(nodes['admin-root'],'複製').onclick();const labels=all(nodes.editor).filter(n=>n.tagName==='label');assert.equal(labels.find(n=>n.textContent==='品名').children[0].value,'');assert.equal(labels.find(n=>n.className==='check'&&n.children.some(x=>x.textContent==='商品上架（仍需發布才生效）')).children[0].checked,false);nodes.editor.close();
+find(nodes['admin-root'],'店家設定').onclick();assert(all(nodes['admin-root']).some(n=>n.textContent==='店家共用點餐提醒'));find(nodes['admin-root'],'發布紀錄').onclick();assert(all(nodes['admin-root']).some(n=>n.textContent==='原始菜單'));
+console.log('PASS: DOM event harness store list → edit → save → isolated publish → published preview; copy defaults/settings/history');

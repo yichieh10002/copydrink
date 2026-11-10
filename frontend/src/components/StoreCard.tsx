@@ -1,0 +1,25 @@
+import Link from "next/link";
+import type { StoreSummary } from "@/lib/types";
+export function StoreCard({ store }: { store: StoreSummary }) {
+  return (
+    <Link
+      className="store-card"
+      href={`/stores/${encodeURIComponent(store.slug)}`}
+    >
+      <span className="store-logo">
+        {store.logoUrl ? (
+          <img src={store.logoUrl} alt="" />
+        ) : (
+          store.name.slice(0, 1)
+        )}
+      </span>
+      <span className="store-card-copy">
+        <strong>{store.name}</strong>
+        <span>查看菜單 →</span>
+        <small>
+          {store.regionCount} 個地區 · {store.drinkCount} 款飲品
+        </small>
+      </span>
+    </Link>
+  );
+}

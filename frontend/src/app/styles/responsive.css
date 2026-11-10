@@ -1,0 +1,145 @@
+@media (max-width: 900px) {
+  .store-intro {
+    grid-template-columns: 1fr;
+  }
+  .store-rules {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .store-rule:nth-child(odd) {
+    border-left: 0;
+  }
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 620px) {
+  .container {
+    width: min(100% - 28px, 1200px);
+  }
+  .nav-inner {
+    height: 64px;
+  }
+  .nav-caption {
+    display: none;
+  }
+  .wordmark {
+    font-size: 27px;
+  }
+  .home-hero {
+    padding: 90px 0 235px;
+    min-height: 565px;
+  }
+  .home-hero h1 {
+    font-size: clamp(2.25rem, 9vw, 3rem);
+  }
+  .hero-scene {
+    background-position: center bottom;
+  }
+  .home-list {
+    padding: 45px 0 70px;
+  }
+  .store-grid {
+    grid-template-columns: 1fr;
+  }
+  .store-card {
+    padding: 18px;
+    min-height: 118px;
+  }
+  .store-logo {
+    width: 65px;
+    height: 65px;
+  }
+  .store-hero {
+    padding: 20px 0 32px;
+  }
+  .store-intro {
+    padding: 18px;
+    gap: 18px;
+    margin-top: 28px;
+  }
+  .store-logo.large {
+    width: 66px;
+    height: 66px;
+  }
+  .store-intro-main {
+    align-items: start;
+  }
+  .store-intro-main h1 {
+    font-size: 1.7rem;
+  }
+  .store-rules {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+  }
+  .store-rule {
+    padding: 13px 7px;
+    border-top: 1px dashed var(--line);
+    border-left: 0;
+  }
+  .store-rule:nth-child(even) {
+    border-left: 1px dashed var(--line);
+  }
+  .store-rule small {
+    max-height: 52px;
+  }
+  .store-links {
+    gap: 10px;
+  }
+  .menu-section {
+    padding: 22px 0 80px;
+  }
+  .menu-category h3 {
+    font-size: 1.5rem;
+    padding: 15px;
+  }
+  .drink-row {
+    padding: 15px;
+    align-items: start;
+    flex-wrap: wrap;
+  }
+  .drink-copy {
+    width: 100%;
+  }
+  .drink-price {
+    text-align: left;
+  }
+  .open-drink {
+    margin-left: auto;
+  }
+  .order-dialog {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    height: calc(
+      100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+    );
+    max-height: calc(
+      100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+    );
+    border-radius: 18px;
+    border-width: 3px;
+  }
+  .dialog-head {
+    padding: 20px;
+  }
+  .dialog-body {
+    padding: 17px;
+  }
+  .order-copy-preview {
+    padding: 12px 17px 6px;
+  }
+  .dialog-head h2 {
+    font-size: 2rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .store-card {
+    transition: none;
+  }
+}

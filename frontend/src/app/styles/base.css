@@ -1,0 +1,115 @@
+:root {
+  --navy: #192d49;
+  --blue: #2b5390;
+  --blue-dark: #173c73;
+  --paper: #f8f1de;
+  --background: #f0ebdf;
+  --ink: #212834;
+  --muted: #687482;
+  --line: #bdc9db;
+  --gold: #f7cb67;
+  --white: #fff;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background: var(--background);
+  background-image: url("/assets/storybook-paper.webp");
+  background-size: 660px 660px;
+  color: var(--ink);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Noto Sans TC",
+    sans-serif;
+}
+button,
+input,
+textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+a {
+  color: inherit;
+}
+.container {
+  width: min(1200px, calc(100% - 48px));
+  margin-inline: auto;
+}
+.sr-only {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
+}
+.site-header {
+  background: #111c34;
+  color: #fff;
+}
+.nav-inner {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wordmark {
+  font-size: 32px;
+  font-weight: 950;
+  letter-spacing: -2px;
+  text-decoration: none;
+  color: white;
+}
+.nav-caption {
+  font-size: 14px;
+  opacity: 0.7;
+}
+.eyebrow {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 20;
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  min-width: 58px;
+  min-height: 58px;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper);
+  color: var(--blue-dark);
+  box-shadow: 0 5px 18px #0b1e3f33;
+  font-weight: 750;
+}
+.back-to-top span {
+  font-size: 22px;
+  line-height: 1;
+}
+.back-to-top small {
+  font-size: 11px;
+}
+@media (max-width: 620px) {
+  .back-to-top {
+    right: 14px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    min-width: 50px;
+    min-height: 52px;
+    background: color-mix(in srgb, var(--paper) 90%, transparent);
+    backdrop-filter: blur(6px);
+  }
+}

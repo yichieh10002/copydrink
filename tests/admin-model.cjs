@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const ctx=vm.createContext({});for(const path of ['dist/data.js','dist/real-data.js','dist/admin-model.js'])vm.runInContext(fs.readFileSync(path,'utf8'),ctx);const source=vm.runInContext('({brands,drinks})',ctx),A=ctx.TeaAdmin;
+const seed=name=>A.seed(source.brands.find(b=>b.name===name),source.drinks.filter(d=>d.brand===name));
+const de=seed('得正'),wu=seed('WUWIN');assert.equal(de.items.length,24);assert.equal(wu.items.length,64);A.validate(de);A.validate(wu);
+let state={draft:A.clone(de),published:A.clone(de),history:[{at:null,data:A.clone(de),changes:['原始菜單']}]};const other=JSON.stringify(wu);
+state.draft.items[0].name='紅茶測試';assert.equal(state.published.items[0].name,'紅茶');assert.equal(A.changes(state.published,state.draft).length,1);
+const result=A.publish(state,'2026-10-19T09:00:00Z');assert.equal(result.published.items[0].name,'紅茶測試');assert.equal(state.published.items[0].name,'紅茶');assert.equal(result.history.length,2);assert.equal(JSON.stringify(wu),other);result.draft.items[0].name='下一版';assert.equal(result.published.items[0].name,'紅茶測試');
+const restore=A.clone(result);restore.draft=A.clone(result.history[1].data);assert.equal(restore.draft.items[0].name,'紅茶');assert.equal(restore.published.items[0].name,'紅茶測試');assert.equal(A.publish(restore,'next').published.items[0].name,'紅茶');
+const activity={id:'feb',name:'二月限定',active:false};result.draft.activities.push(activity);result.draft.items[0].activity='feb';assert.equal(A.visible(result.draft,result.draft.items[0]),false);activity.active=true;assert.equal(A.visible(result.draft,result.draft.items[0]),true);result.draft.items[0].active=false;assert.equal(A.visible(result.draft,result.draft.items[0]),false);
+const zero=A.clone(de);zero.items[0].cups[0].price=0;zero.items[0].cups[1].price=null;A.validate(zero);assert.equal(zero.items[0].cups[0].price,0);assert.equal(zero.items[0].cups[1].price,null);
+zero.items[0].cups[0].price=-1;assert.throws(()=>A.validate(zero));zero.items[0].cups[0].price=NaN;assert.throws(()=>A.validate(zero));zero.items[0].cups[0].price=1;zero.items[0].cups[1].size=zero.items[0].cups[0].size;assert.throws(()=>A.validate(zero));
+assert.throws(()=>A.publish({draft:de,published:de,history:[]},'now'));assert.equal(de.items[20].reminder.includes('少冰'),true);console.log('Admin model: isolation, draft/publish snapshots, rollback, activity visibility, zero/null, invalid data checks passed');

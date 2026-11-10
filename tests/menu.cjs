@@ -1,0 +1,28 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const appSource=fs.readFileSync('dist/menu-view.js','utf8');assert(appSource.includes("title=el('h2',brand.name+' Menu')"));assert(!appSource.includes('點「複製」快速帶走品名'));assert(appSource.includes("tagGroup(brandTags,'quick-menu-store-tags')"));assert(!appSource.includes('/ ${allItems.length} 杯'));
+const ctx=vm.createContext({console});
+vm.runInContext(fs.readFileSync('dist/data.js','utf8')+'\n'+fs.readFileSync('dist/real-data.js','utf8')+'\nglobalThis.testApi={brands,drinks,query,defaults,iceChoices,orderText,suggestions};',ctx);
+const {brands,drinks,query,defaults,iceChoices,orderText,suggestions}=ctx.testApi;
+assert.deepEqual(Array.from(brands,b=>b.name),['得正','WUWIN']);
+assert.equal(drinks.filter(d=>d.brand==='得正').length,24);
+assert.equal(drinks.filter(d=>d.brand==='得正'&&d.recommended).length,12);
+const lemon=drinks.find(d=>d.name==='檸檬春烏龍');assert.equal(lemon.variants.find(v=>v.size==='中杯').price,50);assert.equal(lemon.variants.find(v=>v.size==='大杯').price,60);
+assert(drinks.filter(d=>d.brand==='WUWIN').length>35);
+const foam=drinks.find(d=>d.name==='芝士奶蓋春烏龍'),de=brands[0];
+assert.equal(foam.fixedIce,'少冰');assert.equal(iceChoices(foam,de,'大杯',false).join(','),'少冰');
+assert.equal(foam.variants.find(v=>v.size==='大杯').price,60);
+assert(!foam.variants.some(v=>v.temp!=='冷'));
+assert.equal(drinks.find(d=>d.name==='烘吉鮮奶').variants.some(v=>v.size==='大杯'),false);
+assert.equal(query({...defaults(),brand:'得正',temp:'熱'}).yes.some(d=>d.id===foam.id),false);
+const winter=drinks.find(d=>d.name==='冬瓜拿鐵');assert.equal(winter.fixedSugar,'甜度固定');
+const shake=drinks.find(d=>d.name==='綠豆冰沙');assert.equal(shake.allowedToppings.length,0);
+assert(drinks.every(d=>d.variants.every(v=>!v.oat)));
+assert.equal(orderText(foam,foam.variants[0],'甜度待確認','少冰',[],1,'',{includeBrand:false}),'芝士奶蓋春烏龍｜中杯｜甜度待確認｜少冰｜1 杯');
+assert(orderText(foam,foam.variants[0],'甜度待確認','少冰',[{name:'珍珠'}],1,'',{includeBrand:false}).includes('加珍珠'));
+assert.equal(orderText(foam,foam.variants[0],'甜度待確認','少冰',[],1,'',{includeBrand:false,separator:'•'}),'芝士奶蓋春烏龍 • 中杯 • 甜度待確認 • 少冰 • 1 杯');
+assert.equal(suggestions('wuwin')[0].brand,'WUWIN');
+assert(query({...defaults(),brand:'得正',cal:'300'}).yes.some(d=>d.name==='紅茶'));
+assert(!query({...defaults(),brand:'得正',cal:'300'}).yes.some(d=>d.name==='紅茶鮮奶'));
+assert(query({...defaults(),brand:'得正',temp:'熱',cal:'300'}).pending.length>0);
+for(const d of drinks){assert(d.source||d.brand==='WUWIN');assert(d.variants.length);assert(d.menuCategory);for(const v of d.variants){assert(Number.isFinite(v.price));assert(v.cal===null||Number.isFinite(v.cal));}}
+console.log(`PASS: ${drinks.length} menu entries, source matching, size/temperature rules, fixed options, nutrition filtering and copy text`);

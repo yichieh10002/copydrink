@@ -1,0 +1,93 @@
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.theme-toggle {
+  display: flex;
+  border: 1px solid #829bb9;
+  border-radius: 999px;
+  padding: 3px;
+}
+.theme-toggle button {
+  background: transparent;
+  border: 0;
+  color: white;
+  width: 35px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.25rem;
+}
+.theme-toggle button[aria-pressed="true"] {
+  background: #54739f;
+}
+html[data-theme="dark"] {
+  --background: #14243d;
+  --paper: #1b2e49;
+  --ink: #ecf2f8;
+  --muted: #afbed0;
+  --line: #50627a;
+  --white: #1d3553;
+}
+html[data-theme="dark"] body {
+  background-image: none;
+}
+html[data-theme="dark"] .store-card,
+html[data-theme="dark"] .menu-category,
+html[data-theme="dark"] .home-tool,
+html[data-theme="dark"] .order-dialog,
+html[data-theme="dark"] .utility-dialog {
+  background: #1c314e;
+  color: #f2f5fa;
+}
+html[data-theme="dark"] .store-intro {
+  background: #1b2e49;
+  color: #f2f5fa;
+}
+html[data-theme="dark"] .menu-category h3 {
+  background: #213b5e;
+  color: #e6f0ff;
+}
+html[data-theme="dark"] .section-heading h2,
+html[data-theme="dark"] .store-intro-main h1,
+html[data-theme="dark"] .utility-heading h2 {
+  color: #f2e7c2;
+}
+html[data-theme="dark"] .drink-row:hover,
+html[data-theme="dark"] .drink-row:focus-visible {
+  background: #274364;
+}
+html[data-theme="dark"] .drink-price {
+  color: #cbd8e8;
+}
+html[data-theme="dark"] .top-dialog {
+  background: #1d304c;
+  color: white;
+}
+html[data-theme="dark"] .pill,
+html[data-theme="dark"] .field input,
+html[data-theme="dark"] .field textarea,
+html[data-theme="dark"] .field select,
+html[data-theme="dark"] .copy-preview output {
+  background: #263c58;
+  color: #f6f8fa;
+}
+html[data-theme="dark"] .pill:has(input:checked) {
+  background: #365c56;
+}
+html[data-theme="dark"] .store-links {
+  color: #c4d7fa;
+}
+html[data-theme="dark"] .store-links p {
+  color: #f0f3f7;
+}
+html[data-theme="dark"] .store-rule small,
+html[data-theme="dark"] .mobile-store-extras {
+  color: #c2d1e2;
+}
+html[data-theme="dark"] .rule-icon {
+  color: #9abef7;
+}
+html[data-theme="dark"] .top-dialog li small {
+  color: #c2d1e2;
+}

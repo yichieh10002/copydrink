@@ -1,0 +1,47 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const model=require('../dist/menu-model.js');
+const legacy={brand:{name:'範例店',menus:['原茶','奶茶'],categoryTags:{原茶:['可調整為熱飲']}},items:[{id:'tea',name:'紅茶',menuCategory:'原茶',active:true,recommended:false,tags:[],cups:[{size:'大杯',capacity:'700ml',prices:{north:{price:35,available:true}}}]}],activities:[]};
+const before=JSON.stringify(legacy),normalized=model.normalizeCategories(legacy);
+assert.equal(JSON.stringify(legacy),before);
+const id=normalized.items[0].categoryId,categories=normalized.brand.categories.map(c=>c.id===id?{...c,name:'Original TEA'}:c);
+const renamed=model.updateCategories(normalized,categories);
+assert.equal(renamed.items[0].categoryId,id);assert.equal(renamed.items[0].menuCategory,'Original TEA');
+assert.deepEqual(renamed.brand.categoryTags['Original TEA'],['可調整為熱飲']);
+assert.equal(renamed.items[0].cups[0].prices.north.price,35);
+assert.throws(()=>model.updateCategories(normalized,[]),/找不到所屬分類/);
+assert.throws(()=>model.updateCategories(normalized,categories.map(c=>({...c,name:'重複'}))),/不可重複/);
+assert.deepEqual(model.normalizeCategories(renamed),renamed);
+assert.equal(model.isRecommended({tags:[],recommended:true}),false,'explicit empty tags override legacy recommendation');
+assert.equal(model.isRecommended({recommended:true}),true);
+const source=fs.readFileSync('tests/dialog-structure.cjs','utf8');
+const element=source.slice(source.indexOf('class Element'),source.indexOf('const nodes='));
+const ctx=vm.createContext({console});vm.runInContext(element+';globalThis.Element=Element;',ctx);
+const host=new ctx.Element('section');
+ctx.document={createElement:t=>new ctx.Element(t),createTextNode:t=>Object.assign(new ctx.Element('#text'),{textContent:t}),getElementById:()=>host};
+for(const file of ['data.js','real-data.js','menu-model.js','ui.js','menu-view.js'])vm.runInContext(fs.readFileSync('dist/'+file,'utf8'),ctx);
+vm.runInContext("const $=id=>document.getElementById(id);let s=defaults();function sync(){}function render(){renderQuickMenu();}function copyName(name){globalThis.copied=name;}function openOrder(id){globalThis.opened=id;}",ctx);
+const all=x=>[x,...x.children.flatMap(all)];
+for(const brand of ['得正','WUWIN']){
+ ctx.brandUnderTest=brand;vm.runInContext("s={...defaults(),brand:brandUnderTest,cal:'0',temp:'溫',size:'不存在杯型'};renderQuickMenu()",ctx);
+ assert.equal(host.hidden,false);
+ assert(all(host).some(x=>x.textContent===brand+' Menu'));
+ const rows=all(host).filter(x=>x.className==='quick-menu-row');assert(rows.length>10,'hidden old filters must not hide menu items');
+ const detail=all(rows[0]).find(x=>x.className==='quick-menu-detail'),copy=all(rows[0]).find(x=>x.className==='quick-menu-copy');
+ detail.onclick();copy.onclick();assert(ctx.opened);assert(ctx.copied);
+ const nav=all(host).find(x=>x.className==='quick-menu-nav');
+ nav.children[1].onclick();assert.equal(all(host).filter(x=>x.className==='quick-menu-group').length,1);
+}
+assert(!fs.readFileSync('dist/menu-view.js','utf8').includes("'得正'"));
+assert(!fs.readFileSync('dist/store-view.js','utf8').includes("'得正'"));
+console.log('PASS: stable category rename/tags, immutable migration, both stores use the same complete menu, filters, details and copy');
+// The search node stays attached while filtering, preserving active typing/IME.
+ctx.menuSearch=new ctx.Element('section');ctx.searchHome=new ctx.Element('div');ctx.searchHome.append(ctx.menuSearch);
+vm.runInContext("function placeMenuSearch(target){const destination=target||searchHome;if(menuSearch.parentElement!==destination)destination.append(menuSearch);}",ctx);
+vm.runInContext("s={...defaults(),brand:'得正'};renderQuickMenu()",ctx);
+const searchSlot=ctx.menuSearch.parentElement;assert.equal(searchSlot.className,'menu-search-slot');
+const input=new ctx.Element('input');ctx.menuSearch.append(input);input.value='紅';
+vm.runInContext("s.q='紅';renderQuickMenu()",ctx);assert.equal(ctx.menuSearch.parentElement,searchSlot);assert.equal(input.parentElement,ctx.menuSearch);assert.equal(input.value,'紅');
+assert.equal(host.children[0].className,'menu-heading-slot');assert.equal(host.children[1],searchSlot);assert.equal(host.children[2].className,'menu-body-slot');
+vm.runInContext("s.brand='';renderQuickMenu()",ctx);assert.equal(ctx.menuSearch.parentElement,ctx.searchHome);
+vm.runInContext("s.brand='WUWIN';s.q='';renderQuickMenu()",ctx);assert.equal(ctx.menuSearch.parentElement,searchSlot);
+console.log('PASS: menu search position, input identity and return-home placement');
