@@ -108,17 +108,19 @@
 }
 .drink-tags {
   display: inline-flex;
-  gap: 5px;
+  gap: var(--space-1);
   flex-wrap: wrap;
-  margin-left: 8px;
+  margin-left: var(--space-2);
+  max-width: 100%;
 }
 .tag {
   background: var(--color-surface-soft);
   color: var(--color-brand-strong);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  padding: 4px 6px;
-  font-size: var(--text-caption);
+  padding: 2px 5px;
+  font-size: var(--text-ui-xs);
+  line-height: 1.35;
 }
 .tag.top-tag {
   background: var(--color-accent-surface);
