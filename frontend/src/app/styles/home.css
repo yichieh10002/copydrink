@@ -1,8 +1,7 @@
 .home-hero {
   color: var(--color-text);
   background: var(--color-canvas);
-  padding: clamp(108px, 11vw, 150px) 0 clamp(56px, 8vw, 92px);
-  min-height: min(760px, 88vh);
+  padding: clamp(76px, 7vw, 96px) 0 clamp(32px, 4vw, 56px);
   position: relative;
   isolation: isolate;
   overflow: hidden;
