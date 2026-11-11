@@ -50,63 +50,73 @@ export function StoreInfo({ store }: { store: Store }) {
       .join(" · ");
   };
   const top = b.topPicks?.enabled ? b.topPicks : null;
-  const extras = (
-    <>
-      <div className="store-rules">
-        {(
-          [
-            ["甜度", "sweetness", "◇"],
-            ["冰量／溫度", "temperature", "❄"],
-            ["配料", "topping", "●"],
-            ["杯型容量", "cup", "♧"],
-          ] as const
-        ).map(([label, role, icon]) => (
-          <div className="store-rule" key={role}>
-            <span className="rule-icon" aria-hidden="true">
-              {icon}
-            </span>
-            <div>
-              <strong>{label}</strong>
-              <small>
-                {role === "cup"
-                  ? cupSummary || "以商品為準"
-                  : summary(role) || "依各商品設定"}
-              </small>
-            </div>
+  const rules = (
+    <div className="store-rules">
+      {(
+        [
+          ["甜度", "sweetness", "◇"],
+          ["冰量／溫度", "temperature", "❄"],
+          ["配料", "topping", "●"],
+          ["杯型容量", "cup", "♧"],
+        ] as const
+      ).map(([label, role, icon]) => (
+        <div className="store-rule" key={role}>
+          <span className="rule-icon" aria-hidden="true">
+            {icon}
+          </span>
+          <div>
+            <strong>{label}</strong>
+            <small>
+              {role === "cup"
+                ? cupSummary || "以商品為準"
+                : summary(role) || "依各商品設定"}
+            </small>
           </div>
-        ))}
-      </div>
-      <div className="store-links">
-        <strong>店家資料</strong>
-        {(
-          [
-            ["官方網站", b.website],
-            ["菜單", b.menuUrl],
-            ["門市資訊", b.storesUrl],
-            ["熱量資訊", b.nutritionUrl],
-          ] as const
-        ).map(
-          ([label, url]) =>
-            safeUrl(url) && (
-              <a
-                key={label}
-                href={safeUrl(url)!}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {label} ↗
-              </a>
-            ),
-        )}
-        {introduction?.content && (
-          <details>
-            <summary>{introduction.title || "品牌介紹"}</summary>
-            <p>{introduction.content}</p>
-          </details>
-        )}
-      </div>
-    </>
+        </div>
+      ))}
+    </div>
   );
+  const links = (
+    <div className="store-links">
+      <strong>店家資料</strong>
+      {(
+        [
+          ["官方網站", b.website],
+          ["菜單", b.menuUrl],
+          ["門市資訊", b.storesUrl],
+          ["熱量資訊", b.nutritionUrl],
+        ] as const
+      ).map(
+        ([label, url]) =>
+          safeUrl(url) && (
+            <a
+              key={label}
+              href={safeUrl(url)!}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {label} ↗
+            </a>
+          ),
+      )}
+      {introduction?.content && (
+        <details>
+          <summary>{introduction.title || "品牌介紹"}</summary>
+          <p>{introduction.content}</p>
+        </details>
+      )}
+    </div>
+  );
+  const notices = b.tags?.length ? (
+    <div className="store-notices" aria-label="店家提醒">
+      <strong>店家提醒</strong>
+      <ul>
+        {b.tags.map((tag) => (
+          <li key={tag}>{tag}</li>
+        ))}
+      </ul>
+    </div>
+  ) : null;
   return (
     <section className="store-intro container" aria-label="店家資料">
       <div className="store-intro-main">
@@ -133,10 +143,13 @@ export function StoreInfo({ store }: { store: Store }) {
           </div>
         </div>
       </div>
-      <div className="desktop-store-extras">{extras}</div>
+      <div className="desktop-store-extras">{rules}</div>
+      {notices}
+      <div className="desktop-store-extras">{links}</div>
       <details className="mobile-store-extras">
         <summary>甜度、冰量、配料、杯型與店家資料</summary>
-        {extras}
+        {rules}
+        {links}
       </details>
     </section>
   );

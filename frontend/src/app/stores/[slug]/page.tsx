@@ -40,13 +40,6 @@ export default async function StorePage({ params, searchParams }: Props) {
     >
       <section className="store-hero">
         <div className="container">
-          {store.document.brand.tags?.length ? (
-            <div className="hero-tags">
-              {store.document.brand.tags.map((tag) => (
-                <span key={tag}>{tag}</span>
-              ))}
-            </div>
-          ) : null}
           <StoreInfo store={store} />
         </div>
       </section>

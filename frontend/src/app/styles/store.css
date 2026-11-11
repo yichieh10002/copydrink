@@ -10,20 +10,6 @@
     ),
     linear-gradient(135deg, var(--color-hero-start), var(--color-hero-end));
 }
-.hero-tags {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 18px auto 25px;
-}
-.hero-tags span {
-  border: 1px solid var(--color-accent);
-  border-radius: var(--radius-sm);
-  padding: 6px 10px;
-  font-size: var(--text-caption);
-  color: var(--color-accent);
-}
 .store-intro {
   width: 100%;
   background: var(--color-paper);
@@ -34,7 +20,8 @@
   margin-top: var(--space-6);
   display: grid;
   grid-template-columns: minmax(220px, 280px) 1fr;
-  gap: var(--space-6);
+  column-gap: var(--space-6);
+  row-gap: var(--space-3);
   box-shadow: var(--shadow-md);
 }
 .desktop-store-extras {
@@ -125,16 +112,45 @@
   font-size: var(--text-icon);
   color: var(--color-brand);
 }
+.store-notices {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  border-top: 1px dashed var(--color-border);
+  padding-top: var(--space-3);
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+}
+.store-notices > strong {
+  flex: none;
+  color: var(--color-brand-strong);
+}
+.store-notices ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.store-notices li + li::before {
+  content: "·";
+  margin-right: var(--space-4);
+  color: var(--color-rule);
+}
 .store-links {
   grid-column: 1/-1;
-  border-top: 1px dashed var(--color-border);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--space-4);
-  padding-top: var(--space-4);
+  padding-top: var(--space-3);
   font-size: var(--text-small);
   color: var(--color-brand-strong);
+}
+.store-intro:not(:has(.store-notices)) .store-links {
+  border-top: 1px dashed var(--color-border);
 }
 .store-links a {
   text-decoration: underline;
@@ -151,6 +167,16 @@
   white-space: pre-line;
 }
 @media (max-width: 620px) {
+  .store-notices {
+    gap: var(--space-2);
+    padding-top: var(--space-3);
+  }
+  .store-notices ul {
+    gap: var(--space-1) var(--space-2);
+  }
+  .store-notices li + li::before {
+    margin-right: var(--space-2);
+  }
   .desktop-store-extras {
     display: none;
   }
