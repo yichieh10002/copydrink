@@ -288,17 +288,18 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  padding: var(--space-4) 0;
+  padding: var(--space-4) var(--space-3);
   border: 0;
+  border-radius: var(--radius-md);
   background: transparent;
   color: inherit;
   text-align: left;
   cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-standard);
 }
 .top-item-action:hover,
 .top-item-action:focus-visible {
-  color: var(--color-brand);
-  text-decoration: underline;
+  background: var(--color-hover);
 }
 .top-item-rank {
   font-weight: 800;
