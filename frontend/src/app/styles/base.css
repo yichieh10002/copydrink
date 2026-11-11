@@ -9,8 +9,6 @@ body {
   margin: 0;
   min-height: 100dvh;
   background: var(--background);
-  background-image: url("/assets/storybook-paper.webp");
-  background-size: 660px 660px;
   color: var(--ink);
   font-family: var(--font-sans);
   line-height: 1.5;
@@ -52,23 +50,41 @@ a {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: color-mix(in srgb, var(--color-navy) 94%, transparent);
-  color: #fff;
-  border-bottom: 1px solid rgb(255 255 255 / 12%);
-  backdrop-filter: blur(12px);
+  height: 0;
+  color: var(--color-brand-strong);
+  pointer-events: none;
 }
 .nav-inner {
-  min-height: var(--header-height);
+  width: 100%;
+  max-width: none;
+  min-height: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 .wordmark {
-  font-size: 32px;
+  display: block;
+  padding: 20px 28px 22px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  border-top: 0;
+  border-left: 0;
+  border-radius: 0 0 22px 0;
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(12px);
+  font-size: 30px;
   font-weight: 950;
-  letter-spacing: -2px;
+  letter-spacing: -1.8px;
   text-decoration: none;
-  color: white;
+  color: var(--color-brand-strong);
+  pointer-events: auto;
+  transition:
+    color var(--motion-fast) var(--ease-standard),
+    transform var(--motion-normal) var(--ease-standard);
+}
+.wordmark:hover {
+  color: var(--color-brand);
+  transform: translateY(1px);
 }
 .nav-caption {
   font-size: 14px;

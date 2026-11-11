@@ -1,7 +1,7 @@
 .store-hero {
   background: var(--color-navy);
   color: white;
-  padding: var(--space-8) 0 var(--space-12);
+  padding: clamp(108px, 10vw, 132px) 0 var(--space-12);
   background-image:
     radial-gradient(circle at 18% 0, rgb(76 117 172 / 70%), transparent 48%),
     linear-gradient(135deg, #203f6b, #172f51);

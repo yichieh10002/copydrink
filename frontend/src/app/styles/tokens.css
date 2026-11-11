@@ -1,23 +1,32 @@
 :root {
   color-scheme: light;
 
-  --color-navy: #142a47;
-  --color-brand: #2f5b99;
-  --color-brand-strong: #183f75;
-  --color-accent: #f1c665;
-  --color-canvas: #f2ede2;
-  --color-paper: #fbf5e6;
+  --color-navy: #0c2d4d;
+  --color-brand: #2872b2;
+  --color-brand-strong: #174e82;
+  --color-accent: #d9ae47;
+  --color-canvas: #f6f4ef;
+  --color-paper: #fffdf9;
   --color-surface: #ffffff;
-  --color-surface-soft: #eef3f9;
+  --color-surface-soft: #edf5fc;
   --color-text: #202733;
-  --color-text-muted: #657180;
-  --color-border: #b9c7da;
-  --color-focus: #3178d3;
+  --color-text-muted: #66707d;
+  --color-border: #d8d5ce;
+  --color-focus: #1769aa;
 
   --font-sans:
     system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC",
     sans-serif;
-  --font-display: ui-serif, "Noto Serif TC", "Songti TC", Georgia, serif;
+  --font-display: var(--font-sans);
+  --font-editorial: ui-serif, "Noto Serif TC", "Songti TC", Georgia, serif;
+
+  --text-caption: 0.8125rem;
+  --text-small: 0.875rem;
+  --text-body: 1rem;
+  --text-body-lg: 1.125rem;
+  --text-title-sm: 1.375rem;
+  --text-title: clamp(1.75rem, 3vw, 2.375rem);
+  --text-display: clamp(2.5rem, 5vw, 4.25rem);
 
   --space-1: 4px;
   --space-2: 8px;
@@ -30,15 +39,22 @@
   --space-12: 48px;
   --space-16: 64px;
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
   --radius-pill: 999px;
 
-  --shadow-sm: 0 3px 10px rgb(20 42 71 / 8%);
-  --shadow-md: 0 12px 30px rgb(20 42 71 / 12%);
-  --shadow-lg: 0 22px 60px rgb(8 25 50 / 22%);
+  --shadow-sm: 0 1px 0 rgb(12 45 77 / 7%), 0 5px 14px rgb(12 45 77 / 5%);
+  --shadow-md: 0 12px 30px rgb(12 45 77 / 10%);
+  --shadow-lg: 0 24px 64px rgb(8 25 50 / 20%);
+
+  --motion-fast: 120ms;
+  --motion-normal: 200ms;
+  --motion-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
 
   --content-width: 1180px;
   --header-height: 72px;
@@ -59,18 +75,18 @@
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  --color-navy: #0d1b2f;
-  --color-brand: #86aee6;
-  --color-brand-strong: #d9e8ff;
-  --color-accent: #eac76f;
-  --color-canvas: #122139;
-  --color-paper: #1a2d49;
-  --color-surface: #1c324f;
-  --color-surface-soft: #263f61;
-  --color-text: #eef3f9;
-  --color-text-muted: #b3c1d2;
-  --color-border: #526984;
-  --color-focus: #91bfff;
+  --color-navy: #081827;
+  --color-brand: #74afe0;
+  --color-brand-strong: #d7ebfb;
+  --color-accent: #dfbd67;
+  --color-canvas: #0d1c2b;
+  --color-paper: #14283a;
+  --color-surface: #192f44;
+  --color-surface-soft: #203b54;
+  --color-text: #f4f1ea;
+  --color-text-muted: #bdc8d1;
+  --color-border: #40566b;
+  --color-focus: #8bc6f3;
   --shadow-sm: 0 3px 12px rgb(0 0 0 / 18%);
   --shadow-md: 0 14px 34px rgb(0 0 0 / 24%);
   --shadow-lg: 0 24px 64px rgb(0 0 0 / 38%);

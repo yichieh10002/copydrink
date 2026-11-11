@@ -2,37 +2,58 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  margin: 16px 20px 0 0;
+  padding: 6px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 .theme-toggle {
   display: flex;
-  border: 1px solid #829bb9;
-  border-radius: 999px;
-  padding: 3px;
+  gap: 2px;
 }
 .theme-toggle button {
   background: transparent;
   border: 0;
-  color: white;
-  min-width: 54px;
+  color: var(--color-text-muted);
+  min-width: 52px;
   height: 32px;
   padding: 0 12px;
-  border-radius: 999px;
+  border-radius: 7px;
   font-size: 0.82rem;
   font-weight: 750;
 }
 .theme-toggle button[aria-pressed="true"] {
-  background: #54739f;
+  background: var(--color-brand);
+  color: white;
 }
 html[data-theme="dark"] body {
   background-image: none;
 }
+html[data-theme="dark"] .hero-art {
+  border-color: var(--color-border);
+  filter: brightness(0.72) saturate(0.82);
+}
+html[data-theme="dark"] .hero-art-note {
+  background: rgb(13 28 43 / 78%);
+  color: var(--color-text);
+}
 html[data-theme="dark"] .store-card,
 html[data-theme="dark"] .menu-category,
-html[data-theme="dark"] .home-tool,
 html[data-theme="dark"] .order-dialog,
 html[data-theme="dark"] .utility-dialog {
   background: #1c314e;
   color: #f2f5fa;
+}
+html[data-theme="dark"] .home-tool {
+  background: transparent;
+}
+html[data-theme="dark"] .home-tool:hover,
+html[data-theme="dark"] .home-tool:focus-visible {
+  background: var(--color-surface-soft);
 }
 html[data-theme="dark"] .store-intro {
   background: #1b2e49;

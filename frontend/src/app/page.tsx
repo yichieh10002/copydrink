@@ -93,12 +93,20 @@ export default async function Home({
   return (
     <>
       <section className="home-hero">
-        <div className="hero-scene" aria-hidden="true" />
-        <div className="container">
-          <span className="eyebrow">YOUR DAILY DRINK NOTE</span>
-          <h1>今天這杯，照你的口味。</h1>
-          <p>找菜單、選口味，複製貼回群組。</p>
-          <HomeSearch stores={stores} drinks={drinks} />
+        <div className="container hero-layout">
+          <div className="hero-copy">
+            <span className="eyebrow">YOUR DAILY DRINK NOTE</span>
+            <h1>
+              今天這杯，
+              <br />
+              照你的口味。
+            </h1>
+            <p>找菜單、選口味，複製貼回群組。</p>
+            <HomeSearch stores={stores} drinks={drinks} />
+          </div>
+          <div className="hero-art" aria-hidden="true">
+            <span className="hero-art-note">FIND · PICK · COPY</span>
+          </div>
         </div>
       </section>
       <section className="home-list container">
