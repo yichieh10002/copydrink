@@ -1,8 +1,8 @@
 .menu-section {
-  padding: 30px 0 120px;
+  padding: var(--space-8) 0 120px;
 }
 .menu-tools {
-  padding: 0 0 30px;
+  padding: 0 0 var(--space-8);
 }
 .menu-search {
   display: block;
@@ -11,7 +11,7 @@
 .category-tabs,
 .region-tabs {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
   margin-top: 18px;
 }
@@ -28,12 +28,13 @@
 .region-tabs button {
   border: 1px solid #7389aa;
   background: white;
-  border-radius: 8px;
-  padding: 10px 17px;
+  border-radius: var(--radius-md);
+  min-height: 44px;
+  padding: 9px 16px;
   font-weight: 700;
 }
 .region-tabs button {
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 .category-tabs button[aria-pressed="true"],
 .region-tabs button[aria-pressed="true"] {
@@ -45,22 +46,22 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
-  gap: 22px;
+  gap: var(--space-6);
 }
 .menu-category {
   border: 1px solid #abc0df;
-  border-radius: 18px;
+  border-radius: var(--radius-xl);
   background: #fbf6e9;
   overflow: hidden;
-  box-shadow: 5px 6px 0 #afc1d244;
+  box-shadow: var(--shadow-sm);
 }
 .menu-category h3 {
-  font-family: serif;
+  font-family: var(--font-display);
   color: #11376c;
   background: #f8edcf;
   font-size: 1.8rem;
   margin: 0;
-  padding: 23px;
+  padding: var(--space-6);
   border-bottom: 1px dashed var(--line);
 }
 .menu-category ul {
@@ -80,7 +81,8 @@
   text-align: left;
   border: 0;
   background: transparent;
-  padding: 20px 22px;
+  min-height: 92px;
+  padding: var(--space-5) var(--space-6);
 }
 .drink-row:hover,
 .drink-row:focus-visible {
@@ -111,7 +113,7 @@
   background: #e9f0f9;
   color: #27518d;
   border: 1px solid #d1ddec;
-  border-radius: 7px;
+  border-radius: var(--radius-sm);
   padding: 4px 6px;
   font-size: 0.75rem;
 }

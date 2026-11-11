@@ -23,14 +23,6 @@
 .theme-toggle button[aria-pressed="true"] {
   background: #54739f;
 }
-html[data-theme="dark"] {
-  --background: #14243d;
-  --paper: #1b2e49;
-  --ink: #ecf2f8;
-  --muted: #afbed0;
-  --line: #50627a;
-  --white: #1d3553;
-}
 html[data-theme="dark"] body {
   background-image: none;
 }

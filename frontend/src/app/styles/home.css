@@ -1,8 +1,8 @@
 .home-hero {
   color: white;
   background: #2a5290;
-  padding: 112px 0 290px;
-  min-height: 665px;
+  padding: clamp(72px, 9vw, 112px) 0 clamp(150px, 18vw, 220px);
+  min-height: clamp(500px, 65vw, 620px);
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -15,6 +15,19 @@
   background: url("/assets/home-animals-scene-clean.webp") center center / cover
     no-repeat;
 }
+.home-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgb(15 42 78 / 34%) 0%,
+    rgb(20 55 101 / 8%) 56%,
+    rgb(20 55 101 / 25%) 100%
+  );
+  pointer-events: none;
+}
 .home-hero .container {
   position: relative;
 }
@@ -22,16 +35,18 @@
   font-size: clamp(2.6rem, 4.8vw, 4.3rem);
   line-height: 1.12;
   letter-spacing: -0.04em;
-  margin: 18px 0;
+  margin: var(--space-4) 0;
+  text-wrap: balance;
 }
 .home-hero p {
   font-size: 1.15rem;
   color: #e5ecf8;
+  margin: 0;
 }
 .home-search {
   position: relative;
-  max-width: 560px;
-  margin: 26px auto 0;
+  max-width: 640px;
+  margin: var(--space-8) auto 0;
   text-align: left;
 }
 .home-search-trigger,
@@ -39,9 +54,11 @@
   width: 100%;
   background: white;
   border: 2px solid var(--line);
-  border-radius: 999px;
-  padding: 17px 22px;
+  border-radius: var(--radius-pill);
+  min-height: 54px;
+  padding: 14px 22px;
   outline-offset: 3px;
+  box-shadow: var(--shadow-sm);
 }
 .home-search-trigger {
   text-align: left;
@@ -58,11 +75,11 @@
   max-width: calc(100vw - 24px);
   max-height: calc(100dvh - 32px);
   border: 2px solid var(--blue);
-  border-radius: 18px;
+  border-radius: var(--radius-xl);
   padding: 0;
   background: #fcf9f3;
   color: var(--ink);
-  box-shadow: 0 15px 50px #0d1f37aa;
+  box-shadow: var(--shadow-lg);
 }
 .global-search-dialog::backdrop {
   background: #0a1e3da8;
@@ -75,7 +92,7 @@
   align-items: center;
   gap: 8px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: white;
   padding: 5px 12px 5px 17px;
 }
@@ -117,7 +134,7 @@
   display: flex;
   align-items: center;
   gap: 13px;
-  padding: 10px 4px;
+  padding: 12px 6px;
   border-bottom: 1px solid #dce3e9;
   text-decoration: none;
 }
@@ -180,14 +197,14 @@
   background: var(--paper);
 }
 .home-list {
-  padding: 64px 0 100px;
+  padding: clamp(48px, 7vw, 72px) 0 clamp(72px, 9vw, 112px);
 }
 .section-heading {
   border-bottom: 1px solid var(--blue);
-  margin-bottom: 28px;
+  margin-bottom: var(--space-8);
 }
 .section-heading h2 {
-  font-family: serif;
+  font-family: var(--font-display);
   color: var(--blue-dark);
   font-size: clamp(2rem, 4vw, 3.5rem);
   margin: 0 0 10px;
@@ -198,24 +215,30 @@
 }
 .store-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: var(--space-5);
 }
 .store-card {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 26px;
-  background: white;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  background: var(--white);
   border: 1.5px solid var(--line);
-  border-radius: 16px;
-  box-shadow: 5px 6px 0 #b6c6d344;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
   text-decoration: none;
-  min-height: 145px;
-  transition: transform 0.15s;
+  min-height: 132px;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
 }
-.store-card:hover {
+.store-card:hover,
+.store-card:focus-visible {
   transform: translateY(-3px);
+  border-color: var(--blue);
+  box-shadow: var(--shadow-md);
 }
 .store-logo {
   flex: none;
@@ -223,7 +246,7 @@
   place-items: center;
   background: white;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   width: 76px;
   height: 76px;
   color: var(--blue);
@@ -243,10 +266,12 @@
 .store-card-copy {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: var(--space-2);
+  min-width: 0;
 }
 .store-card-copy strong {
-  font-size: 1.35rem;
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  line-height: 1.3;
 }
 .store-card-copy span {
   color: var(--blue);

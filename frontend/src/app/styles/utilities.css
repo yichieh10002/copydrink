@@ -1,8 +1,8 @@
 .home-tools {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 38px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-10);
 }
 .home-tool {
   text-align: left;
@@ -10,10 +10,12 @@
   align-items: center;
   gap: 11px;
   border: 1px solid #aebed2;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: #fffaf0;
   color: var(--blue-dark);
-  padding: 18px;
+  min-height: 64px;
+  padding: var(--space-4) var(--space-5);
+  box-shadow: var(--shadow-sm);
 }
 .home-tool > span {
   font-size: 1.6rem;
@@ -27,12 +29,13 @@
 }
 .utility-dialog {
   border: 2px solid var(--blue);
-  border-radius: 17px;
+  border-radius: var(--radius-xl);
   background: #fcf9f3;
   color: var(--ink);
   width: min(600px, calc(100vw - 24px));
   max-height: 90dvh;
-  padding: 25px;
+  padding: var(--space-6);
+  box-shadow: var(--shadow-lg);
 }
 .utility-dialog::backdrop {
   background: #0a1e3da8;
@@ -73,7 +76,7 @@
 .utility-heading h2 {
   margin: 0;
   color: var(--blue-dark);
-  font-family: serif;
+  font-family: var(--font-display);
   font-size: 2rem;
 }
 .utility-heading button {
@@ -84,7 +87,8 @@
 .quick-note .field select {
   display: block;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
+  min-height: var(--control-height);
   background: white;
   width: 100%;
   padding: 12px;
@@ -102,12 +106,13 @@
 .quick-picker-control input {
   min-width: 0;
   margin-top: 0;
-  border-radius: 10px 0 0 10px;
+  min-height: var(--control-height);
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
   border-right: 0;
 }
 .quick-picker-control button {
   border: 1px solid var(--line);
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
   background: #edf3fb;
   color: var(--blue-dark);
   font-size: 1.15rem;
@@ -138,9 +143,9 @@
   max-height: 220px;
   overflow-y: auto;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: white;
-  box-shadow: 0 12px 25px #0b1e3f2b;
+  box-shadow: var(--shadow-md);
 }
 .quick-picker-menu button {
   border: 0;

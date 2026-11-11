@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BackToTop } from "@/components/BackToTop";
+import "./styles/tokens.css";
 import "./styles/base.css";
 import "./styles/home.css";
 import "./styles/store.css";

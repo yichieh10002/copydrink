@@ -1,32 +1,20 @@
-:root {
-  --navy: #192d49;
-  --blue: #2b5390;
-  --blue-dark: #173c73;
-  --paper: #f8f1de;
-  --background: #f0ebdf;
-  --ink: #212834;
-  --muted: #687482;
-  --line: #bdc9db;
-  --gold: #f7cb67;
-  --white: #fff;
-}
 * {
   box-sizing: border-box;
 }
 html {
   scroll-behavior: smooth;
+  min-width: 320px;
 }
 body {
   margin: 0;
+  min-height: 100dvh;
   background: var(--background);
   background-image: url("/assets/storybook-paper.webp");
   background-size: 660px 660px;
   color: var(--ink);
-  font-family:
-    system-ui,
-    -apple-system,
-    "Noto Sans TC",
-    sans-serif;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 button,
 input,
@@ -36,11 +24,20 @@ textarea {
 button {
   cursor: pointer;
 }
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
 a {
   color: inherit;
 }
 .container {
-  width: min(1200px, calc(100% - 48px));
+  width: min(var(--content-width), calc(100% - 48px));
   margin-inline: auto;
 }
 .sr-only {
@@ -52,11 +49,16 @@ a {
   white-space: nowrap;
 }
 .site-header {
-  background: #111c34;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--color-navy) 94%, transparent);
   color: #fff;
+  border-bottom: 1px solid rgb(255 255 255 / 12%);
+  backdrop-filter: blur(12px);
 }
 .nav-inner {
-  height: 76px;
+  min-height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -87,9 +89,9 @@ a {
   gap: 0;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: var(--paper);
-  box-shadow: 0 5px 18px #0b1e3f33;
+  box-shadow: var(--shadow-md);
 }
 .back-to-top,
 .back-to-stores {
