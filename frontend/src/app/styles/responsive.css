@@ -134,7 +134,7 @@
   }
   .store-intro-brand > .store-logo {
     grid-column: 1;
-    grid-row: 1;
+    grid-row: 1 / span 2;
   }
   .store-intro-main h1 {
     grid-column: 2;
@@ -143,14 +143,33 @@
     margin: 0;
   }
   .store-description,
-  .mobile-brand-links,
-  .store-intro-stats {
+  .mobile-brand-links {
     grid-column: 1 / -1;
   }
+  .store-intro-stats {
+    grid-column: 2;
+    grid-row: 2;
+    gap: 0;
+    margin: var(--space-1) 0 0;
+    color: color-mix(in srgb, var(--color-on-dark) 76%, transparent);
+    font-size: var(--text-caption);
+  }
+  .store-intro-stats span {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .store-intro-stats span + span::before {
+    content: "·";
+    margin: 0 var(--space-2);
+  }
   .store-description {
+    grid-row: 3;
     margin-top: var(--space-4);
   }
   .mobile-brand-links {
+    grid-row: 4;
     margin-top: var(--space-4);
   }
   .store-rules {
