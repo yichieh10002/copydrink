@@ -15,7 +15,9 @@ export function StoreCard({ store }: { store: StoreSummary }) {
       </span>
       <span className="store-card-copy">
         <strong>{store.name}</strong>
-        <small>{store.drinkCount} 款飲品</small>
+        <small>
+          {store.regionCount} 個區域 · {store.drinkCount} 款飲品
+        </small>
       </span>
     </Link>
   );

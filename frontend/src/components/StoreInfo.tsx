@@ -132,7 +132,7 @@ export function StoreInfo({ store }: { store: Store }) {
             <p className="store-intro-description">{introduction.content}</p>
           )}
           <div className="store-intro-stats">
-            <span>{store.regions.length} 個地區營運</span>
+            <span>{store.regions.length} 個區域</span>
             <span>全品項 {store.items.length} 款飲品</span>
           </div>
         </div>
