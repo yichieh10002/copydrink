@@ -10,7 +10,7 @@
 
 ## 排版與尺寸
 
-字體由 `--font-sans`、`--font-display`、`--font-editorial` 控制。正文基準為瀏覽器預設 16px，輔助字從 `--text-small`（14px）與 `--text-caption`（13px）選用；互動元件不要用 `--text-micro`（11px），這個尺寸只留給裝飾性標籤。標題使用 `--text-title-sm`、`--text-section`、`--text-title`、`--text-display`，手機展示標題與彈窗標題各有獨立 token。字級不得在元件中直接寫數值。
+字體由 `--font-sans`、`--font-display`、`--font-editorial` 控制。一般正文是 `--text-body`（15px），表單輸入維持 `--text-input`（16px，避免 iOS 聚焦時自動放大），輔助字從 `--text-small`（14px）與 `--text-caption`（13px）選用；互動元件不要用 `--text-micro`（11px），這個尺寸只留給裝飾性標籤。標題使用 `--text-title-sm`、`--text-section`、`--text-title`、`--text-display`，手機展示標題與彈窗標題各有獨立 token。字級不得在元件中直接寫數值。
 
 間距採 4px 基準，常用 `--space-1` 至 `--space-16`；圓角用 `--radius-*`；陰影用 `--shadow-*`。特殊的圖像比例、單一控件的內距或尺寸可留在元件樣式中，反覆出現的數值應提升為 token。可點擊的主要操作目標至少約 44px 高；焦點可見樣式由 `base.css` 管理。
 

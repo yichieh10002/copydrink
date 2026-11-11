@@ -11,13 +11,20 @@ body {
   background: var(--color-canvas);
   color: var(--color-text);
   font-family: var(--font-sans);
+  font-size: var(--text-body);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
+}
+input,
+textarea,
+select {
+  font-size: var(--text-input);
 }
 button {
   cursor: pointer;

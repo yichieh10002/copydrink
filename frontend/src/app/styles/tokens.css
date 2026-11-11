@@ -44,20 +44,21 @@
 
   --text-caption: 0.8125rem;
   --text-small: 0.875rem;
-  --text-body: 1rem;
-  --text-body-lg: 1.125rem;
-  --text-title-sm: 1.375rem;
-  --text-section: 1.75rem;
-  --text-icon: 1.5rem;
+  --text-body: 0.9375rem;
+  --text-input: 1rem;
+  --text-body-lg: 1.0625rem;
+  --text-title-sm: 1.25rem;
+  --text-section: 1.5rem;
+  --text-icon: 1.375rem;
   --text-micro: 0.6875rem;
   --text-ui-xs: 0.75rem;
-  --text-ui-lg: 1.25rem;
-  --text-control-icon: 1.625rem;
-  --text-card-title: clamp(1.125rem, 2vw, 1.375rem);
-  --text-dialog-title: clamp(1.375rem, 3vw, 1.75rem);
-  --text-mobile-display: clamp(2.25rem, 11vw, 3rem);
-  --text-title: clamp(1.75rem, 3vw, 2.375rem);
-  --text-display: clamp(2.5rem, 5vw, 4.25rem);
+  --text-ui-lg: 1.125rem;
+  --text-control-icon: 1.5rem;
+  --text-card-title: clamp(1.0625rem, 2vw, 1.25rem);
+  --text-dialog-title: clamp(1.25rem, 3vw, 1.5rem);
+  --text-mobile-display: clamp(2rem, 10vw, 2.625rem);
+  --text-title: clamp(1.5rem, 3vw, 2rem);
+  --text-display: clamp(2.25rem, 5vw, 3.5rem);
 
   --space-1: 4px;
   --space-2: 8px;
