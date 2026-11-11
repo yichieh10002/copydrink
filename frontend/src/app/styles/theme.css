@@ -90,6 +90,12 @@ html[data-theme="dark"] .quick-picker-menu button:focus-visible,
 html[data-theme="dark"] .quick-picker-menu button[aria-selected="true"] {
   background: #24466f;
 }
+html[data-theme="dark"] .back-to-top:hover,
+html[data-theme="dark"] .back-to-top:focus-visible,
+html[data-theme="dark"] .back-to-stores:hover,
+html[data-theme="dark"] .back-to-stores:focus-visible {
+  background: #24466f;
+}
 html[data-theme="dark"] .pill:has(input:checked) {
   background: #365c56;
 }

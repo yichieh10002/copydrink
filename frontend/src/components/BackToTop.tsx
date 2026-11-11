@@ -39,7 +39,7 @@ export function BackToTop() {
       {isStorePage && (
         <Link className="back-to-stores" href="/" aria-label="返回全部店家">
           <span aria-hidden="true">←</span>
-          <small>全部店家</small>
+          <small>回全部</small>
         </Link>
       )}
     </nav>
