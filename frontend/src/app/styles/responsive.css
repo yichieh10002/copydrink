@@ -30,7 +30,7 @@
   .wordmark {
     padding: 9px 12px 10px;
     border-radius: 0 0 11px 0;
-    font-size: 20px;
+    font-size: var(--text-ui-lg);
   }
   .nav-right {
     margin: 10px 10px 0 0;
@@ -47,7 +47,7 @@
   }
   .home-hero h1 {
     max-width: none;
-    font-size: clamp(2.25rem, 11vw, 3rem);
+    font-size: var(--text-mobile-display);
     margin-top: 14px;
   }
   .hero-layout {
@@ -106,7 +106,7 @@
     align-items: start;
   }
   .store-intro-main h1 {
-    font-size: 1.7rem;
+    font-size: var(--text-section);
   }
   .store-rules {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -114,11 +114,11 @@
   }
   .store-rule {
     padding: 13px 7px;
-    border-top: 1px dashed var(--line);
+    border-top: 1px dashed var(--color-border);
     border-left: 0;
   }
   .store-rule:nth-child(even) {
-    border-left: 1px dashed var(--line);
+    border-left: 1px dashed var(--color-border);
   }
   .store-rule small {
     max-height: 52px;
@@ -130,7 +130,7 @@
     padding: 22px 0 88px;
   }
   .menu-category h3 {
-    font-size: 1.5rem;
+    font-size: var(--text-icon);
     padding: 15px;
   }
   .drink-row {

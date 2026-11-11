@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
+    "style:check": "node scripts/check-design-tokens.mjs",
     "test": "node --import tsx --test tests/*.test.ts",
     "format": "prettier --write src tests scripts",
     "format:check": "prettier --check src tests scripts"

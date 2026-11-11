@@ -23,108 +23,14 @@
   height: 32px;
   padding: 0 12px;
   border-radius: 7px;
-  font-size: 0.82rem;
+  font-size: var(--text-caption);
   font-weight: 750;
 }
 .theme-toggle button[aria-pressed="true"] {
   background: var(--color-brand);
-  color: white;
-}
-html[data-theme="dark"] body {
-  background-image: none;
+  color: var(--color-on-brand);
 }
 html[data-theme="dark"] .hero-art {
   border-color: var(--color-border);
   filter: brightness(0.72) saturate(0.82);
-}
-html[data-theme="dark"] .hero-art-note {
-  background: rgb(13 28 43 / 78%);
-  color: var(--color-text);
-}
-html[data-theme="dark"] .store-card,
-html[data-theme="dark"] .menu-category,
-html[data-theme="dark"] .order-dialog,
-html[data-theme="dark"] .utility-dialog {
-  background: #1c314e;
-  color: #f2f5fa;
-}
-html[data-theme="dark"] .home-tool {
-  background: transparent;
-}
-html[data-theme="dark"] .home-tool:hover,
-html[data-theme="dark"] .home-tool:focus-visible {
-  background: var(--color-surface-soft);
-}
-html[data-theme="dark"] .store-intro {
-  background: #1b2e49;
-  color: #f2f5fa;
-}
-html[data-theme="dark"] .menu-category h3 {
-  background: #213b5e;
-  color: #e6f0ff;
-}
-html[data-theme="dark"] .section-heading h2,
-html[data-theme="dark"] .store-intro-main h1,
-html[data-theme="dark"] .utility-heading h2 {
-  color: #f2e7c2;
-}
-html[data-theme="dark"] .drink-row:hover,
-html[data-theme="dark"] .drink-row:focus-visible {
-  background: #274364;
-}
-html[data-theme="dark"] .drink-price {
-  color: #cbd8e8;
-}
-html[data-theme="dark"] .top-dialog {
-  background: #1d304c;
-  color: white;
-}
-html[data-theme="dark"] .pill,
-html[data-theme="dark"] .field input,
-html[data-theme="dark"] .field textarea,
-html[data-theme="dark"] .field select,
-html[data-theme="dark"] .quick-custom-group select,
-html[data-theme="dark"] .copy-preview output {
-  background: #263c58;
-  color: #f6f8fa;
-}
-html[data-theme="dark"] .quick-picker-control button {
-  background: #304b6d;
-  color: #f6f8fa;
-}
-html[data-theme="dark"] .quick-picker-menu,
-html[data-theme="dark"] .quick-picker-menu button {
-  background: #132b4a;
-  color: #f8f0da;
-  border-color: #587394;
-}
-html[data-theme="dark"] .quick-picker-menu button:hover,
-html[data-theme="dark"] .quick-picker-menu button:focus-visible,
-html[data-theme="dark"] .quick-picker-menu button[aria-selected="true"] {
-  background: #24466f;
-}
-html[data-theme="dark"] .back-to-top:hover,
-html[data-theme="dark"] .back-to-top:focus-visible,
-html[data-theme="dark"] .back-to-stores:hover,
-html[data-theme="dark"] .back-to-stores:focus-visible {
-  background: #24466f;
-}
-html[data-theme="dark"] .pill:has(input:checked) {
-  background: #365c56;
-}
-html[data-theme="dark"] .store-links {
-  color: #c4d7fa;
-}
-html[data-theme="dark"] .store-links p {
-  color: #f0f3f7;
-}
-html[data-theme="dark"] .store-rule small,
-html[data-theme="dark"] .mobile-store-extras {
-  color: #c2d1e2;
-}
-html[data-theme="dark"] .rule-icon {
-  color: #9abef7;
-}
-html[data-theme="dark"] .top-dialog li small {
-  color: #c2d1e2;
 }

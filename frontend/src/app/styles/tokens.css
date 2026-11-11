@@ -13,6 +13,28 @@
   --color-text-muted: #66707d;
   --color-border: #d8d5ce;
   --color-focus: #1769aa;
+  --color-on-brand: #ffffff;
+  --color-on-dark: #ffffff;
+  --color-hero-start: #203f6b;
+  --color-hero-end: #172f51;
+  --color-field: #ffffff;
+  --color-hover: #e8f1fc;
+  --color-selected: #e7f1ec;
+  --color-selected-border: #2b6156;
+  --color-selected-text: #214a40;
+  --color-accent-surface: #fff1c7;
+  --color-accent-text: #845000;
+  --color-accent-border: #c19b44;
+  --color-disabled: #dce2eb;
+  --color-disabled-text: #66758b;
+  --color-toast: #173b70;
+  --color-rule: #a8b7cd;
+  --color-hero-note: rgb(255 253 249 / 82%);
+  --color-backdrop: rgb(8 24 39 / 68%);
+  --color-skeleton-start: #dce4ec;
+  --color-skeleton-mid: #f3f5f8;
+  --color-decorative-glow: rgb(40 114 178 / 8%);
+  --color-decorative-glow-strong: rgb(76 117 172 / 70%);
 
   --font-sans:
     system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC",
@@ -25,6 +47,15 @@
   --text-body: 1rem;
   --text-body-lg: 1.125rem;
   --text-title-sm: 1.375rem;
+  --text-section: 1.75rem;
+  --text-icon: 1.5rem;
+  --text-micro: 0.6875rem;
+  --text-ui-xs: 0.75rem;
+  --text-ui-lg: 1.25rem;
+  --text-control-icon: 1.625rem;
+  --text-card-title: clamp(1.125rem, 2vw, 1.375rem);
+  --text-dialog-title: clamp(1.375rem, 3vw, 1.75rem);
+  --text-mobile-display: clamp(2.25rem, 11vw, 3rem);
   --text-title: clamp(1.75rem, 3vw, 2.375rem);
   --text-display: clamp(2.5rem, 5vw, 4.25rem);
 
@@ -59,18 +90,6 @@
   --content-width: 1180px;
   --header-height: 72px;
   --control-height: 46px;
-
-  /* Existing names remain available while components are migrated. */
-  --navy: var(--color-navy);
-  --blue: var(--color-brand);
-  --blue-dark: var(--color-brand-strong);
-  --paper: var(--color-paper);
-  --background: var(--color-canvas);
-  --ink: var(--color-text);
-  --muted: var(--color-text-muted);
-  --line: var(--color-border);
-  --gold: var(--color-accent);
-  --white: var(--color-surface);
 }
 
 html[data-theme="dark"] {
@@ -87,6 +106,28 @@ html[data-theme="dark"] {
   --color-text-muted: #bdc8d1;
   --color-border: #40566b;
   --color-focus: #8bc6f3;
+  --color-on-brand: #081827;
+  --color-on-dark: #f4f1ea;
+  --color-hero-start: #152c43;
+  --color-hero-end: #0b1d2e;
+  --color-field: #263c58;
+  --color-hover: #24466f;
+  --color-selected: #365c56;
+  --color-selected-border: #77a995;
+  --color-selected-text: #f4f1ea;
+  --color-accent-surface: #4a3b24;
+  --color-accent-text: #f4d68d;
+  --color-accent-border: #a8894b;
+  --color-disabled: #34475b;
+  --color-disabled-text: #c4cbd3;
+  --color-toast: #14283a;
+  --color-rule: #526984;
+  --color-hero-note: rgb(13 28 43 / 78%);
+  --color-backdrop: rgb(1 9 18 / 76%);
+  --color-skeleton-start: #263c58;
+  --color-skeleton-mid: #344d67;
+  --color-decorative-glow: rgb(116 175 224 / 9%);
+  --color-decorative-glow-strong: rgb(76 117 172 / 34%);
   --shadow-sm: 0 3px 12px rgb(0 0 0 / 18%);
   --shadow-md: 0 14px 34px rgb(0 0 0 / 24%);
   --shadow-lg: 0 24px 64px rgb(0 0 0 / 38%);

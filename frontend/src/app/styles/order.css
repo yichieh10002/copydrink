@@ -39,7 +39,7 @@
 }
 .copy-preview {
   padding-bottom: 20px;
-  border-bottom: 1px dashed var(--line);
+  border-bottom: 1px dashed var(--color-border);
 }
 .copy-preview-heading {
   display: flex;
@@ -48,26 +48,26 @@
   gap: 12px;
 }
 .copy-preview strong {
-  color: var(--blue);
+  color: var(--color-brand);
 }
 .copy-preview output {
   display: block;
-  border: 1px dashed #92aad3;
+  border: 1px dashed var(--color-border);
   border-radius: var(--radius-md);
-  background: white;
+  background: var(--color-field);
   padding: 19px;
   min-height: 72px;
   margin: 12px 0;
   font-weight: 700;
-  color: var(--blue);
+  color: var(--color-brand);
   white-space: pre-wrap;
   max-height: 96px;
   overflow-y: auto;
 }
 .copy-button,
 .error-state button {
-  background: var(--blue);
-  color: white;
+  background: var(--color-brand);
+  color: var(--color-on-brand);
   border: 0;
   border-radius: var(--radius-pill);
   min-height: 46px;
@@ -78,20 +78,20 @@
   width: 100%;
 }
 .copy-button:disabled {
-  background: #dce2eb;
-  color: #66758b;
+  background: var(--color-disabled);
+  color: var(--color-disabled-text);
   cursor: not-allowed;
 }
 .copy-reset {
   flex: none;
   margin: 0;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
-  background: var(--paper);
-  color: var(--blue);
+  background: var(--color-paper);
+  color: var(--color-brand);
   font-weight: 750;
   padding: 6px 12px;
-  font-size: 0.82rem;
+  font-size: var(--text-caption);
 }
 .copy-toast {
   position: fixed;
@@ -101,12 +101,12 @@
   translate: -50% 0;
   width: max-content;
   max-width: calc(100vw - 32px);
-  border: 1px solid #ffffff55;
+  border: 1px solid color-mix(in srgb, var(--color-on-dark) 33%, transparent);
   border-radius: 999px;
-  background: #173b70;
-  color: white;
+  background: var(--color-toast);
+  color: var(--color-on-dark);
   padding: 11px 18px;
-  box-shadow: 0 10px 30px #081a35aa;
+  box-shadow: var(--shadow-lg);
   font-weight: 750;
   text-align: center;
   animation: toast-in 0.18s ease-out;
@@ -120,7 +120,7 @@
 .copy-order-builder,
 .copy-separator {
   border: 0;
-  border-top: 1px dashed var(--line);
+  border-top: 1px dashed var(--color-border);
   margin: 20px 0;
   padding: 16px 0 0;
   min-width: 0;
@@ -131,8 +131,8 @@
   padding-right: 12px;
 }
 .copy-order-builder > p {
-  color: var(--muted);
-  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
   margin: 0 0 10px;
 }
 .copy-order-list {
@@ -144,8 +144,8 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  background: white;
-  border: 1px solid var(--line);
+  background: var(--color-field);
+  border: 1px solid var(--color-border);
   border-radius: 11px;
   padding: 8px 12px;
   min-height: 54px;
@@ -158,13 +158,13 @@
   font-weight: 750;
 }
 .copy-part-value {
-  color: var(--muted);
-  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
 }
 .copy-signature {
   min-width: 120px;
   flex: 1;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 8px;
 }
@@ -176,9 +176,9 @@
 .copy-order-arrows button {
   min-width: 36px;
   min-height: 36px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: var(--paper);
+  background: var(--color-paper);
 }
 .copy-order-arrows button:disabled {
   opacity: 0.35;
@@ -196,11 +196,11 @@
 }
 .inline-check input,
 .pill input {
-  accent-color: #285594;
+  accent-color: var(--color-brand);
 }
 .choice-group {
   border: 0;
-  border-top: 1px dashed var(--line);
+  border-top: 1px dashed var(--color-border);
   padding: 17px 0;
   margin: 16px 0 0;
   min-width: 0;
@@ -216,9 +216,9 @@
   margin-top: 8px;
 }
 .pill {
-  border: 1.5px solid var(--line);
+  border: 1.5px solid var(--color-border);
   border-radius: 999px;
-  background: white;
+  background: var(--color-field);
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -226,16 +226,16 @@
   cursor: pointer;
 }
 .pill:has(input:checked) {
-  background: #e7f1ec;
-  border-color: #2b6156;
-  color: #214a40;
+  background: var(--color-selected);
+  border-color: var(--color-selected-border);
+  color: var(--color-selected-text);
 }
 .pill small {
-  font-size: 0.72rem;
-  color: var(--muted);
+  font-size: var(--text-ui-xs);
+  color: var(--color-text-muted);
 }
 .fixed-choice {
-  color: var(--blue);
+  color: var(--color-brand);
 }
 .field {
   display: block;
@@ -245,32 +245,37 @@
 .field input,
 .field textarea {
   display: block;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 10px;
   width: 100%;
   padding: 11px;
   margin-top: 8px;
-  background: white;
+  background: var(--color-field);
 }
 .field textarea {
   min-height: 85px;
 }
 .reference-price {
-  color: var(--muted);
-  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
 }
 .error-state {
   padding: 100px 0;
   text-align: center;
 }
 .error-state a {
-  color: var(--blue);
+  color: var(--color-brand);
 }
 .loading-page {
   padding: 80px 0;
 }
 .skeleton {
-  background: linear-gradient(95deg, #dce4ec 20%, #f3f5f8 40%, #dce4ec 70%);
+  background: linear-gradient(
+    95deg,
+    var(--color-skeleton-start) 20%,
+    var(--color-skeleton-mid) 40%,
+    var(--color-skeleton-start) 70%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.4s linear infinite;
   border-radius: 15px;

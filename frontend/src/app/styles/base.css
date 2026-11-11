@@ -8,8 +8,8 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--background);
-  color: var(--ink);
+  background: var(--color-canvas);
+  color: var(--color-text);
   font-family: var(--font-sans);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -72,7 +72,7 @@ a {
   background: color-mix(in srgb, var(--color-surface) 94%, transparent);
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(12px);
-  font-size: 22px;
+  font-size: var(--text-title-sm);
   font-weight: 950;
   letter-spacing: -1.2px;
   text-decoration: none;
@@ -87,11 +87,11 @@ a {
   transform: translateY(1px);
 }
 .nav-caption {
-  font-size: 14px;
+  font-size: var(--text-small);
   opacity: 0.7;
 }
 .eyebrow {
-  font-size: 12px;
+  font-size: var(--text-ui-xs);
   font-weight: 800;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -104,9 +104,9 @@ a {
   display: grid;
   gap: 0;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  background: var(--paper);
+  background: var(--color-paper);
   box-shadow: var(--shadow-md);
 }
 .back-to-top,
@@ -121,27 +121,27 @@ a {
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: var(--blue-dark);
+  color: var(--color-brand-strong);
   font-weight: 750;
   text-decoration: none;
 }
 .back-to-stores {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--color-border);
 }
 .back-to-top:hover,
 .back-to-top:focus-visible,
 .back-to-stores:hover,
 .back-to-stores:focus-visible {
-  background: #e8f1fc;
+  background: var(--color-hover);
 }
 .back-to-top span,
 .back-to-stores span {
-  font-size: 22px;
+  font-size: var(--text-title-sm);
   line-height: 1;
 }
 .back-to-top small,
 .back-to-stores small {
-  font-size: 11px;
+  font-size: var(--text-micro);
 }
 @media (max-width: 620px) {
   .floating-nav {
@@ -154,7 +154,7 @@ a {
     min-height: 52px;
   }
   .floating-nav {
-    background: color-mix(in srgb, var(--paper) 90%, transparent);
+    background: color-mix(in srgb, var(--color-paper) 90%, transparent);
     backdrop-filter: blur(6px);
   }
 }
