@@ -15,7 +15,7 @@ export function StoreInfo({ store }: { store: Store }) {
     groups = b.optionGroups || [];
   const introduction =
     typeof b.introduction === "string"
-      ? { title: "品牌介紹", content: b.introduction }
+      ? { content: b.introduction }
       : b.introduction;
   const regularSizes = new Set(
     store.items.flatMap((i) =>
@@ -104,15 +104,9 @@ export function StoreInfo({ store }: { store: Store }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {label} ↗
+              {label}
             </a>
           ),
-      )}
-      {introduction?.content && (
-        <details>
-          <summary>{introduction.title || "品牌介紹"}</summary>
-          <p>{introduction.content}</p>
-        </details>
       )}
     </div>
   );
@@ -129,28 +123,32 @@ export function StoreInfo({ store }: { store: Store }) {
   return (
     <section className="store-intro container" aria-label="店家資料">
       <div className="store-intro-main">
-        <span className="store-logo large">
-          {b.logoUrl ? <img src={b.logoUrl} alt="" /> : b.name.slice(0, 1)}
-        </span>
-        <div>
+        <div className="store-intro-brand">
+          <span className="store-logo large">
+            {b.logoUrl ? <img src={b.logoUrl} alt="" /> : b.name.slice(0, 1)}
+          </span>
           <h1>{b.name}</h1>
-          <p>
-            {store.regions.length} 個地區 · {store.items.length} 款飲品
-          </p>
-          <div className="store-intro-actions">
-            {top && (
-              <TopPicks
-                title={top.title || "必喝 TOP"}
-                description={top.description || ""}
-                storeKey={store.key}
-                items={(top.itemIds || []).flatMap((id) => {
-                  const item = store.items.find((i) => i.id === id);
-                  return item ? [{ item, note: top.notes?.[id] || "" }] : [];
-                })}
-              />
-            )}
+          {introduction?.content && (
+            <p className="store-intro-description">{introduction.content}</p>
+          )}
+          <div className="store-intro-stats">
+            <span>{store.regions.length} 個地區營運</span>
+            <span>全品項 {store.items.length} 款飲品</span>
           </div>
         </div>
+        {top && (
+          <div className="store-intro-actions">
+            <TopPicks
+              title={top.title || "必喝 TOP"}
+              description={top.description || ""}
+              storeKey={store.key}
+              items={(top.itemIds || []).flatMap((id) => {
+                const item = store.items.find((i) => i.id === id);
+                return item ? [{ item, note: top.notes?.[id] || "" }] : [];
+              })}
+            />
+          </div>
+        )}
       </div>
       <div className="store-intro-details">
         <div className="desktop-store-extras">{rules}</div>

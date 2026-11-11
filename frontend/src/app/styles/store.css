@@ -38,26 +38,56 @@
 }
 .store-intro-main {
   display: flex;
-  gap: var(--space-4);
-  align-items: flex-start;
-  align-content: flex-start;
-  padding: var(--space-6);
-  background: var(--color-surface-soft);
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: var(--space-8);
+  background: var(--color-navy);
+  color: var(--color-on-dark);
   border-right: 1px solid var(--color-border);
+}
+.store-intro-brand {
+  min-width: 0;
 }
 .store-intro-main h1 {
   font-family: var(--font-display);
   font-size: var(--text-section);
   font-weight: 800;
+  margin: var(--space-5) 0 var(--space-2);
+}
+.store-intro-description {
+  color: var(--color-on-dark);
+  font-size: var(--text-body);
+  line-height: 1.7;
+  white-space: pre-line;
+  opacity: 0.82;
   margin: 0;
 }
-.store-intro-main p {
-  color: var(--color-text-muted);
+.store-intro-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
   font-size: var(--text-small);
-  margin: 4px 0;
+}
+.store-intro-stats span {
+  border: 1px solid color-mix(in srgb, var(--color-on-dark) 24%, transparent);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-3);
+  background: color-mix(in srgb, var(--color-on-dark) 12%, transparent);
 }
 .store-intro-actions {
-  margin-top: 9px;
+  border-top: 1px solid
+    color-mix(in srgb, var(--color-on-dark) 20%, transparent);
+  padding-top: var(--space-5);
+}
+.store-intro-actions .top-button {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-accent);
+  padding: var(--space-1) 0;
+  text-align: left;
 }
 .store-rules {
   display: grid;
@@ -173,19 +203,10 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.store-links details {
-  flex-basis: 100%;
-}
-.store-links summary {
-  cursor: pointer;
-}
-.store-links p {
-  color: var(--color-text);
-  white-space: pre-line;
-}
 @media (max-width: 620px) {
   .store-intro-main {
     border-right: 0;
+    padding: var(--space-5);
   }
   .store-intro-details {
     padding: 0 var(--space-4);
