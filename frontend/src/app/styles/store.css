@@ -4,6 +4,11 @@
   padding: 26px 0 50px;
   background-image: radial-gradient(circle at 25% 0, #4268a1, transparent 50%);
 }
+.store-subnav {
+  background: #1b3559;
+  border-top: 1px solid #ffffff20;
+  padding: 10px 0;
+}
 .back-link {
   display: inline-block;
   color: white;

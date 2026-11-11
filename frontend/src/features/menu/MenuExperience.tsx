@@ -115,6 +115,7 @@ export function MenuExperience({
         </label>
         {store.regions.length > 1 && (
           <div className="region-tabs" aria-label="地區菜單">
+            <span className="region-label">區域</span>
             {store.regions.map((r) => (
               <button
                 key={r.id}

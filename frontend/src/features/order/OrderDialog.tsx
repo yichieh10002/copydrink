@@ -11,6 +11,7 @@ import {
 } from "@/lib/menu";
 import { copyDrinkText } from "@/lib/copy";
 import { track } from "@/lib/analytics";
+import { CopyToast } from "@/components/CopyToast";
 import { ChoiceFieldset, CupChoices } from "./ChoiceFieldset";
 
 type CopyPart = "signature" | "brand" | "drink";
@@ -55,7 +56,7 @@ export function OrderDialog({
     order: defaultOrder,
     separator: "｜",
   });
-  const [copied, setCopied] = useState(false),
+  const [copyNotice, setCopyNotice] = useState(0),
     [error, setError] = useState("");
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -75,6 +76,11 @@ export function OrderDialog({
     }
     return () => dialog?.close();
   }, []);
+  useEffect(() => {
+    if (!copyNotice) return;
+    const timeout = window.setTimeout(() => setCopyNotice(0), 2000);
+    return () => window.clearTimeout(timeout);
+  }, [copyNotice]);
   const tempChoices = useMemo(
     () => allTemperatureChoices(store.document, item, regionId),
     [store, item, regionId],
@@ -184,12 +190,12 @@ export function OrderDialog({
     } catch {
       /* Still works without storage. */
     }
-    setCopied(false);
+    setCopyNotice(0);
     setError("");
     bodyRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   }
   function choose(group: OptionGroup, id: string) {
-    setCopied(false);
+    setCopyNotice(0);
     setError("");
     if (group.kind === "single") {
       if (group.role === "temperature") {
@@ -217,7 +223,7 @@ export function OrderDialog({
     if (!ready) return;
     try {
       await navigator.clipboard.writeText(text);
-      setCopied(true);
+      setCopyNotice((value) => value + 1);
       track({ type: "drink_copy", store: store.key, drink: item.id });
     } catch {
       setError("無法自動複製，請選取下方文字手動複製。");
@@ -262,7 +268,12 @@ export function OrderDialog({
         </button>
       </div>
       <div className="copy-preview order-copy-preview">
-        <strong>複製後的文字</strong>
+        <div className="copy-preview-heading">
+          <strong>複製後的文字</strong>
+          <button type="button" className="copy-reset" onClick={reset}>
+            ↺ 重設
+          </button>
+        </div>
         <output>{text}</output>
         <button
           type="button"
@@ -272,10 +283,6 @@ export function OrderDialog({
         >
           {ready ? "複製跟團文字" : "請完成必選項目"}
         </button>
-        <button type="button" className="copy-reset" onClick={reset}>
-          ↺ 重設
-        </button>
-        {copied && <p role="status">✓ 已複製，可以貼到群組囉！</p>}
         {error && <p role="alert">{error}</p>}
       </div>
       <div className="dialog-body" ref={bodyRef}>
@@ -421,6 +428,7 @@ export function OrderDialog({
           ))}
         </fieldset>
       </div>
+      <CopyToast show={copyNotice > 0} />
     </dialog>
   );
 }

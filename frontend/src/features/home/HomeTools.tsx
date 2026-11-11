@@ -12,6 +12,16 @@ export type QuickStore = {
     sugars: string[];
     ices: string[];
     toppings: string[];
+    customGroups: Array<{
+      id: string;
+      name: string;
+      kind: "single" | "multiple";
+      required: boolean;
+      maxChoices?: number | null;
+      mode?: string;
+      fixedChoiceId?: string;
+      choices: Array<{ id: string; label: string; price?: number | null }>;
+    }>;
   }>;
   sugars: string[];
   ices: string[];

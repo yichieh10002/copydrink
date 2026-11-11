@@ -39,11 +39,15 @@ export default async function StorePage({ params, searchParams }: Props) {
     <StoreSelectionProvider
       initialItem={store.items.find((item) => item.id === drink) || null}
     >
-      <section className="store-hero">
+      <nav className="store-subnav" aria-label="店家切換">
         <div className="container">
           <Link href="/" className="back-link">
             ← 返回全部店家
           </Link>
+        </div>
+      </nav>
+      <section className="store-hero">
+        <div className="container">
           {store.document.brand.tags?.length ? (
             <div className="hero-tags">
               {store.document.brand.tags.map((tag) => (

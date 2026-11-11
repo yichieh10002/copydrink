@@ -90,6 +90,50 @@
   padding: 12px;
   margin-top: 8px;
 }
+.quick-picker-control {
+  display: grid;
+  grid-template-columns: 1fr 48px;
+  align-items: stretch;
+  margin-top: 8px;
+}
+.quick-picker-control input {
+  min-width: 0;
+  margin-top: 0;
+  border-radius: 10px 0 0 10px;
+  border-right: 0;
+}
+.quick-picker-control button {
+  border: 1px solid var(--line);
+  border-radius: 0 10px 10px 0;
+  background: #edf3fb;
+  color: var(--blue-dark);
+  font-size: 1.15rem;
+  font-weight: 850;
+}
+.quick-picker-control button:hover,
+.quick-picker-control button:focus-visible {
+  background: #dbe8f8;
+}
+.quick-picker-control button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.quick-picker-hint {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-top: 6px;
+}
+.quick-custom-group select {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+  padding: 12px;
+  margin-top: 8px;
+}
 .quick-mode,
 .quick-order,
 .quick-separator {

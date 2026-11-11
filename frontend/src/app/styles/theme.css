@@ -13,10 +13,12 @@
   background: transparent;
   border: 0;
   color: white;
-  width: 35px;
+  min-width: 54px;
   height: 32px;
-  border-radius: 50%;
-  font-size: 1.25rem;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 750;
 }
 .theme-toggle button[aria-pressed="true"] {
   background: #54739f;
@@ -68,8 +70,13 @@ html[data-theme="dark"] .pill,
 html[data-theme="dark"] .field input,
 html[data-theme="dark"] .field textarea,
 html[data-theme="dark"] .field select,
+html[data-theme="dark"] .quick-custom-group select,
 html[data-theme="dark"] .copy-preview output {
   background: #263c58;
+  color: #f6f8fa;
+}
+html[data-theme="dark"] .quick-picker-control button {
+  background: #304b6d;
   color: #f6f8fa;
 }
 html[data-theme="dark"] .pill:has(input:checked) {

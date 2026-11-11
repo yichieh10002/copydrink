@@ -33,17 +33,17 @@ export function ThemeToggle() {
         type="button"
         aria-pressed={theme === "light"}
         onClick={() => change("light")}
-        aria-label="淺色模式"
+        aria-label="切換為淺色模式"
       >
-        ☼
+        淺色
       </button>
       <button
         type="button"
         aria-pressed={theme === "dark"}
         onClick={() => change("dark")}
-        aria-label="深色模式"
+        aria-label="切換為深色模式"
       >
-        ☾
+        深色
       </button>
     </div>
   );

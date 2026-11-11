@@ -15,6 +15,15 @@
   flex-wrap: wrap;
   margin-top: 18px;
 }
+.region-tabs {
+  align-items: center;
+}
+.region-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 750;
+  margin-right: 2px;
+}
 .category-tabs button,
 .region-tabs button {
   border: 1px solid #7389aa;

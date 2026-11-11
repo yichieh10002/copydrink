@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { CopyToast } from "@/components/CopyToast";
 import { copyDrinkText } from "@/lib/copy";
 import { normalizeSearch } from "@/lib/search";
 import type { QuickStore } from "./HomeTools";
@@ -16,6 +17,69 @@ const defaultSizes = ["大杯", "中杯", "小杯", "瓶裝"];
 const defaultSugars = ["全糖", "少糖", "半糖", "微糖", "一分糖", "無糖"];
 const defaultIces = ["正常冰", "少冰", "微冰", "去冰", "常溫", "溫飲", "熱飲"];
 
+function PickerInput({
+  id,
+  label,
+  value,
+  options,
+  placeholder,
+  onChange,
+  disabled = false,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  options: string[];
+  placeholder: string;
+  onChange: (value: string) => void;
+  disabled?: boolean;
+}) {
+  const input = useRef<HTMLInputElement>(null);
+  function openOptions() {
+    const target = input.current;
+    if (!target || disabled) return;
+    target.focus();
+    try {
+      target.showPicker();
+    } catch {
+      /* Typing still filters the native suggestion list. */
+    }
+  }
+  return (
+    <div className="field quick-picker-field">
+      <label htmlFor={id}>{label}</label>
+      <div className="quick-picker-control">
+        <input
+          ref={input}
+          id={id}
+          list={`${id}-options`}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+          disabled={disabled}
+          autoComplete="off"
+        />
+        <button
+          type="button"
+          onClick={openOptions}
+          disabled={disabled}
+          aria-label={`展開${label}選項`}
+        >
+          ▾
+        </button>
+      </div>
+      <small className="quick-picker-hint">
+        {disabled ? "請先選擇店家" : "可輸入搜尋，或點右側 ▾ 查看選項"}
+      </small>
+      <datalist id={`${id}-options`}>
+        {options.map((option) => (
+          <option key={option} value={option} />
+        ))}
+      </datalist>
+    </div>
+  );
+}
+
 export function QuickNote({ stores }: { stores: QuickStore[] }) {
   const [library, setLibrary] = useState(true);
   const [storeName, setStoreName] = useState("");
@@ -23,8 +87,10 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
   const [size, setSize] = useState("");
   const [sugar, setSugar] = useState("");
   const [ice, setIce] = useState("");
-  const [milk, setMilk] = useState("");
   const [toppings, setToppings] = useState("");
+  const [customSelections, setCustomSelections] = useState<
+    Record<string, string[]>
+  >({});
   const [quantity, setQuantity] = useState(1);
   const [signature, setSignature] = useState("");
   const [note, setNote] = useState("");
@@ -34,7 +100,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
   const [includeSignature, setIncludeSignature] = useState(false);
   const [order, setOrder] = useState(initialOrder);
   const [separator, setSeparator] = useState<"｜" | " " | "•">("｜");
-  const [copied, setCopied] = useState(false);
+  const [copyNotice, setCopyNotice] = useState(0);
   const [copyError, setCopyError] = useState("");
   const selectedStore = library
     ? stores.find((s) => normalizeSearch(s.name) === normalizeSearch(storeName))
@@ -42,6 +108,19 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
   const selectedDrink = selectedStore?.items.find(
     (item) => normalizeSearch(item.name) === normalizeSearch(drink),
   );
+  useEffect(() => {
+    const fixed = Object.fromEntries(
+      (selectedDrink?.customGroups || [])
+        .filter((group) => group.mode === "fixed" && group.fixedChoiceId)
+        .map((group) => [group.id, [group.fixedChoiceId!]]),
+    );
+    setCustomSelections(fixed);
+  }, [selectedDrink?.id]);
+  useEffect(() => {
+    if (!copyNotice) return;
+    const timeout = window.setTimeout(() => setCopyNotice(0), 2000);
+    return () => window.clearTimeout(timeout);
+  }, [copyNotice]);
   const visibleOrder = order.filter(
     (part) =>
       part === "drink" ||
@@ -64,15 +143,17 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
         choices: ice ? [{ id: "ice", label: ice }] : [],
       },
       {
-        role: "custom",
-        name: "換奶",
-        choices: milk ? [{ id: "milk", label: milk }] : [],
-      },
-      {
-        role: "custom",
+        role: "topping",
         name: "加料",
         choices: toppings ? [{ id: "topping", label: toppings }] : [],
       },
+      ...(selectedDrink?.customGroups || []).map((group) => ({
+        role: "custom",
+        name: group.name,
+        choices: group.choices.filter((choice) =>
+          (customSelections[group.id] || []).includes(choice.id),
+        ),
+      })),
     ],
     quantity,
     signature: includeSignature ? signature : "",
@@ -85,7 +166,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
   });
   const ready =
     !!drink.trim() &&
-    (!library || !!storeName.trim()) &&
+    (!library || (!!selectedStore && !!selectedDrink)) &&
     Number.isInteger(quantity) &&
     quantity >= 1 &&
     quantity <= 99 &&
@@ -93,7 +174,11 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
       (price !== "" &&
         Number.isInteger(Number(price)) &&
         Number(price) >= 0)) &&
-    (!includeSignature || !!signature.trim());
+    (!includeSignature || !!signature.trim()) &&
+    (selectedDrink?.customGroups || []).every(
+      (group) =>
+        !group.required || (customSelections[group.id] || []).length > 0,
+    );
   function reset() {
     setLibrary(true);
     setStoreName("");
@@ -101,8 +186,8 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
     setSize("");
     setSugar("");
     setIce("");
-    setMilk("");
     setToppings("");
+    setCustomSelections({});
     setQuantity(1);
     setSignature("");
     setNote("");
@@ -112,7 +197,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
     setIncludeSignature(false);
     setOrder(initialOrder);
     setSeparator("｜");
-    setCopied(false);
+    setCopyNotice(0);
     setCopyError("");
   }
   function move(key: Part, delta: number) {
@@ -131,7 +216,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
     if (!ready) return;
     try {
       await navigator.clipboard.writeText(text);
-      setCopied(true);
+      setCopyNotice((value) => value + 1);
       setCopyError("");
     } catch {
       setCopyError("無法自動複製，請選取上方文字手動複製。");
@@ -140,7 +225,12 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
   return (
     <div className="quick-note">
       <div className="copy-preview quick-copy-preview">
-        <strong>複製後的文字</strong>
+        <div className="copy-preview-heading">
+          <strong>複製後的文字</strong>
+          <button type="button" className="copy-reset" onClick={reset}>
+            ↺ 重設
+          </button>
+        </div>
         <output>{text}</output>
         <button
           type="button"
@@ -150,14 +240,12 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
         >
           {ready
             ? "複製跟團文字"
-            : library && !storeName.trim()
-              ? "請填寫店家名稱"
-              : "請填寫必填欄位"}
+            : library && !selectedStore
+              ? "請選擇資料庫店家"
+              : library && !selectedDrink
+                ? "請選擇資料庫飲料"
+                : "請填寫必填欄位"}
         </button>
-        <button type="button" className="copy-reset" onClick={reset}>
-          ↺ 重設
-        </button>
-        {copied && <p role="status">✓ 已複製</p>}
         {copyError && <p role="alert">{copyError}</p>}
       </div>
       <div className="quick-note-fields">
@@ -168,7 +256,16 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
               type="radio"
               name="quick-mode"
               checked={library}
-              onChange={() => setLibrary(true)}
+              onChange={() => {
+                setLibrary(true);
+                setStoreName("");
+                setDrink("");
+                setSize("");
+                setSugar("");
+                setIce("");
+                setToppings("");
+                setCustomSelections({});
+              }}
             />
             使用 copydrink 飲料
           </label>
@@ -177,63 +274,82 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
               type="radio"
               name="quick-mode"
               checked={!library}
-              onChange={() => setLibrary(false)}
+              onChange={() => {
+                setLibrary(false);
+                setStoreName("");
+                setDrink("");
+                setSize("");
+                setSugar("");
+                setIce("");
+                setToppings("");
+                setCustomSelections({});
+              }}
             />
             一般填寫
           </label>
         </fieldset>
-        <label className="field">
-          {library ? "搜尋或輸入店家" : "店家名稱（選填）"}
-          <input
-            list={library ? "quick-stores" : undefined}
+        {library ? (
+          <PickerInput
+            id="quick-store"
+            label="選擇店家"
             value={storeName}
-            onChange={(e) => {
-              setStoreName(e.target.value);
+            options={stores.map((store) => store.name)}
+            placeholder="輸入店家名稱或點右側箭頭"
+            onChange={(value) => {
+              setStoreName(value);
               setDrink("");
               setSize("");
               setSugar("");
               setIce("");
-              setMilk("");
               setToppings("");
+              setCustomSelections({});
             }}
-            placeholder={library ? "搜尋現有店家，或自行輸入" : "可以留白"}
           />
-          {library && (
-            <datalist id="quick-stores">
-              {stores.map((s) => (
-                <option key={s.slug} value={s.name} />
-              ))}
-            </datalist>
-          )}
-        </label>
+        ) : (
+          <label className="field">
+            店家名稱（選填）
+            <input
+              value={storeName}
+              onChange={(event) => setStoreName(event.target.value)}
+              placeholder="可以留白"
+            />
+          </label>
+        )}
         {selectedStore && (
           <p className="quick-tip">
-            已找到 {selectedStore.name}：可選店內飲料，也可以自己輸入品名。
+            已選擇 {selectedStore.name}
+            。下一步請從資料庫選擇飲料；若要自行輸入，請切換「一般填寫」。
           </p>
         )}
-        <label className="field">
-          {selectedStore ? "搜尋或輸入飲料" : "飲料名稱"}
-          <input
-            list={selectedStore ? "quick-drinks" : undefined}
+        {library ? (
+          <PickerInput
+            id="quick-drink"
+            label="選擇飲料"
             value={drink}
-            onChange={(e) => {
-              setDrink(e.target.value);
+            options={selectedStore?.items.map((item) => item.name) || []}
+            placeholder={
+              selectedStore ? "輸入飲料名稱或點右側箭頭" : "請先選擇店家"
+            }
+            disabled={!selectedStore}
+            onChange={(value) => {
+              setDrink(value);
               setSize("");
               setSugar("");
               setIce("");
-              setMilk("");
               setToppings("");
+              setCustomSelections({});
             }}
-            placeholder="例如：春烏龍"
           />
-          {selectedStore && (
-            <datalist id="quick-drinks">
-              {selectedStore.items.map((i) => (
-                <option key={i.id} value={i.name} />
-              ))}
-            </datalist>
-          )}
-        </label>
+        ) : (
+          <label className="field">
+            飲料名稱
+            <input
+              value={drink}
+              onChange={(event) => setDrink(event.target.value)}
+              placeholder="例如：春烏龍"
+            />
+          </label>
+        )}
         {selectedDrink && (
           <div className="quick-catalog">
             <p>
@@ -252,86 +368,119 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
             </Link>
           </div>
         )}
-        <label className="field">
-          杯型／容量（選填）
-          <input
-            list="quick-sizes"
-            value={size}
-            onChange={(e) => setSize(e.target.value)}
-            placeholder="例如：大杯"
-          />
-          <datalist id="quick-sizes">
-            {(selectedDrink?.sizes.length
-              ? selectedDrink.sizes
-              : defaultSizes
-            ).map((x) => (
-              <option key={x} value={x} />
-            ))}
-          </datalist>
-        </label>
-        <label className="field">
-          甜度（可自行輸入）
-          <input
-            list="quick-sugars"
-            value={sugar}
-            onChange={(e) => setSugar(e.target.value)}
-            placeholder="例如：微糖"
-          />
-          <datalist id="quick-sugars">
-            {(selectedDrink?.sugars.length
+        <PickerInput
+          id="quick-size"
+          label="杯型／容量（選填）"
+          value={size}
+          onChange={setSize}
+          placeholder="例如：大杯"
+          options={
+            selectedDrink?.sizes.length ? selectedDrink.sizes : defaultSizes
+          }
+        />
+        <PickerInput
+          id="quick-sugar"
+          label="甜度（可自行輸入）"
+          value={sugar}
+          onChange={setSugar}
+          placeholder="例如：微糖"
+          options={
+            selectedDrink?.sugars.length
               ? selectedDrink.sugars
               : selectedStore?.sugars.length
                 ? selectedStore.sugars
                 : defaultSugars
-            ).map((x) => (
-              <option key={x} value={x} />
-            ))}
-          </datalist>
-        </label>
-        <label className="field">
-          冰量／溫熱（可自行輸入）
-          <input
-            list="quick-ices"
-            value={ice}
-            onChange={(e) => setIce(e.target.value)}
-            placeholder="例如：少冰、熱飲"
-          />
-          <datalist id="quick-ices">
-            {(selectedDrink?.ices.length
+          }
+        />
+        <PickerInput
+          id="quick-ice"
+          label="冰量／溫熱（可自行輸入）"
+          value={ice}
+          onChange={setIce}
+          placeholder="例如：少冰、熱飲"
+          options={
+            selectedDrink?.ices.length
               ? selectedDrink.ices
               : selectedStore?.ices.length
                 ? selectedStore.ices
                 : defaultIces
-            ).map((x) => (
-              <option key={x} value={x} />
-            ))}
-          </datalist>
-        </label>
-        <label className="field">
-          換奶／配方（選填）
-          <input
-            value={milk}
-            onChange={(e) => setMilk(e.target.value)}
-            placeholder="例如：換燕麥奶"
-          />
-        </label>
-        <label className="field">
-          配料（選填）
-          <input
-            list="quick-toppings"
-            value={toppings}
-            onChange={(e) => setToppings(e.target.value)}
-            placeholder="例如：珍珠、椰果"
-          />
-          <datalist id="quick-toppings">
-            {(selectedDrink?.toppings.length
+          }
+        />
+        {(selectedDrink?.customGroups || []).map((group) => (
+          <fieldset className="choice-group quick-custom-group" key={group.id}>
+            <legend>
+              {group.name}
+              {group.required ? "（必選）" : "（選填）"}
+            </legend>
+            {group.mode === "fixed" ? (
+              <p className="fixed-choice">
+                {
+                  group.choices.find(
+                    (choice) => choice.id === group.fixedChoiceId,
+                  )?.label
+                }
+              </p>
+            ) : group.kind === "single" ? (
+              <select
+                value={customSelections[group.id]?.[0] || ""}
+                onChange={(event) =>
+                  setCustomSelections((current) => ({
+                    ...current,
+                    [group.id]: event.target.value ? [event.target.value] : [],
+                  }))
+                }
+              >
+                <option value="">請選擇</option>
+                {group.choices.map((choice) => (
+                  <option value={choice.id} key={choice.id}>
+                    {choice.label}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <div className="choice-list">
+                {group.choices.map((choice) => {
+                  const checked = (customSelections[group.id] || []).includes(
+                    choice.id,
+                  );
+                  return (
+                    <label className="pill" key={choice.id}>
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() =>
+                          setCustomSelections((current) => {
+                            const previous = current[group.id] || [];
+                            const next = checked
+                              ? previous.filter((id) => id !== choice.id)
+                              : group.maxChoices &&
+                                  previous.length >= group.maxChoices
+                                ? previous
+                                : [...previous, choice.id];
+                            return { ...current, [group.id]: next };
+                          })
+                        }
+                      />
+                      {choice.label}
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+          </fieldset>
+        ))}
+        <PickerInput
+          id="quick-toppings"
+          label="配料（選填）"
+          value={toppings}
+          onChange={setToppings}
+          placeholder="例如：珍珠、椰果"
+          options={
+            selectedDrink?.toppings.length
               ? selectedDrink.toppings
               : selectedStore?.toppings || []
-            ).map((x) => (
-              <option key={x} value={x} />
-            ))}
-          </datalist>
-        </label>
+          }
+        />
         <label className="field">
           數量
           <input
@@ -443,6 +592,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
           ))}
         </fieldset>
       </div>
+      <CopyToast show={copyNotice > 0} />
     </div>
   );
 }
