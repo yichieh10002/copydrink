@@ -64,17 +64,17 @@ a {
 }
 .wordmark {
   display: block;
-  padding: 20px 28px 22px;
+  padding: 10px 14px 11px;
   border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
   border-top: 0;
   border-left: 0;
-  border-radius: 0 0 22px 0;
+  border-radius: 0 0 12px 0;
   background: color-mix(in srgb, var(--color-surface) 94%, transparent);
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(12px);
-  font-size: 30px;
+  font-size: 22px;
   font-weight: 950;
-  letter-spacing: -1.8px;
+  letter-spacing: -1.2px;
   text-decoration: none;
   color: var(--color-brand-strong);
   pointer-events: auto;

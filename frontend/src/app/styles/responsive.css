@@ -28,9 +28,9 @@
     display: none;
   }
   .wordmark {
-    padding: 15px 18px 17px;
-    border-radius: 0 0 16px 0;
-    font-size: 25px;
+    padding: 9px 12px 10px;
+    border-radius: 0 0 11px 0;
+    font-size: 20px;
   }
   .nav-right {
     margin: 10px 10px 0 0;
@@ -148,29 +148,11 @@
   .open-drink {
     margin-left: auto;
   }
-  .order-dialog {
-    width: calc(100vw - 24px);
-    max-width: calc(100vw - 24px);
-    height: calc(
-      100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
-    );
-    max-height: calc(
-      100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
-    );
-    border-radius: 18px;
-    border-width: 3px;
-  }
-  .dialog-head {
-    padding: 20px;
-  }
   .dialog-body {
     padding: 17px;
   }
   .order-copy-preview {
     padding: 12px 17px 6px;
-  }
-  .dialog-head h2 {
-    font-size: 2rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {

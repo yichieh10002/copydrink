@@ -9,6 +9,7 @@ import "./styles/menu.css";
 import "./styles/order.css";
 import "./styles/responsive.css";
 import "./styles/utilities.css";
+import "./styles/modal.css";
 import "./styles/theme.css";
 
 export const metadata: Metadata = {
