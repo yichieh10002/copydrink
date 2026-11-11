@@ -131,11 +131,11 @@
   }
   .menu-category h3 {
     font-size: var(--text-icon);
-    padding: 15px;
+    padding: var(--space-3) var(--space-4);
   }
   .drink-row {
     min-height: 0;
-    padding: 16px;
+    padding: var(--space-3) var(--space-4);
     align-items: start;
     flex-wrap: wrap;
   }
