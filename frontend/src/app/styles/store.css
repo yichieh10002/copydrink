@@ -210,6 +210,18 @@
   text-underline-offset: 3px;
 }
 @media (max-width: 620px) {
+  .store-description {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .store-description:has([data-expanded="true"]) {
+    align-items: flex-end;
+  }
+  .store-description .store-intro-description {
+    flex: 1;
+    min-width: 0;
+  }
   .store-intro-description:not([data-expanded="true"]) {
     display: -webkit-box;
     overflow: hidden;
@@ -219,9 +231,10 @@
   }
   .store-description-toggle {
     display: inline-flex;
+    flex: none;
     min-height: 44px;
     align-items: center;
-    margin-top: var(--space-1);
+    margin: 0;
     padding: 0;
     border: 0;
     background: transparent;
