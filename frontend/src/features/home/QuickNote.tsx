@@ -5,6 +5,7 @@ import { CopyToast } from "@/components/CopyToast";
 import { copyDrinkText } from "@/lib/copy";
 import { normalizeSearch } from "@/lib/search";
 import type { QuickStore } from "./HomeTools";
+import { RequiredMark } from "@/components/RequiredMark";
 
 type Part = "signature" | "brand" | "drink";
 const initialOrder: Part[] = ["signature", "brand", "drink"];
@@ -25,6 +26,7 @@ function PickerInput({
   placeholder,
   onChange,
   disabled = false,
+  required = false,
 }: {
   id: string;
   label: string;
@@ -33,6 +35,7 @@ function PickerInput({
   placeholder: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  required?: boolean;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
@@ -58,7 +61,10 @@ function PickerInput({
   }
   return (
     <div className="field quick-picker-field" ref={root}>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>
+        {label}
+        {required && <RequiredMark />}
+      </label>
       <div className="quick-picker-control">
         <input
           ref={input}
@@ -331,6 +337,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
           <PickerInput
             id="quick-store"
             label="選擇店家"
+            required
             value={storeName}
             options={stores.map((store) => store.name)}
             placeholder="輸入店家名稱或點右側箭頭"
@@ -364,6 +371,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
           <PickerInput
             id="quick-drink"
             label="選擇飲料"
+            required
             value={drink}
             options={selectedStore?.items.map((item) => item.name) || []}
             placeholder={
@@ -382,6 +390,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
         ) : (
           <label className="field">
             飲料名稱
+            <RequiredMark />
             <input
               value={drink}
               onChange={(event) => setDrink(event.target.value)}
@@ -449,7 +458,14 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
           <fieldset className="choice-group quick-custom-group" key={group.id}>
             <legend>
               {group.name}
-              {group.required ? "（必選）" : "（選填）"}
+              {group.required ? (
+                <>
+                  （必選）
+                  <RequiredMark />
+                </>
+              ) : (
+                "（選填）"
+              )}
             </legend>
             {group.mode === "fixed" ? (
               <p className="fixed-choice">

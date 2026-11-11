@@ -1,5 +1,6 @@
 import type { Choice, Cup, OptionGroup } from "@/lib/types";
 import { temperature } from "@/lib/menu";
+import { RequiredMark } from "@/components/RequiredMark";
 
 export function CupChoices({
   cups,
@@ -12,7 +13,10 @@ export function CupChoices({
 }) {
   return (
     <fieldset className="choice-group">
-      <legend>杯型</legend>
+      <legend>
+        杯型
+        <RequiredMark />
+      </legend>
       <div className="choice-list">
         {cups.map((c) => (
           <label className="pill" key={c.size}>
@@ -42,7 +46,15 @@ export function ChoiceFieldset({
   return (
     <fieldset className="choice-group">
       <legend>
-        {group.name} {group.required ? "（必選）" : "（選填）"}
+        {group.name}{" "}
+        {group.required ? (
+          <>
+            （必選）
+            <RequiredMark />
+          </>
+        ) : (
+          "（選填）"
+        )}
       </legend>
       {group.mode === "fixed" ? (
         <p className="fixed-choice">

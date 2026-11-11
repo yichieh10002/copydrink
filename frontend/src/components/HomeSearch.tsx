@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { KeyboardEvent } from "react";
 import type { StoreSummary } from "@/lib/types";
@@ -16,6 +16,7 @@ export type DrinkSearchEntry = {
   logoUrl?: string;
   searchTerms?: string[];
 };
+const HISTORY_KEY = "copydrink-recent-searches";
 
 function rank(terms: Array<string | undefined>, needle: string) {
   return Math.min(
@@ -46,6 +47,39 @@ export function HomeSearch({
   const composing = useRef(false);
   const [query, setQuery] = useState("");
   const [activeQuery, setActiveQuery] = useState("");
+  const [recent, setRecent] = useState<string[]>([]);
+  useEffect(() => {
+    try {
+      const saved: unknown = JSON.parse(
+        localStorage.getItem(HISTORY_KEY) || "[]",
+      );
+      if (Array.isArray(saved))
+        setRecent(
+          saved
+            .filter((value): value is string => typeof value === "string")
+            .slice(0, 5),
+        );
+    } catch {
+      // A blocked or malformed local storage value should not prevent search.
+    }
+  }, []);
+  function remember(value: string) {
+    const term = value.trim().slice(0, 100);
+    if (!term) return;
+    const next = [term, ...recent.filter((item) => item !== term)].slice(0, 5);
+    setRecent(next);
+    try {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+    } catch {
+      // Search continues even if local storage is unavailable.
+    }
+  }
+  function openSearch(value = "") {
+    setQuery(value);
+    setActiveQuery(value);
+    dialogRef.current?.showModal();
+    inputRef.current?.focus();
+  }
   const results = useMemo(() => {
     const needle = normalizeSearch(activeQuery);
     if (!needle)
@@ -103,6 +137,7 @@ export function HomeSearch({
     }
     if (event.key === "Enter") {
       event.preventDefault();
+      remember(query);
       links()[0]?.click();
     }
   }
@@ -121,14 +156,33 @@ export function HomeSearch({
       <button
         type="button"
         className="home-search-trigger"
-        onClick={() => {
-          dialogRef.current?.showModal();
-          inputRef.current?.focus();
-        }}
+        onClick={() => openSearch()}
         aria-haspopup="dialog"
       >
         <span aria-hidden="true">⌕</span> 搜尋店家或飲料…
       </button>
+      {recent.length > 0 && (
+        <div className="recent-searches" aria-label="上次搜尋紀錄">
+          <span>最近搜尋</span>
+          {recent.map((term) => (
+            <button type="button" key={term} onClick={() => openSearch(term)}>
+              {term}
+            </button>
+          ))}
+          <button
+            type="button"
+            className="recent-clear"
+            onClick={() => {
+              setRecent([]);
+              try {
+                localStorage.removeItem(HISTORY_KEY);
+              } catch {}
+            }}
+          >
+            清除紀錄
+          </button>
+        </div>
+      )}
       <dialog
         ref={dialogRef}
         className="global-search-dialog"
@@ -194,6 +248,7 @@ export function HomeSearch({
                 key={store.key}
                 href={`/stores/${store.slug}`}
                 onClick={() => {
+                  remember(query);
                   track({ type: "search_select", kind: "store" });
                   close();
                 }}
@@ -219,6 +274,7 @@ export function HomeSearch({
                 key={drink.slug + drink.id}
                 href={`/stores/${drink.slug}?focusDrink=${encodeURIComponent(drink.id)}`}
                 onClick={() => {
+                  remember(query);
                   track({ type: "search_select", kind: "drink" });
                   close();
                 }}
