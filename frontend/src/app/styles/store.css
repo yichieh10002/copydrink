@@ -66,6 +66,9 @@
   opacity: 0.82;
   margin: 0;
 }
+.store-description-toggle {
+  display: none;
+}
 .store-intro-stats {
   display: flex;
   flex-wrap: wrap;
@@ -207,6 +210,27 @@
   text-underline-offset: 3px;
 }
 @media (max-width: 620px) {
+  .store-intro-description:not([data-expanded="true"]) {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    white-space: normal;
+  }
+  .store-description-toggle {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    margin-top: var(--space-1);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-on-dark);
+    font-size: var(--text-small);
+    font-weight: 750;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
   .mobile-brand-links {
     display: block;
     margin-top: var(--space-5);

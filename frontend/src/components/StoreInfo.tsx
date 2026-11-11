@@ -2,6 +2,7 @@ import type { Store } from "@/lib/types";
 import { formatPrice } from "@/lib/menu";
 import { TopPicks } from "./TopPicks";
 import { ToppingSummary } from "./ToppingSummary";
+import { ExpandableStoreDescription } from "./ExpandableStoreDescription";
 function safeUrl(value?: string) {
   try {
     const url = new URL(value || "");
@@ -132,7 +133,9 @@ export function StoreInfo({ store }: { store: Store }) {
           </span>
           <h1>{b.name}</h1>
           {introduction?.content && (
-            <p className="store-intro-description">{introduction.content}</p>
+            <ExpandableStoreDescription>
+              {introduction.content}
+            </ExpandableStoreDescription>
           )}
           {hasLinks && <div className="mobile-brand-links">{links}</div>}
           <div className="store-intro-stats">
