@@ -110,7 +110,7 @@
     height: 65px;
   }
   .store-hero {
-    padding: 72px 0 var(--space-6);
+    padding: var(--space-8) 0 var(--space-5);
   }
   .store-intro {
     padding: 0;
@@ -123,9 +123,35 @@
   }
   .store-intro-main {
     align-items: stretch;
+    gap: var(--space-5);
+    padding: var(--space-4);
+  }
+  .store-intro-brand {
+    display: grid;
+    grid-template-columns: 66px minmax(0, 1fr);
+    align-items: center;
+    gap: 0 var(--space-4);
+  }
+  .store-intro-brand > .store-logo {
+    grid-column: 1;
+    grid-row: 1;
   }
   .store-intro-main h1 {
+    grid-column: 2;
+    grid-row: 1;
     font-size: var(--text-section);
+    margin: 0;
+  }
+  .store-description,
+  .mobile-brand-links,
+  .store-intro-stats {
+    grid-column: 1 / -1;
+  }
+  .store-description {
+    margin-top: var(--space-4);
+  }
+  .mobile-brand-links {
+    margin-top: var(--space-4);
   }
   .store-rules {
     grid-template-columns: 1fr;
