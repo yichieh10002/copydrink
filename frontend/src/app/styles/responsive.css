@@ -6,12 +6,9 @@
   .store-intro {
     grid-template-columns: 1fr;
   }
-  .store-rules {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-  }
-  .store-rule:nth-child(odd) {
-    border-left: 0;
+  .store-intro-main {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
   }
   .menu-grid {
     grid-template-columns: 1fr;
@@ -94,8 +91,8 @@
     padding: 88px 0 36px;
   }
   .store-intro {
-    padding: 18px;
-    gap: 18px;
+    padding: 0;
+    gap: var(--space-3);
     margin-top: 20px;
   }
   .store-logo.large {
@@ -109,19 +106,13 @@
     font-size: var(--text-section);
   }
   .store-rules {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0;
+    grid-template-columns: 1fr;
   }
-  .store-rule {
-    padding: 13px 7px;
-    border-top: 1px dashed var(--color-border);
-    border-left: 0;
+  .store-rule:nth-child(n) {
+    grid-column: 1;
   }
-  .store-rule:nth-child(even) {
-    border-left: 1px dashed var(--color-border);
-  }
-  .store-rule small {
-    max-height: 52px;
+  .store-rule:nth-child(-n + 2) small {
+    max-height: none;
   }
   .store-links {
     gap: 10px;

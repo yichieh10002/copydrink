@@ -27,7 +27,7 @@ export function TopPicks({
         ★ {title} · {items.length} 款
       </button>
       <dialog
-        className="top-dialog"
+        className="top-dialog utility-dialog"
         ref={dialog}
         aria-label={title}
         onClick={(event) => {
@@ -42,10 +42,11 @@ export function TopPicks({
             event.currentTarget.close();
         }}
       >
-        <div className="top-dialog-heading">
+        <div className="top-dialog-heading utility-heading">
           <h2>{title}</h2>
           <button
             type="button"
+            className="close-button"
             aria-label="關閉必喝榜單"
             onClick={() => dialog.current?.close()}
           >

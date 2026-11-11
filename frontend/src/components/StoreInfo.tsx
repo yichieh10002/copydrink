@@ -1,6 +1,7 @@
 import type { Store } from "@/lib/types";
 import { formatPrice } from "@/lib/menu";
 import { TopPicks } from "./TopPicks";
+import { ToppingSummary } from "./ToppingSummary";
 function safeUrl(value?: string) {
   try {
     const url = new URL(value || "");
@@ -37,19 +38,23 @@ export function StoreInfo({ store }: { store: Store }) {
     (conditionalSizes.size
       ? `；${[...conditionalSizes].join("、")}需選對應溫度`
       : "");
-  const summary = (role: string) => {
+  const summary = (role: "sweetness" | "temperature") => {
     const g = groups.find((x) => x.role === role);
     if (g)
       return g.choices
         .map((x) => x.label + (x.price ? ` +${formatPrice(x.price)}` : ""))
         .join(" · ");
     if (role === "sweetness") return b.sugars?.join(" · ");
-    if (role === "temperature") return b.ices?.join(" · ");
-    return b.toppings
-      ?.map((t) => t.name + ` +${formatPrice(t.price)}`)
-      .join(" · ");
+    return b.ices?.join(" · ");
   };
   const top = b.topPicks?.enabled ? b.topPicks : null;
+  const toppingGroup = groups.find((x) => x.role === "topping");
+  const toppings = toppingGroup
+    ? toppingGroup.choices.map((choice) => ({
+        name: choice.label,
+        price: choice.price ?? null,
+      }))
+    : (b.toppings || []).map((t) => ({ name: t.name, price: t.price }));
   const rules = (
     <div className="store-rules">
       {(
@@ -66,11 +71,15 @@ export function StoreInfo({ store }: { store: Store }) {
           </span>
           <div>
             <strong>{label}</strong>
-            <small>
-              {role === "cup"
-                ? cupSummary || "以商品為準"
-                : summary(role) || "依各商品設定"}
-            </small>
+            {role === "topping" ? (
+              <ToppingSummary toppings={toppings} />
+            ) : (
+              <small>
+                {role === "cup"
+                  ? cupSummary || "以商品為準"
+                  : summary(role) || "依各商品設定"}
+              </small>
+            )}
           </div>
         </div>
       ))}
@@ -143,9 +152,11 @@ export function StoreInfo({ store }: { store: Store }) {
           </div>
         </div>
       </div>
-      <div className="desktop-store-extras">{rules}</div>
-      {notices}
-      <div className="desktop-store-extras">{links}</div>
+      <div className="store-intro-details">
+        <div className="desktop-store-extras">{rules}</div>
+        {notices}
+        <div className="desktop-store-extras">{links}</div>
+      </div>
       <details className="mobile-store-extras">
         <summary>甜度、冰量、配料、杯型與店家資料</summary>
         {rules}
