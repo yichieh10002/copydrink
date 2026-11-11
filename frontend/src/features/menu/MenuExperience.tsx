@@ -200,22 +200,20 @@ export function MenuExperience({
                           <span className="drink-copy">
                             <strong>{item.name}</strong>
                             <span className="drink-tags">
-                              {[
-                                ...(topIds.has(item.id) ? ["必喝 TOP"] : []),
-                                ...itemTags(item).filter(
+                              {topIds.has(item.id) && (
+                                <span className="tag top-tag">推薦</span>
+                              )}
+                              {itemTags(item)
+                                .filter(
                                   (tag) =>
-                                    !topIds.has(item.id) || tag !== "推薦",
-                                ),
-                              ].map((tag) => (
-                                <span
-                                  key={tag}
-                                  className={
-                                    tag === "必喝 TOP" ? "tag top-tag" : "tag"
-                                  }
-                                >
-                                  {tag}
-                                </span>
-                              ))}
+                                    !topIds.has(item.id) ||
+                                    (tag !== "推薦" && tag !== "必喝 TOP"),
+                                )
+                                .map((tag) => (
+                                  <span key={tag} className="tag">
+                                    {tag}
+                                  </span>
+                                ))}
                             </span>
                             {item.note && <small>{item.note}</small>}
                           </span>
