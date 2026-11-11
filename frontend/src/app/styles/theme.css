@@ -79,6 +79,17 @@ html[data-theme="dark"] .quick-picker-control button {
   background: #304b6d;
   color: #f6f8fa;
 }
+html[data-theme="dark"] .quick-picker-menu,
+html[data-theme="dark"] .quick-picker-menu button {
+  background: #132b4a;
+  color: #f8f0da;
+  border-color: #587394;
+}
+html[data-theme="dark"] .quick-picker-menu button:hover,
+html[data-theme="dark"] .quick-picker-menu button:focus-visible,
+html[data-theme="dark"] .quick-picker-menu button[aria-selected="true"] {
+  background: #24466f;
+}
 html[data-theme="dark"] .pill:has(input:checked) {
   background: #365c56;
 }

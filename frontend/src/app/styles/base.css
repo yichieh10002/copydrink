@@ -78,13 +78,19 @@ a {
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
-.back-to-top {
+.floating-nav {
   position: fixed;
   right: 24px;
   bottom: 24px;
   z-index: 20;
   display: grid;
+  gap: 8px;
+}
+.back-to-top,
+.back-to-stores {
+  display: grid;
   justify-items: center;
+  align-content: center;
   gap: 0;
   min-width: 58px;
   min-height: 58px;
@@ -95,18 +101,24 @@ a {
   color: var(--blue-dark);
   box-shadow: 0 5px 18px #0b1e3f33;
   font-weight: 750;
+  text-decoration: none;
 }
-.back-to-top span {
+.back-to-top span,
+.back-to-stores span {
   font-size: 22px;
   line-height: 1;
 }
-.back-to-top small {
+.back-to-top small,
+.back-to-stores small {
   font-size: 11px;
 }
 @media (max-width: 620px) {
-  .back-to-top {
+  .floating-nav {
     right: 14px;
     bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+  .back-to-top,
+  .back-to-stores {
     min-width: 50px;
     min-height: 52px;
     background: color-mix(in srgb, var(--paper) 90%, transparent);

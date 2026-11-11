@@ -34,48 +34,87 @@ function PickerInput({
   onChange: (value: string) => void;
   disabled?: boolean;
 }) {
+  const root = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
-  function openOptions() {
-    const target = input.current;
-    if (!target || disabled) return;
-    target.focus();
-    try {
-      target.showPicker();
-    } catch {
-      /* Typing still filters the native suggestion list. */
+  const [open, setOpen] = useState(false);
+  const filteredOptions = options.filter(
+    (option) =>
+      !value || normalizeSearch(option).includes(normalizeSearch(value)),
+  );
+
+  useEffect(() => {
+    function close(event: PointerEvent) {
+      if (!root.current?.contains(event.target as Node)) setOpen(false);
     }
+    document.addEventListener("pointerdown", close);
+    return () => document.removeEventListener("pointerdown", close);
+  }, []);
+
+  function openOptions() {
+    if (disabled || options.length === 0) return;
+    const nextOpen = !open;
+    input.current?.focus();
+    setOpen(nextOpen);
   }
   return (
-    <div className="field quick-picker-field">
+    <div className="field quick-picker-field" ref={root}>
       <label htmlFor={id}>{label}</label>
       <div className="quick-picker-control">
         <input
           ref={input}
           id={id}
-          list={`${id}-options`}
           value={value}
-          onChange={(event) => onChange(event.target.value)}
+          onChange={(event) => {
+            onChange(event.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => {
+            if (!disabled && options.length > 0) setOpen(true);
+          }}
           placeholder={placeholder}
           disabled={disabled}
           autoComplete="off"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded={open}
+          aria-controls={`${id}-options`}
         />
         <button
           type="button"
           onClick={openOptions}
-          disabled={disabled}
+          disabled={disabled || options.length === 0}
           aria-label={`展開${label}選項`}
+          aria-expanded={open}
+          aria-controls={`${id}-options`}
         >
-          ▾
+          {open ? "▴" : "▾"}
         </button>
       </div>
       <small className="quick-picker-hint">
         {disabled ? "請先選擇店家" : "可輸入搜尋，或點右側 ▾ 查看選項"}
       </small>
-      <datalist id={`${id}-options`}>
-        {options.map((option) => (
-          <option key={option} value={option} />
-        ))}
-      </datalist>
+      {open && (
+        <div className="quick-picker-menu" id={`${id}-options`} role="listbox">
+          {filteredOptions.length ? (
+            filteredOptions.map((option) => (
+              <button
+                type="button"
+                role="option"
+                aria-selected={option === value}
+                key={option}
+                onClick={() => {
+                  onChange(option);
+                  setOpen(false);
+                }}
+              >
+                {option}
+              </button>
+            ))
+          ) : (
+            <p>沒有符合的選項，仍可繼續自行輸入。</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

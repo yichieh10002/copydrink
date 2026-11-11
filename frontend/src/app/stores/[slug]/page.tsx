@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { getStore } from "@/lib/data";
 import { StoreInfo } from "@/components/StoreInfo";
 import { MenuExperience } from "@/features/menu/MenuExperience";
@@ -39,13 +38,6 @@ export default async function StorePage({ params, searchParams }: Props) {
     <StoreSelectionProvider
       initialItem={store.items.find((item) => item.id === drink) || null}
     >
-      <nav className="store-subnav" aria-label="店家切換">
-        <div className="container">
-          <Link href="/" className="back-link">
-            ← 返回全部店家
-          </Link>
-        </div>
-      </nav>
       <section className="store-hero">
         <div className="container">
           {store.document.brand.tags?.length ? (
