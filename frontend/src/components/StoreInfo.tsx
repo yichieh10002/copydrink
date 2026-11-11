@@ -110,6 +110,9 @@ export function StoreInfo({ store }: { store: Store }) {
       )}
     </div>
   );
+  const hasLinks = [b.website, b.menuUrl, b.storesUrl, b.nutritionUrl].some(
+    (url) => safeUrl(url),
+  );
   const notices = b.tags?.length ? (
     <div className="store-notices" aria-label="店家提醒">
       <strong>店家提醒</strong>
@@ -131,6 +134,7 @@ export function StoreInfo({ store }: { store: Store }) {
           {introduction?.content && (
             <p className="store-intro-description">{introduction.content}</p>
           )}
+          {hasLinks && <div className="mobile-brand-links">{links}</div>}
           <div className="store-intro-stats">
             <span>{store.regions.length} 個區域</span>
             <span>全品項 {store.items.length} 款飲品</span>
@@ -156,9 +160,8 @@ export function StoreInfo({ store }: { store: Store }) {
         <div className="desktop-store-extras">{links}</div>
       </div>
       <details className="mobile-store-extras">
-        <summary>甜度、冰量、配料、杯型與店家資料</summary>
+        <summary>甜度、冰量、配料與杯型</summary>
         {rules}
-        {links}
       </details>
     </section>
   );
