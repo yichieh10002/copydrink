@@ -83,6 +83,19 @@
   .home-search-trigger {
     min-height: 50px;
   }
+  .menu-search input {
+    min-height: 48px;
+    padding: 11px 16px;
+  }
+  .category-tabs {
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .category-tabs button {
+    min-height: 44px;
+    padding: 7px 12px;
+    font-size: var(--text-small);
+  }
   .section-heading {
     display: flex;
     flex-wrap: wrap;
