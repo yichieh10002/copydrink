@@ -19,6 +19,9 @@ export function StoreCard({ store }: { store: StoreSummary }) {
           {store.regionCount} 個區域 · {store.drinkCount} 款飲品
         </small>
       </span>
+      <span className="store-card-arrow" aria-hidden="true">
+        →
+      </span>
     </Link>
   );
 }

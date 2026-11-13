@@ -86,12 +86,16 @@
   :where(.order-dialog, .utility-dialog) {
     width: calc(100vw - 24px);
     max-width: calc(100vw - 24px);
-    max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    max-height: calc(
+      100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+    );
     border-radius: var(--radius-lg);
   }
 
   .order-dialog {
-    height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    height: calc(
+      100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+    );
   }
 
   :where(.dialog-head, .utility-heading) {

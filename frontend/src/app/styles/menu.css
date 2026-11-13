@@ -35,18 +35,22 @@
   transition:
     background var(--motion-fast) var(--ease-standard),
     border-color var(--motion-fast) var(--ease-standard),
-    color var(--motion-fast) var(--ease-standard);
+    color var(--motion-fast) var(--ease-standard),
+    transform var(--motion-slow) var(--ease-spring),
+    box-shadow var(--motion-normal) var(--ease-standard);
 }
 .category-tabs button:hover,
 .region-tabs button:hover {
   border-color: var(--color-brand);
   background: var(--color-hover);
 }
-.category-tabs button[aria-pressed='true'],
-.region-tabs button[aria-pressed='true'] {
+.category-tabs button[aria-pressed="true"],
+.region-tabs button[aria-pressed="true"] {
   background: var(--color-brand);
   border-color: var(--color-brand);
   color: var(--color-on-brand);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 .menu-grid {
   display: grid;
@@ -60,8 +64,13 @@
   background: var(--color-paper);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  transition: box-shadow 500ms var(--ease-out-expo);
+}
+.menu-category:hover {
+  box-shadow: var(--shadow-lg);
 }
 .menu-category h3 {
+  position: relative;
   font-family: var(--font-sans);
   color: var(--color-brand-strong);
   background: var(--color-surface-soft);
@@ -72,6 +81,13 @@
   margin: 0;
   padding: var(--space-4) var(--space-5);
   border-bottom: 1px solid var(--color-border);
+}
+.menu-category h3::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: var(--gradient-brand);
 }
 .menu-category ul {
   list-style: none;
@@ -92,11 +108,18 @@
   background: transparent;
   min-height: 68px;
   padding: var(--space-3) var(--space-5);
-  transition: background var(--motion-fast) var(--ease-standard);
+  transition:
+    background var(--motion-fast) var(--ease-standard),
+    padding-left 400ms var(--ease-out-expo);
 }
 .drink-row:hover,
 .drink-row:focus-visible {
-  background: var(--color-hover);
+  background: linear-gradient(90deg, var(--color-hover), transparent);
+  padding-left: var(--space-8);
+}
+.drink-row:hover .open-drink {
+  color: var(--color-accent-text);
+  translate: 4px 0;
 }
 .drink-copy {
   display: block;
@@ -152,6 +175,9 @@
   color: var(--color-brand);
   font-size: var(--text-caption);
   white-space: nowrap;
+  transition:
+    translate 400ms var(--ease-spring),
+    color var(--motion-fast) var(--ease-standard);
 }
 .empty-state {
   padding: 35px;
@@ -161,17 +187,44 @@
   color: var(--color-text-muted);
 }
 .site-footer {
+  position: relative;
+  overflow: clip;
   background: var(--color-navy);
   color: var(--color-on-dark);
-  padding: 60px 0;
+  padding: clamp(56px, 8vw, 110px) 0 var(--space-12);
+}
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: min(60vw, 640px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-decorative-glow-strong);
+  filter: blur(90px);
+  animation: glow-drift-b 20s ease-in-out infinite alternate;
+}
+.site-footer .container {
+  position: relative;
 }
 .site-footer strong {
+  display: block;
+  width: fit-content;
+  color: transparent;
   font-family: var(--font-display);
-  font-size: var(--text-section);
+  font-size: var(--text-kicker);
   font-weight: 700;
-  letter-spacing: 0.02em;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: var(--gradient-footer) 0 0 / 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradient-pan 7s ease-in-out infinite alternate;
 }
 .site-footer p {
+  max-width: 46em;
+  margin: var(--space-6) 0 0;
   font-size: var(--text-small);
   opacity: 0.7;
   line-height: 1.8;

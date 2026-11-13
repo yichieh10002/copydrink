@@ -1,88 +1,3 @@
-.home-hero {
-  color: var(--color-text);
-  background: var(--color-canvas);
-  padding: clamp(48px, 6vw, 80px) 0 clamp(48px, 6vw, 80px);
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  text-align: left;
-}
-.home-hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image: radial-gradient(
-    circle at 12% 10%,
-    var(--color-decorative-glow),
-    transparent 35%
-  );
-  pointer-events: none;
-}
-.hero-layout {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(440px, 1.15fr);
-  align-items: center;
-  gap: clamp(40px, 6vw, 84px);
-}
-.hero-copy {
-  position: relative;
-  z-index: 1;
-}
-.home-hero h1 {
-  max-width: 9em;
-  font-family: var(--font-sans);
-  font-size: var(--text-display);
-  font-weight: 900;
-  line-height: 1.2;
-  letter-spacing: 0.04em;
-  margin: var(--space-5) 0 var(--space-5);
-  text-wrap: balance;
-}
-.home-hero p {
-  font-size: var(--text-body-lg);
-  color: var(--color-text-muted);
-  margin: 0;
-  line-height: 1.8;
-}
-.home-hero .eyebrow {
-  color: var(--color-brand);
-}
-.hero-art {
-  position: relative;
-  aspect-ratio: 1.42;
-  overflow: hidden;
-  border: 0;
-  border-radius: var(--radius-xl);
-  background: url('/assets/copydrink-editorial-hero.webp') center / cover no-repeat;
-  box-shadow: var(--shadow-lg);
-  animation: hero-reveal 700ms var(--ease-enter) both;
-}
-.hero-art-note {
-  position: absolute;
-  right: 22px;
-  bottom: 20px;
-  padding: 8px 14px;
-  border-radius: var(--radius-pill);
-  background: var(--color-hero-note);
-  color: var(--color-brand-strong);
-  font-family: var(--font-display);
-  font-size: var(--text-micro);
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  backdrop-filter: blur(8px);
-}
-@keyframes hero-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
 .home-search {
   position: relative;
   max-width: 640px;
@@ -276,75 +191,137 @@
   background: var(--color-hover);
 }
 .home-list {
-  padding: clamp(48px, 7vw, 100px) 0 clamp(72px, 9vw, 140px);
+  position: relative;
+  padding: clamp(56px, 8vw, 120px) 0 clamp(80px, 10vw, 150px);
   background: var(--color-section-alt);
 }
 .section-heading {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-5);
-  margin-bottom: var(--space-10);
+  display: grid;
+  justify-items: start;
+  margin-bottom: var(--space-12);
+}
+.section-kicker {
+  margin-left: -0.04em;
+  color: transparent;
+  font-family: var(--font-display);
+  font-size: var(--text-kicker);
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  -webkit-text-stroke: 1.5px var(--color-outline);
+  user-select: none;
 }
 .section-heading h2 {
-  font-family: var(--font-sans);
+  position: relative;
+  margin: calc(var(--text-kicker) * -0.3) 0 0;
+  padding-bottom: var(--space-3);
   color: var(--color-brand-strong);
+  font-family: var(--font-sans);
   font-size: var(--text-title);
   font-weight: 900;
-  letter-spacing: 0.06em;
-  margin: 0;
+  letter-spacing: 0.08em;
+}
+.section-heading h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-brand);
 }
 .section-heading p {
+  margin: var(--space-4) 0 0;
   color: var(--color-text-muted);
-  margin: 0;
 }
 .store-directory-end {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-10) 0 0;
+  padding: var(--space-12) 0 0;
   color: var(--color-text-muted);
   font-size: var(--text-small);
 }
 .store-directory-end button {
-  border: 1px solid var(--color-border);
+  border: 0;
   border-radius: var(--radius-pill);
-  background: var(--color-field);
-  color: var(--color-brand-strong);
-  padding: var(--space-2) var(--space-5);
-  font-weight: 600;
-  transition: background var(--motion-fast) var(--ease-standard);
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  padding: var(--space-3) var(--space-6);
+  font-weight: 700;
+  box-shadow: var(--shadow-md);
+  transition:
+    transform var(--motion-slow) var(--ease-spring),
+    background var(--motion-fast) var(--ease-standard);
 }
 .store-directory-end button:hover {
-  background: var(--color-hover);
+  background: var(--color-accent);
+  transform: translateY(-3px) scale(1.04);
 }
 .store-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: var(--space-5);
 }
 .store-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-6) var(--space-4);
-  background: var(--color-surface);
+  align-items: flex-start;
+  gap: var(--space-5);
+  min-height: 196px;
+  padding: var(--space-5);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
   text-decoration: none;
-  min-height: 150px;
   transition:
-    transform var(--motion-normal) var(--ease-standard),
-    box-shadow var(--motion-normal) var(--ease-standard),
+    transform 500ms var(--ease-out-expo),
+    box-shadow 500ms var(--ease-out-expo),
     border-color var(--motion-normal) var(--ease-standard);
+  will-change: transform;
+}
+.store-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    280px circle at var(--gx, 50%) var(--gy, 0%),
+    var(--color-spotlight),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--motion-slow) var(--ease-standard);
+}
+.store-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  background: var(--gradient-brand);
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale 600ms var(--ease-out-expo);
 }
 .store-card:hover,
 .store-card:focus-visible {
-  transform: translateY(-4px);
+  transform: perspective(800px) rotateX(calc(var(--my, 0) * -10deg))
+    rotateY(calc(var(--mx, 0) * 12deg)) translateY(-8px);
   border-color: var(--color-brand);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+}
+.store-card:hover::before,
+.store-card:focus-visible::before {
+  opacity: 1;
+}
+.store-card:hover::after,
+.store-card:focus-visible::after {
+  scale: 1 1;
 }
 .store-logo {
   flex: none;
@@ -369,26 +346,55 @@
   width: 84px;
   height: 84px;
 }
+.store-card .store-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 600ms var(--ease-spring);
+}
+.store-card:hover .store-logo {
+  transform: scale(1.12) rotate(-5deg);
+}
 .store-card-copy {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  flex: 1;
-  gap: var(--space-2);
+  gap: var(--space-1);
   width: 100%;
   min-width: 0;
-  text-align: center;
+  margin-top: auto;
+  text-align: left;
 }
 .store-card-copy strong {
-  font-size: var(--text-body);
+  font-size: var(--text-body-lg);
+  font-weight: 900;
   line-height: 1.3;
+  letter-spacing: 0.02em;
 }
 .store-card-copy small {
   color: var(--color-text-muted);
   font-size: var(--text-caption);
 }
-.store-card .store-logo {
-  width: 54px;
-  height: 54px;
+.store-card-arrow {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--color-surface-soft);
+  color: var(--color-brand-strong);
+  font-family: var(--font-display);
+  font-size: var(--text-ui-lg);
+  transition:
+    background var(--motion-normal) var(--ease-standard),
+    color var(--motion-normal) var(--ease-standard),
+    rotate 500ms var(--ease-spring);
+}
+.store-card:hover .store-card-arrow {
+  background: var(--color-accent);
+  color: var(--color-on-brand);
+  rotate: -45deg;
 }

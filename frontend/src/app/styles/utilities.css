@@ -142,7 +142,7 @@
 }
 .quick-picker-menu button:hover,
 .quick-picker-menu button:focus-visible,
-.quick-picker-menu button[aria-selected='true'] {
+.quick-picker-menu button[aria-selected="true"] {
   background: var(--color-hover);
 }
 .quick-picker-menu p {
@@ -255,8 +255,12 @@
     --modal-width: 100%;
   }
   .quick-dialog[open] {
-    height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-    max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    height: calc(
+      100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+    );
+    max-height: calc(
+      100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+    );
   }
   .quick-copy-preview {
     padding: 10px 16px 5px;
