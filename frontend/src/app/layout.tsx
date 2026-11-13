@@ -9,10 +9,10 @@ import './styles/home.css';
 import './styles/store.css';
 import './styles/menu.css';
 import './styles/order.css';
-import './styles/responsive.css';
 import './styles/utilities.css';
 import './styles/modal.css';
 import './styles/theme.css';
+import './styles/responsive.css';
 
 export const metadata: Metadata = {
   title: { default: 'copydrink｜飲料小抄', template: '%s｜copydrink' },
