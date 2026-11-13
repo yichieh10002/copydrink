@@ -6,7 +6,7 @@
   margin: auto;
   padding: 0;
   overflow: hidden;
-  border: 1px solid var(--color-border);
+  border: 0;
   border-radius: var(--radius-xl);
   background: var(--color-paper);
   color: var(--color-text);
@@ -15,7 +15,7 @@
 
 :where(.order-dialog, .utility-dialog)::backdrop {
   background: var(--color-backdrop);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(6px);
 }
 
 :where(.order-dialog, .utility-dialog)[open] {
@@ -40,11 +40,11 @@
 :where(.dialog-head, .utility-heading) h2 {
   margin: 0;
   color: var(--color-brand-strong);
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: var(--text-dialog-title);
-  font-weight: 780;
+  font-weight: 900;
   line-height: 1.25;
-  letter-spacing: -0.025em;
+  letter-spacing: 0.02em;
 }
 
 :where(.close-button, .utility-heading > button) {
@@ -55,7 +55,7 @@
   height: 40px;
   padding: 0;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: 50%;
   background: transparent;
   color: var(--color-brand-strong);
   font-size: var(--text-control-icon);
@@ -86,16 +86,12 @@
   :where(.order-dialog, .utility-dialog) {
     width: calc(100vw - 24px);
     max-width: calc(100vw - 24px);
-    max-height: calc(
-      100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
-    );
+    max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
     border-radius: var(--radius-lg);
   }
 
   .order-dialog {
-    height: calc(
-      100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)
-    );
+    height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   }
 
   :where(.dialog-head, .utility-heading) {

@@ -12,7 +12,7 @@ body {
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--text-body);
-  line-height: 1.5;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 button,
@@ -61,6 +61,7 @@ a {
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
   color: var(--color-brand-strong);
+  backdrop-filter: blur(12px);
 }
 .nav-inner {
   width: 100%;
@@ -75,9 +76,10 @@ a {
 .wordmark {
   display: block;
   flex: none;
+  font-family: var(--font-display);
   font-size: var(--text-title-sm);
-  font-weight: 950;
-  letter-spacing: -1.2px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   text-decoration: none;
   color: var(--color-brand-strong);
   transition:
@@ -89,7 +91,7 @@ a {
   opacity: 0.8;
 }
 .required-mark {
-  color: var(--color-brand);
+  color: var(--color-accent);
   font-weight: 800;
   margin-left: 3px;
 }
@@ -98,8 +100,9 @@ a {
   opacity: 0.7;
 }
 .eyebrow {
+  font-family: var(--font-display);
   font-size: var(--text-ui-xs);
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
@@ -129,7 +132,7 @@ a {
   border-radius: 0;
   background: transparent;
   color: var(--color-brand-strong);
-  font-weight: 750;
+  font-weight: 700;
   text-decoration: none;
 }
 .back-to-stores {
