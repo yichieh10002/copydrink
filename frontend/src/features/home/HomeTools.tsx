@@ -1,7 +1,8 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NotePencilIcon } from "@phosphor-icons/react/dist/csr/NotePencil";
 import { CoffeeIcon } from "@phosphor-icons/react/dist/csr/Coffee";
+import { ListIcon } from "@phosphor-icons/react/dist/csr/List";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 import { QuickNote } from "./QuickNote";
 
@@ -40,20 +41,69 @@ export function HomeTools({
 }) {
   const quick = useRef<HTMLDialogElement>(null),
     warm = useRef<HTMLDialogElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) setMenuOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
+
   return (
-    <div className="home-tools">
-      <button className="home-tool" onClick={() => quick.current?.showModal()}>
-        <NotePencilIcon size={22} weight="regular" aria-hidden="true" />
-        <strong>自填飲料小抄</strong>
-        <small>沒有菜單，也能自己寫好複製。</small>
+    <div className="home-tools" ref={menuRef}>
+      <button
+        className="home-menu-trigger"
+        type="button"
+        ref={menuButtonRef}
+        aria-label="快捷功能選單"
+        aria-expanded={menuOpen}
+        aria-controls="home-tool-list"
+        onClick={() => setMenuOpen((open) => !open)}
+      >
+        <ListIcon size={22} weight="regular" aria-hidden="true" />
       </button>
-      {notices.length > 0 && (
-        <button className="home-tool" onClick={() => warm.current?.showModal()}>
-          <CoffeeIcon size={22} weight="regular" aria-hidden="true" />
-          <strong>溫熱飲店家注意</strong>
-          <small>喝熱飲前先看杯型與規定。</small>
+      <div className="home-tool-list" id="home-tool-list" data-open={menuOpen}>
+        <button
+          className="home-tool"
+          type="button"
+          onClick={() => {
+            setMenuOpen(false);
+            quick.current?.showModal();
+          }}
+        >
+          <NotePencilIcon size={22} weight="regular" aria-hidden="true" />
+          <strong>自填飲料小抄</strong>
+          <small>沒有菜單，也能自己寫好複製。</small>
         </button>
-      )}
+        {notices.length > 0 && (
+          <button
+            className="home-tool"
+            type="button"
+            onClick={() => {
+              setMenuOpen(false);
+              warm.current?.showModal();
+            }}
+          >
+            <CoffeeIcon size={22} weight="regular" aria-hidden="true" />
+            <strong>溫熱飲店家注意</strong>
+            <small>喝熱飲前先看杯型與規定。</small>
+          </button>
+        )}
+      </div>
       <dialog
         className="utility-dialog quick-dialog"
         ref={quick}

@@ -18,7 +18,7 @@
 }
 @media (max-width: 620px) {
   :root {
-    --header-offset: 112px;
+    --header-offset: 72px;
   }
   .container {
     width: min(100% - 28px, var(--content-width));
@@ -31,7 +31,8 @@
     font-size: var(--text-ui-lg);
   }
   .nav-right {
-    margin: 0;
+    order: 2;
+    margin-left: auto;
     padding: 2px;
   }
   .site-header {
@@ -39,20 +40,56 @@
   }
   .nav-inner {
     gap: 4px;
-    flex-wrap: wrap;
-    padding: 6px 10px 2px 16px;
+    flex-wrap: nowrap;
+    padding: 6px 10px 6px 16px;
     border-radius: var(--radius-lg);
   }
   .home-tools {
-    flex: 0 0 100%;
+    position: relative;
+    flex: none;
     order: 3;
+  }
+  .home-menu-trigger {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-brand-strong);
+  }
+  .home-menu-trigger:hover,
+  .home-menu-trigger:focus-visible,
+  .home-menu-trigger[aria-expanded="true"] {
+    background: var(--color-hover);
+  }
+  .home-tool-list {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    right: 0;
+    z-index: 1;
+    width: min(280px, calc(100vw - 32px));
+    display: grid;
     gap: 0;
-    justify-content: center;
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+  .home-tool-list[data-open="false"] {
+    display: none;
   }
   .home-tool {
     min-height: 44px;
-    padding: 5px;
-    font-size: var(--text-ui-xs);
+    width: 100%;
+    padding: var(--space-3);
+    font-size: var(--text-small);
+  }
+  .home-tool strong {
+    white-space: nowrap;
   }
   .home-tool > svg {
     width: 18px;
