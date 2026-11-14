@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "copydrink-dev",
+      "runtimeExecutable": "/Users/yichieh/Desktop/copydrink/frontend/node_modules/.bin/next",
+      "runtimeArgs": ["dev", "--dir", "/Users/yichieh/Desktop/copydrink/frontend"],
+      "port": 3000
+    }
+  ]
+}
