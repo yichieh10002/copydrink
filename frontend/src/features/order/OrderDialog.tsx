@@ -1,5 +1,9 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { XIcon } from "@phosphor-icons/react/dist/csr/X";
+import { ArrowCounterClockwiseIcon } from "@phosphor-icons/react/dist/csr/ArrowCounterClockwise";
+import { ArrowUpIcon } from "@phosphor-icons/react/dist/csr/ArrowUp";
+import { ArrowDownIcon } from "@phosphor-icons/react/dist/csr/ArrowDown";
 import type { MenuItem, OptionGroup, Store } from "@/lib/types";
 import {
   allTemperatureChoices,
@@ -264,14 +268,14 @@ export function OrderDialog({
           aria-label="關閉飲料設定"
           onClick={onClose}
         >
-          ×
+          <XIcon size={20} aria-hidden="true" />
         </button>
       </div>
       <div className="copy-preview order-copy-preview">
         <div className="copy-preview-heading">
           <strong>複製後的文字</strong>
           <button type="button" className="copy-reset" onClick={reset}>
-            ↺ 重設
+            <ArrowCounterClockwiseIcon size={16} aria-hidden="true" /> 重設
           </button>
         </div>
         <output>{text}</output>
@@ -389,7 +393,7 @@ export function OrderDialog({
                     }
                     onClick={() => move(part, -1)}
                   >
-                    ↑
+                    <ArrowUpIcon size={18} aria-hidden="true" />
                   </button>
                   <button
                     type="button"
@@ -400,7 +404,7 @@ export function OrderDialog({
                     }
                     onClick={() => move(part, 1)}
                   >
-                    ↓
+                    <ArrowDownIcon size={18} aria-hidden="true" />
                   </button>
                 </div>
               </div>

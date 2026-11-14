@@ -1,5 +1,8 @@
 "use client";
 import { useRef } from "react";
+import { StarIcon } from "@phosphor-icons/react/dist/csr/Star";
+import { XIcon } from "@phosphor-icons/react/dist/csr/X";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/csr/ArrowRight";
 import type { MenuItem } from "@/lib/types";
 import { useStoreSelection } from "@/features/menu/StoreSelection";
 import { track } from "@/lib/analytics";
@@ -24,7 +27,8 @@ export function TopPicks({
         type="button"
         onClick={() => dialog.current?.showModal()}
       >
-        ★ {title} · {items.length} 款
+        <StarIcon size={18} weight="fill" aria-hidden="true" />
+        {title} · {items.length} 款
       </button>
       <dialog
         className="top-dialog utility-dialog"
@@ -50,7 +54,7 @@ export function TopPicks({
             aria-label="關閉必喝榜單"
             onClick={() => dialog.current?.close()}
           >
-            ×
+            <XIcon size={20} weight="regular" aria-hidden="true" />
           </button>
         </div>
         {description && <p>{description}</p>}
@@ -76,7 +80,9 @@ export function TopPicks({
                   <strong>{item.item.name}</strong>
                   {item.note && <small>{item.note}</small>}
                 </span>
-                <span className="top-item-cta">設定與複製 →</span>
+                <span className="top-item-cta">
+                  設定與複製 <ArrowRightIcon size={18} aria-hidden="true" />
+                </span>
               </button>
             </li>
           ))}

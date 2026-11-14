@@ -1,4 +1,8 @@
 import type { Store } from "@/lib/types";
+import { DiamondIcon } from "@phosphor-icons/react/dist/ssr/Diamond";
+import { SnowflakeIcon } from "@phosphor-icons/react/dist/ssr/Snowflake";
+import { CirclesThreeIcon } from "@phosphor-icons/react/dist/ssr/CirclesThree";
+import { CoffeeIcon } from "@phosphor-icons/react/dist/ssr/Coffee";
 import { formatPrice } from "@/lib/menu";
 import { TopPicks } from "./TopPicks";
 import { ToppingSummary } from "./ToppingSummary";
@@ -60,15 +64,15 @@ export function StoreInfo({ store }: { store: Store }) {
     <div className="store-rules">
       {(
         [
-          ["甜度", "sweetness", "◇"],
-          ["冰量／溫度", "temperature", "❄"],
-          ["配料", "topping", "●"],
-          ["杯型容量", "cup", "♧"],
+          ["甜度", "sweetness", DiamondIcon],
+          ["冰量／溫度", "temperature", SnowflakeIcon],
+          ["配料", "topping", CirclesThreeIcon],
+          ["杯型容量", "cup", CoffeeIcon],
         ] as const
-      ).map(([label, role, icon]) => (
+      ).map(([label, role, Icon]) => (
         <div className="store-rule" key={role}>
           <span className="rule-icon" aria-hidden="true">
-            {icon}
+            <Icon size={22} weight="regular" />
           </span>
           <div>
             <strong>{label}</strong>

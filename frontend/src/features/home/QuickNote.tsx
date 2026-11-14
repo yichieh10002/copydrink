@@ -1,6 +1,11 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { CaretDownIcon } from "@phosphor-icons/react/dist/csr/CaretDown";
+import { ArrowCounterClockwiseIcon } from "@phosphor-icons/react/dist/csr/ArrowCounterClockwise";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/csr/ArrowRight";
+import { ArrowUpIcon } from "@phosphor-icons/react/dist/csr/ArrowUp";
+import { ArrowDownIcon } from "@phosphor-icons/react/dist/csr/ArrowDown";
 import { CopyToast } from "@/components/CopyToast";
 import { copyDrinkText } from "@/lib/copy";
 import { normalizeSearch } from "@/lib/search";
@@ -93,11 +98,16 @@ function PickerInput({
           aria-expanded={open}
           aria-controls={`${id}-options`}
         >
-          {open ? "▴" : "▾"}
+          <CaretDownIcon
+            size={18}
+            weight="bold"
+            className={open ? "picker-caret-open" : undefined}
+            aria-hidden="true"
+          />
         </button>
       </div>
       <small className="quick-picker-hint">
-        {disabled ? "請先選擇店家" : "可輸入搜尋，或點右側 ▾ 查看選項"}
+        {disabled ? "請先選擇店家" : "可輸入搜尋，或點右側箭頭查看選項"}
       </small>
       {open && (
         <div className="quick-picker-menu" id={`${id}-options`} role="listbox">
@@ -273,7 +283,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
         <div className="copy-preview-heading">
           <strong>複製後的文字</strong>
           <button type="button" className="copy-reset" onClick={reset}>
-            ↺ 重設
+            <ArrowCounterClockwiseIcon size={16} aria-hidden="true" /> 重設
           </button>
         </div>
         <output>{text}</output>
@@ -412,7 +422,8 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
                 encodeURIComponent(selectedDrink.id)
               }
             >
-              設定這杯的口味與複製 →
+              設定這杯的口味與複製{" "}
+              <ArrowRightIcon size={16} aria-hidden="true" />
             </Link>
           </div>
         )}
@@ -586,7 +597,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
                   onClick={() => move(part, -1)}
                   disabled={visibleOrder.indexOf(part) === 0}
                 >
-                  ↑
+                  <ArrowUpIcon size={18} aria-hidden="true" />
                 </button>
                 <button
                   type="button"
@@ -596,7 +607,7 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
                     visibleOrder.indexOf(part) === visibleOrder.length - 1
                   }
                 >
-                  ↓
+                  <ArrowDownIcon size={18} aria-hidden="true" />
                 </button>
               </div>
             ))}

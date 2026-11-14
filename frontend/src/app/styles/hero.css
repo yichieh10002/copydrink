@@ -229,8 +229,7 @@
   font-size: var(--text-badge);
 }
 .hero-badge .hero-badge-mark {
-  font-size: var(--text-badge-mark);
-  text-anchor: middle;
+  color: var(--color-on-brand);
 }
 .hero-pearl {
   position: absolute;
@@ -303,6 +302,9 @@
   --depth: 48px;
 }
 .hero-chip-b {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   bottom: 14%;
   right: -2%;
   --depth: -40px;
@@ -345,10 +347,9 @@
   -webkit-text-stroke: 1.5px var(--color-on-dark);
 }
 .marquee-track i {
-  display: inline-block;
+  display: inline-flex;
   margin: 0 0.55em;
   color: var(--color-accent);
-  font-size: 0.6em;
   font-style: normal;
   vertical-align: 0.2em;
   -webkit-text-stroke: 0;

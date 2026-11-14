@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 
 type Topping = { name: string; price: number | null };
 
@@ -57,7 +58,7 @@ export function ToppingSummary({ toppings }: { toppings: Topping[] }) {
             aria-label="關閉配料一覽"
             onClick={() => dialog.current?.close()}
           >
-            ×
+            <XIcon size={20} weight="regular" aria-hidden="true" />
           </button>
         </div>
         <ul className="topping-list">

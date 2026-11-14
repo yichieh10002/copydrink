@@ -125,6 +125,9 @@
   padding-top: var(--space-5);
 }
 .store-intro-actions .top-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -208,7 +211,9 @@
   font-size: var(--text-small);
 }
 .rule-icon {
-  font-size: var(--text-icon);
+  display: inline-flex;
+  flex: none;
+  align-items: flex-start;
   color: var(--color-brand);
 }
 .store-notices {
@@ -424,6 +429,9 @@
   font-weight: 700;
 }
 .top-item-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-weight: 700;
   white-space: nowrap;
 }

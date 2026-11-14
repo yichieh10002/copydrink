@@ -1,4 +1,6 @@
 import type { CSSProperties } from "react";
+import { StarFourIcon } from "@phosphor-icons/react/dist/ssr/StarFour";
+import { CheckIcon } from "@phosphor-icons/react/dist/ssr/Check";
 import { redirect } from "next/navigation";
 import { getStores } from "@/lib/data";
 import { StoreDirectory } from "@/components/StoreDirectory";
@@ -116,9 +118,14 @@ export default async function Home({
                   FIND · PICK · COPY · FIND · PICK · COPY ·
                 </textPath>
               </text>
-              <text className="hero-badge-mark" x="60" y="71">
-                ✦
-              </text>
+              <StarFourIcon
+                className="hero-badge-mark"
+                x={43}
+                y={43}
+                width={34}
+                height={34}
+                weight="fill"
+              />
             </svg>
             <span className="hero-pearl hero-pearl-1" />
             <span className="hero-pearl hero-pearl-2" />
@@ -126,7 +133,9 @@ export default async function Home({
             <span className="hero-pearl hero-pearl-4" />
             <span className="hero-pearl hero-pearl-5" />
             <span className="hero-chip hero-chip-a">半糖 · 少冰</span>
-            <span className="hero-chip hero-chip-b">已複製 ✓</span>
+            <span className="hero-chip hero-chip-b">
+              已複製 <CheckIcon size={16} weight="bold" />
+            </span>
           </div>
         </div>
       </section>
@@ -138,7 +147,9 @@ export default async function Home({
                 {MARQUEE_WORDS.map((word, index) => (
                   <span key={word} className={index % 2 ? "outline" : ""}>
                     {word}
-                    <i>✦</i>
+                    <i>
+                      <StarFourIcon size={20} weight="fill" />
+                    </i>
                   </span>
                 ))}
               </span>

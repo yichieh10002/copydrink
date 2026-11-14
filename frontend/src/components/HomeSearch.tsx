@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/csr/MagnifyingGlass";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
+import { ArrowUpRightIcon } from "@phosphor-icons/react/dist/csr/ArrowUpRight";
 import type { KeyboardEvent } from "react";
 import type { StoreSummary } from "@/lib/types";
 import { track } from "@/lib/analytics";
@@ -271,7 +272,7 @@ export function HomeSearch({
                   <strong>{store.name}</strong>
                   <small>查看店家菜單</small>
                 </span>
-                <span aria-hidden="true">↗</span>
+                <ArrowUpRightIcon size={18} aria-hidden="true" />
               </Link>
             ))}
             {!!results.drinks.length && <h3>飲料</h3>}
@@ -299,7 +300,7 @@ export function HomeSearch({
                     {drink.storeName} · {drink.category}
                   </small>
                 </span>
-                <span aria-hidden="true">↗</span>
+                <ArrowUpRightIcon size={18} aria-hidden="true" />
               </Link>
             ))}
             {!results.total && (

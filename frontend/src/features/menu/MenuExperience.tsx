@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/csr/ArrowRight";
 import type { Store } from "@/lib/types";
 import {
   availableCups,
@@ -226,7 +227,10 @@ export function MenuExperience({
                                 )
                                 .join(" / ") || "選擇溫度查看杯型"}
                             </span>
-                            <span className="open-drink">詳細與複製 →</span>
+                            <span className="open-drink">
+                              詳細與複製{" "}
+                              <ArrowRightIcon size={16} aria-hidden="true" />
+                            </span>
                           </span>
                         </button>
                       </li>

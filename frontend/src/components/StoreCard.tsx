@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr/ArrowRight";
 import type { StoreSummary } from "@/lib/types";
 export function StoreCard({ store }: { store: StoreSummary }) {
   return (
@@ -20,7 +21,7 @@ export function StoreCard({ store }: { store: StoreSummary }) {
         </small>
       </span>
       <span className="store-card-arrow" aria-hidden="true">
-        →
+        <ArrowRightIcon size={20} weight="regular" />
       </span>
     </Link>
   );

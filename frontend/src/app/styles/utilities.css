@@ -99,12 +99,17 @@
   border-right: 0;
 }
 .quick-picker-control button {
+  display: grid;
+  place-items: center;
   border: 1px solid var(--color-border);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
   background: var(--color-surface-soft);
   color: var(--color-brand-strong);
   font-size: var(--text-body-lg);
   font-weight: 800;
+}
+.picker-caret-open {
+  transform: rotate(180deg);
 }
 .quick-picker-control button:hover,
 .quick-picker-control button:focus-visible {

@@ -83,6 +83,9 @@
   cursor: not-allowed;
 }
 .copy-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   flex: none;
   margin: 0;
   border: 1px solid var(--color-border);
@@ -94,6 +97,9 @@
   font-size: var(--text-caption);
 }
 .copy-toast {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   position: fixed;
   z-index: 100;
   left: 50%;
