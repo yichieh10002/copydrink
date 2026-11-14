@@ -22,8 +22,8 @@
 .home-tool:last-child {
   border-right: 0;
 }
-.home-tool > span {
-  font-size: var(--text-control-icon);
+.home-tool > svg {
+  flex: none;
 }
 .home-tool small {
   display: none;

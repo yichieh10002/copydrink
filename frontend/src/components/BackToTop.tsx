@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ArrowUpIcon } from "@phosphor-icons/react/dist/csr/ArrowUp";
+import { ArrowLeftIcon } from "@phosphor-icons/react/dist/csr/ArrowLeft";
 
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
@@ -33,12 +35,12 @@ export function BackToTop() {
           })
         }
       >
-        <span aria-hidden="true">↑</span>
+        <ArrowUpIcon size={22} weight="regular" aria-hidden="true" />
         <small>回頂部</small>
       </button>
       {isStorePage && (
         <Link className="back-to-stores" href="/" aria-label="返回全部店家">
-          <span aria-hidden="true">←</span>
+          <ArrowLeftIcon size={22} weight="regular" aria-hidden="true" />
           <small>回全部</small>
         </Link>
       )}

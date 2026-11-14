@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/csr/MagnifyingGlass";
+import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 import type { KeyboardEvent } from "react";
 import type { StoreSummary } from "@/lib/types";
 import { track } from "@/lib/analytics";
@@ -159,7 +161,8 @@ export function HomeSearch({
         onClick={() => openSearch()}
         aria-haspopup="dialog"
       >
-        <span aria-hidden="true">⌕</span> 搜尋店家或飲料…
+        <MagnifyingGlassIcon size={22} weight="regular" aria-hidden="true" />
+        搜尋店家或飲料…
       </button>
       {recent.length > 0 && (
         <div className="recent-searches" aria-label="上次搜尋紀錄">
@@ -196,7 +199,11 @@ export function HomeSearch({
             <label htmlFor="global-search" className="sr-only">
               搜尋店家或飲料
             </label>
-            <span aria-hidden="true">⌕</span>
+            <MagnifyingGlassIcon
+              size={22}
+              weight="regular"
+              aria-hidden="true"
+            />
             <input
               id="global-search"
               ref={inputRef}
@@ -224,7 +231,7 @@ export function HomeSearch({
               onClick={close}
               aria-label="關閉搜尋視窗"
             >
-              ×
+              <XIcon size={22} weight="regular" aria-hidden="true" />
             </button>
           </div>
           <p className="global-search-status" role="status" aria-live="polite">

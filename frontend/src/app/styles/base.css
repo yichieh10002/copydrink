@@ -149,11 +149,6 @@ a {
 .back-to-stores:focus-visible {
   background: var(--color-hover);
 }
-.back-to-top span,
-.back-to-stores span {
-  font-size: var(--text-title-sm);
-  line-height: 1;
-}
 .back-to-top small,
 .back-to-stores small {
   font-size: var(--text-micro);

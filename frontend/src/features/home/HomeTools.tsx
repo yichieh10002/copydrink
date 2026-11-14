@@ -1,5 +1,8 @@
 "use client";
 import { useRef } from "react";
+import { NotePencilIcon } from "@phosphor-icons/react/dist/csr/NotePencil";
+import { CoffeeIcon } from "@phosphor-icons/react/dist/csr/Coffee";
+import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 import { QuickNote } from "./QuickNote";
 
 export type QuickStore = {
@@ -40,13 +43,13 @@ export function HomeTools({
   return (
     <div className="home-tools">
       <button className="home-tool" onClick={() => quick.current?.showModal()}>
-        <span aria-hidden="true">✎</span>
+        <NotePencilIcon size={22} weight="regular" aria-hidden="true" />
         <strong>自填飲料小抄</strong>
         <small>沒有菜單，也能自己寫好複製。</small>
       </button>
       {notices.length > 0 && (
         <button className="home-tool" onClick={() => warm.current?.showModal()}>
-          <span aria-hidden="true">♨</span>
+          <CoffeeIcon size={22} weight="regular" aria-hidden="true" />
           <strong>溫熱飲店家注意</strong>
           <small>喝熱飲前先看杯型與規定。</small>
         </button>
@@ -65,7 +68,7 @@ export function HomeTools({
             aria-label="關閉自填飲料小抄"
             onClick={() => quick.current?.close()}
           >
-            ×
+            <XIcon size={22} weight="regular" aria-hidden="true" />
           </button>
         </div>
         <QuickNote stores={stores} />
@@ -84,7 +87,7 @@ export function HomeTools({
             aria-label="關閉溫熱飲注意"
             onClick={() => warm.current?.close()}
           >
-            ×
+            <XIcon size={22} weight="regular" aria-hidden="true" />
           </button>
         </div>
         <ul className="warm-notices">
