@@ -1,0 +1,171 @@
+/* Keep touch navigation immediate: no scroll-linked reveals or sticky hover transforms. */
+@media (hover: none), (pointer: coarse) {
+  .hero-glow,
+  .site-footer::before {
+    display: none;
+  }
+
+  .nav-inner,
+  .floating-nav {
+    background: var(--color-paper);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .hero-chip {
+    background: var(--color-paper);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  :where(.order-dialog, .utility-dialog)::backdrop {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .nav-inner,
+  .store-intro,
+  .store-intro-main .store-logo,
+  .store-card,
+  .menu-category,
+  .section-heading > *,
+  .hero-giant,
+  .hero-visual::before,
+  .hero-badge,
+  .hero-pearl,
+  .hero-chip,
+  .marquee-track,
+  .marquee-track i,
+  .site-footer strong,
+  .home-hero .eyebrow,
+  .hero-line > span,
+  .home-hero h1 em,
+  .home-hero p,
+  .home-hero .home-search,
+  .hero-stats,
+  .count-up,
+  .hero-visual,
+  .hero-art {
+    animation: none;
+  }
+
+  .store-card,
+  .menu-category,
+  .section-heading > * {
+    opacity: 1;
+    translate: none;
+    scale: 1;
+  }
+
+  .hero-giant {
+    transform: none;
+  }
+  .count-up {
+    --count: var(--target);
+  }
+
+  body::before {
+    display: none;
+  }
+
+  .store-card,
+  .menu-category,
+  .drink-row,
+  .store-card .store-logo,
+  .store-card-arrow {
+    will-change: auto;
+    transition-duration: var(--motion-fast);
+  }
+
+  .store-card:hover:not(:focus-visible) {
+    transform: none;
+    border-color: var(--color-border);
+    box-shadow: none;
+  }
+  .store-card:hover:not(:focus-visible)::before {
+    opacity: 0;
+  }
+  .store-card:hover:not(:focus-visible)::after {
+    scale: 0 1;
+  }
+  .store-card:hover:not(:focus-visible) .store-logo {
+    transform: none;
+  }
+  .store-card:hover:not(:focus-visible) .store-card-arrow {
+    background: var(--color-surface-soft);
+    color: var(--color-brand-strong);
+    rotate: none;
+  }
+
+  .menu-category:hover {
+    box-shadow: var(--shadow-sm);
+  }
+  .drink-row:hover:not(:focus-visible) {
+    background: transparent;
+    padding-left: var(--space-5);
+  }
+  .drink-row:hover:not(:focus-visible) .drink-copy strong {
+    color: var(--color-text);
+  }
+  .drink-row:hover:not(:focus-visible) .open-drink {
+    color: inherit;
+    translate: none;
+  }
+
+  .category-tabs button:hover:not([aria-pressed="true"]),
+  .region-tabs button:hover:not([aria-pressed="true"]) {
+    border-color: var(--color-border);
+    background: var(--color-field);
+    color: var(--color-text);
+  }
+  .store-rule:nth-child(-n + 2):hover {
+    transform: none;
+    border-color: var(--color-border);
+  }
+  .top-button:hover,
+  .store-directory-end button:hover {
+    transform: none;
+  }
+  .top-button:hover,
+  .quick-link:hover {
+    background: var(--color-accent);
+  }
+  .store-directory-end button:hover {
+    background: var(--color-brand);
+  }
+
+  .home-tool:hover,
+  .global-search-result:hover:not(:focus-visible),
+  .search-results a:hover,
+  .back-to-top:hover:not(:focus-visible),
+  .back-to-stores:hover:not(:focus-visible),
+  .top-item-action:hover:not(:focus-visible),
+  .home-menu-trigger:hover:not(:focus-visible):not([aria-expanded="true"]) {
+    background: transparent;
+  }
+  .recent-searches button:hover {
+    background: var(--color-surface);
+  }
+  .recent-searches .recent-clear:hover {
+    background: transparent;
+  }
+  .quick-picker-control button:hover:not(:focus-visible) {
+    background: var(--color-surface-soft);
+  }
+  .quick-picker-menu
+    button:hover:not(:focus-visible):not([aria-selected="true"]) {
+    background: var(--color-field);
+  }
+  .home-search-trigger:hover:not(:focus-visible),
+  .menu-search input:hover:not(:focus-visible) {
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+@media (hover: none) and (max-width: 620px),
+  (pointer: coarse) and (max-width: 620px) {
+  .drink-row:hover:not(:focus-visible) {
+    padding-left: var(--space-4);
+  }
+}

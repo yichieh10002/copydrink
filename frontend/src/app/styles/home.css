@@ -284,7 +284,12 @@
     transform 500ms var(--ease-out-expo),
     box-shadow 500ms var(--ease-out-expo),
     border-color var(--motion-normal) var(--ease-standard);
-  will-change: transform;
+}
+@media (hover: hover) and (pointer: fine) {
+  .store-card:hover,
+  .store-card:focus-visible {
+    will-change: transform;
+  }
 }
 .store-card::before {
   content: "";

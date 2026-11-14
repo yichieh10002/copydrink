@@ -217,7 +217,7 @@
     grid-row: 2;
     gap: 0;
     margin: var(--space-1) 0 0;
-    color: color-mix(in srgb, var(--color-on-dark) 76%, transparent);
+    color: var(--color-text-muted);
     font-size: var(--text-caption);
   }
   .store-intro-stats span {

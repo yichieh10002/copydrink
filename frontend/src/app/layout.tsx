@@ -16,6 +16,7 @@ import "./styles/modal.css";
 import "./styles/theme.css";
 import "./styles/motion.css";
 import "./styles/responsive.css";
+import "./styles/touch-motion.css";
 
 export const metadata: Metadata = {
   title: { default: "copydrink｜飲料小抄", template: "%s｜copydrink" },

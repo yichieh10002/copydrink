@@ -37,6 +37,8 @@
   --color-decorative-glow: rgb(40 95 172 / 6%);
   --color-decorative-glow-strong: rgb(40 95 172 / 60%);
   --color-section-alt: #f8f7f4;
+  --color-store-hero: #f2f4f6;
+  --color-store-footer: #e8edf1;
 
   --color-mesh-a: rgb(40 95 172 / 26%);
   --color-mesh-b: rgb(247 112 54 / 22%);
@@ -158,6 +160,8 @@ html[data-theme="dark"] {
   --color-decorative-glow: rgb(91 155 213 / 8%);
   --color-decorative-glow-strong: rgb(91 155 213 / 30%);
   --color-section-alt: #131f2c;
+  --color-store-hero: #191f26;
+  --color-store-footer: #222a32;
   --color-mesh-a: rgb(91 155 213 / 26%);
   --color-mesh-b: rgb(255 140 87 / 18%);
   --color-mesh-c: rgb(120 90 220 / 20%);
