@@ -268,9 +268,16 @@
   }
   .drink-price {
     text-align: left;
+    min-width: 0;
+    max-width: none;
+  }
+  .drink-action {
+    width: 100%;
+    justify-content: space-between;
   }
   .open-drink {
     margin-left: auto;
+    flex: none;
   }
   .dialog-body {
     padding: 17px;
