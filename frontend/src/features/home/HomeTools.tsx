@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { NotePencilIcon } from "@phosphor-icons/react/dist/csr/NotePencil";
-import { CoffeeIcon } from "@phosphor-icons/react/dist/csr/Coffee";
 import { ListIcon } from "@phosphor-icons/react/dist/csr/List";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 import { QuickNote } from "./QuickNote";
@@ -85,7 +83,6 @@ export function HomeTools({
             quick.current?.showModal();
           }}
         >
-          <NotePencilIcon size={22} weight="regular" aria-hidden="true" />
           <strong>自填飲料小抄</strong>
           <small>沒有菜單，也能自己寫好複製。</small>
         </button>
@@ -98,8 +95,7 @@ export function HomeTools({
               warm.current?.showModal();
             }}
           >
-            <CoffeeIcon size={22} weight="regular" aria-hidden="true" />
-            <strong>溫熱飲店家注意</strong>
+            <strong>熱飲注意</strong>
             <small>喝熱飲前先看杯型與規定。</small>
           </button>
         )}

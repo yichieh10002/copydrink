@@ -91,10 +91,6 @@
   .home-tool strong {
     white-space: nowrap;
   }
-  .home-tool > svg {
-    width: 18px;
-    height: 18px;
-  }
   .theme-toggle button {
     min-width: 46px;
     height: 30px;

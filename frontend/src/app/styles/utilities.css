@@ -14,30 +14,28 @@
   gap: var(--space-2);
 }
 .home-tool {
-  text-align: left;
+  text-align: center;
   display: flex;
   align-items: center;
   gap: 6px;
   border: 0;
-  border-radius: var(--radius-pill);
+  border-radius: 0;
   background: transparent;
-  color: var(--color-brand-strong);
-  min-height: 42px;
-  padding: var(--space-2) var(--space-3);
+  color: var(--color-text);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
   box-shadow: none;
-  transition: background var(--motion-fast) var(--ease-standard);
+  transition: color var(--motion-fast) var(--ease-standard);
 }
 .home-tool:last-child {
   border-right: 0;
 }
-.home-tool > svg {
-  flex: none;
-}
 .home-tool small {
   display: none;
 }
-.home-tool:hover {
-  background: var(--color-surface-soft);
+.home-tool:hover,
+.home-tool:focus-visible {
+  color: var(--color-brand);
 }
 .utility-dialog {
   --modal-width: 600px;

@@ -126,9 +126,11 @@
   .store-directory-end button:hover {
     transform: none;
   }
-  .top-button:hover,
   .quick-link:hover {
     background: var(--color-accent);
+  }
+  .top-button:hover:not(:focus-visible) {
+    background: transparent;
   }
   .store-directory-end button:hover {
     background: var(--color-brand);
