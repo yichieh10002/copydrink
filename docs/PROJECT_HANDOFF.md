@@ -145,6 +145,8 @@ find /workspace/scratch -type d \( -name node_modules -o -name .next \) -prune \
 
 本機 `node_modules` 原為舊版，缺 `@phosphor-icons/react`，已用 `npm ci` 依 lockfile 重裝。`next build` 改到的 `next-env.d.ts` 已還原。
 
+**同日追加（已提交於本機、未推送、未部署）**：店家頁資訊卡入場由 `hero-in`（上移 40px＋縮放 0.9＋旋轉 -4°、1000ms）改為共用的 `fade-up`（淡入＋上移 24px、500ms）；店家 logo 的 `bob` 無限晃動移除（logo 靜止時不再歪斜）；`hero-in` keyframes 已無人使用而刪除。檔案：`styles/store.css`、`styles/motion.css`。建置、`style:check`、Prettier 通過；本機確認套用。店家頁載入位移也已修（同一筆提交）：`styles/order.css` 的 `.loading-page` 加上 `min-height: 100svh`，並用和 `.store-hero` 相同的負 `margin-top`（`--header-offset`）貼頂。原因同首頁：骨架比視窗矮、頁尾先出現再被推走，且實際內容貼頂而骨架從 header 下方開始。本機量測功夫茶頁 1024×768 的 CLS 由 0.237 降到 0，390×844 為 0；首頁複測仍為 0。`.loading-page` 目前只有 `stores/[slug]/loading.tsx` 使用。
+
 尚未處理的評估建議（等小潔決定）：移除跑馬條星星旋轉與「口味」漸層循環、確認後刪除被插畫蓋住的三個 `hero-glow`、Hero 離開畫面時暫停循環動畫、店家卡片捲動進場範圍收短、搜尋彈窗補進場動畫、`home-hero-background.webp`（1.4MB）與 `copydrink-logo-short-black.webp`（530kB，顯示僅約 190px 寬）壓縮。
 
 ## Vercel 預覽的精確資訊

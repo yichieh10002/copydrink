@@ -15,7 +15,7 @@
   margin-top: 0;
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-  animation: hero-in 1000ms var(--ease-out-expo) both;
+  animation: fade-up 500ms var(--ease-out-expo) both;
 }
 .store-intro-details {
   display: grid;
@@ -41,7 +41,6 @@
 }
 .store-intro-main .store-logo {
   box-shadow: var(--shadow-lg);
-  animation: bob 7s ease-in-out infinite alternate;
 }
 .store-intro-brand {
   min-width: 0;
