@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/csr/ArrowRight";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/csr/MagnifyingGlass";
 import type { Store } from "@/lib/types";
 import {
   availableCups,
@@ -107,6 +108,7 @@ export function MenuExperience({
       <div className="menu-tools">
         <label className="menu-search">
           <span className="sr-only">搜尋這家店的飲料</span>
+          <MagnifyingGlassIcon size={22} weight="regular" aria-hidden="true" />
           <input
             type="search"
             value={query}
@@ -211,7 +213,10 @@ export function MenuExperience({
                                     (tag !== "推薦" && tag !== "必喝 TOP"),
                                 )
                                 .map((tag) => (
-                                  <span key={tag} className="tag">
+                                  <span
+                                    key={tag}
+                                    className={`tag${tag === "推薦" || tag === "必喝 TOP" ? " top-tag" : ""}`}
+                                  >
                                     {tag}
                                   </span>
                                 ))}

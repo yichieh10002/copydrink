@@ -1,10 +1,15 @@
+body:has(.menu-section) {
+  background: var(--color-menu-canvas);
+}
 .menu-section {
   padding: var(--space-8) 0 120px;
+  background: var(--color-menu-canvas);
 }
 .menu-tools {
   padding: 0 0 var(--space-6);
 }
 .menu-search {
+  position: relative;
   display: block;
   max-width: 640px;
 }
@@ -72,10 +77,9 @@
   box-shadow: var(--shadow-lg);
 }
 .menu-category h3 {
-  position: relative;
   font-family: var(--font-sans);
   color: var(--color-brand-strong);
-  background: var(--color-surface-soft);
+  background: var(--color-menu-heading);
   font-size: var(--text-section);
   font-weight: 900;
   letter-spacing: 0.04em;
@@ -83,13 +87,6 @@
   margin: 0;
   padding: var(--space-4) var(--space-5);
   border-bottom: 1px solid var(--color-border);
-}
-.menu-category h3::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 5px;
-  background: var(--gradient-brand);
 }
 .menu-category ul {
   list-style: none;
@@ -151,9 +148,9 @@
   max-width: 100%;
 }
 .tag {
-  background: var(--color-surface-soft);
-  color: var(--color-brand-strong);
-  border: 1px solid var(--color-border);
+  background: var(--color-tag-surface);
+  color: var(--color-tag-text);
+  border: 1px solid var(--color-tag-border);
   border-radius: var(--radius-pill);
   padding: 2px 8px;
   font-size: var(--text-ui-xs);
@@ -161,9 +158,9 @@
   font-weight: 600;
 }
 .tag.top-tag {
-  background: var(--color-accent-surface);
-  color: var(--color-accent-text);
-  border-color: var(--color-accent-border);
+  background: var(--color-recommendation-surface);
+  color: var(--color-recommendation-text);
+  border-color: var(--color-recommendation-border);
 }
 .drink-action {
   display: flex;
@@ -194,49 +191,6 @@
   border-radius: var(--radius-lg);
   text-align: center;
   color: var(--color-text-muted);
-}
-.site-footer {
-  position: relative;
-  overflow: clip;
-  background: var(--color-navy);
-  color: var(--color-on-dark);
-  padding: clamp(56px, 8vw, 110px) 0 var(--space-12);
-}
-.site-footer::before {
-  content: "";
-  position: absolute;
-  top: -40%;
-  right: -10%;
-  width: min(60vw, 640px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--color-decorative-glow-strong);
-  filter: blur(90px);
-  animation: glow-drift-b 20s ease-in-out infinite alternate;
-}
-.site-footer .container {
-  position: relative;
-}
-.site-footer strong {
-  display: block;
-  width: fit-content;
-  color: transparent;
-  font-family: var(--font-display);
-  font-size: var(--text-kicker);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  background: var(--gradient-footer) 0 0 / 220% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: gradient-pan 7s ease-in-out infinite alternate;
-}
-.site-footer p {
-  max-width: 46em;
-  margin: var(--space-6) 0 0;
-  font-size: var(--text-small);
-  opacity: 0.7;
-  line-height: 1.8;
 }
 .drink-row.search-highlight {
   outline: 3px solid var(--color-accent);

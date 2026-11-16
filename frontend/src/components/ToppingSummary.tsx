@@ -1,4 +1,5 @@
 "use client";
+import { useDialogBackdrop } from "@/lib/useDialogBackdrop";
 
 import { useRef } from "react";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
@@ -10,6 +11,7 @@ function priceLabel(price: number | null) {
 }
 
 export function ToppingSummary({ toppings }: { toppings: Topping[] }) {
+  const backdrop = useDialogBackdrop();
   const dialog = useRef<HTMLDialogElement>(null);
   if (!toppings.length) return <small>依各商品設定</small>;
 
@@ -39,17 +41,7 @@ export function ToppingSummary({ toppings }: { toppings: Topping[] }) {
         ref={dialog}
         className="topping-dialog utility-dialog"
         aria-label="全部配料"
-        onClick={(event) => {
-          const rect = event.currentTarget.getBoundingClientRect();
-          if (
-            event.target === event.currentTarget &&
-            (event.clientX < rect.left ||
-              event.clientX > rect.right ||
-              event.clientY < rect.top ||
-              event.clientY > rect.bottom)
-          )
-            event.currentTarget.close();
-        }}
+        {...backdrop}
       >
         <div className="utility-heading">
           <h2>配料一覽</h2>

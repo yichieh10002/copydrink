@@ -3,7 +3,7 @@
   isolation: isolate;
   overflow: clip;
   margin-top: calc(-1 * var(--header-offset));
-  padding: calc(var(--header-offset) + clamp(40px, 5vw, 72px)) 0 var(--space-8);
+  padding: calc(var(--header-offset) + var(--space-5)) 0 var(--space-5);
   background: var(--color-store-hero);
   color: var(--color-text);
 }
@@ -22,7 +22,7 @@
   align-content: start;
   gap: var(--space-4);
   min-width: 0;
-  padding: var(--space-6);
+  padding: var(--space-5) var(--space-6);
 }
 .desktop-store-extras {
   display: contents;
@@ -34,8 +34,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: var(--space-8);
-  padding: var(--space-8);
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
   color: var(--color-text);
   border-right: 1px solid var(--color-border);
 }
@@ -69,23 +69,21 @@
 .store-intro-stats {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-2);
-  margin-top: var(--space-6);
+  margin-top: var(--space-4);
   font-size: var(--text-small);
 }
-.store-intro-stats span {
+.store-intro-stats > span {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
   padding: var(--space-1) var(--space-3);
   background: var(--color-surface-soft);
   color: var(--color-text-muted);
 }
-.store-intro-actions {
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--space-5);
-}
-.store-intro-actions .top-button {
-  text-align: center;
+.store-intro-stats .top-button {
+  min-height: 36px;
+  padding: var(--space-1) var(--space-3);
 }
 .store-rules {
   display: grid;
@@ -383,8 +381,13 @@
   background: var(--color-hover);
 }
 .top-item-rank {
+  flex: none;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: transparent;
   font-weight: 800;
-  color: var(--color-accent-text);
+  color: var(--color-brand-strong);
   white-space: nowrap;
 }
 .top-dialog li small {
@@ -403,6 +406,8 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  color: var(--color-brand);
+  font-size: var(--text-caption);
   font-weight: 700;
   white-space: nowrap;
 }
@@ -421,5 +426,11 @@
   }
   .top-item-cta {
     margin-left: auto;
+  }
+}
+
+@media (min-width: 621px) {
+  .store-intro-description {
+    white-space: normal;
   }
 }

@@ -219,7 +219,16 @@
 }
 .quick-separator {
   display: flex;
+  flex-wrap: wrap;
   gap: 18px;
+}
+.quick-separator > label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 4px;
+  cursor: pointer;
 }
 .quick-catalog {
   padding: 12px 0 18px;

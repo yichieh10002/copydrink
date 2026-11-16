@@ -1,4 +1,5 @@
 "use client";
+import { useDialogBackdrop } from "@/lib/useDialogBackdrop";
 import { useEffect, useRef, useState } from "react";
 import { ListIcon } from "@phosphor-icons/react/dist/csr/List";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
@@ -39,6 +40,8 @@ export function HomeTools({
 }) {
   const quick = useRef<HTMLDialogElement>(null),
     warm = useRef<HTMLDialogElement>(null);
+  const quickBackdrop = useDialogBackdrop();
+  const warmBackdrop = useDialogBackdrop();
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -104,9 +107,7 @@ export function HomeTools({
         className="utility-dialog quick-dialog"
         ref={quick}
         aria-label="自填飲料小抄"
-        onClick={(e) => {
-          if (e.target === e.currentTarget) quick.current?.close();
-        }}
+        {...quickBackdrop}
       >
         <div className="utility-heading">
           <h2>自填飲料小抄</h2>
@@ -123,9 +124,7 @@ export function HomeTools({
         className="utility-dialog"
         ref={warm}
         aria-label="溫熱飲店家注意"
-        onClick={(e) => {
-          if (e.target === e.currentTarget) warm.current?.close();
-        }}
+        {...warmBackdrop}
       >
         <div className="utility-heading">
           <h2>溫熱飲店家注意</h2>

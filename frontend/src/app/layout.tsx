@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BackToTop } from "@/components/BackToTop";
 import { MotionEffects } from "@/components/MotionEffects";
@@ -17,6 +18,7 @@ import "./styles/theme.css";
 import "./styles/motion.css";
 import "./styles/responsive.css";
 import "./styles/touch-motion.css";
+import "./styles/footer.css";
 
 export const metadata: Metadata = {
   title: { default: "copydrink｜飲料小抄", template: "%s｜copydrink" },
@@ -47,14 +49,24 @@ export default async function RootLayout({
         <main>{children}</main>
         <BackToTop />
         <MotionEffects />
-        <footer className="site-footer">
-          <div className="container">
-            <strong>copydrink</strong>
-            <p>
-              菜單價格、品項與供應情形以各門市公告為準。本站提供查詢與文字複製，不會代為送出訂單。
-            </p>
-          </div>
-        </footer>
+        <SiteFooter
+          sources={stores.flatMap((store) => {
+            const brand = store.document.brand;
+            try {
+              const url = new URL(brand.website || brand.menuUrl || "");
+              if (!["https:", "http:"].includes(url.protocol)) return [];
+              return [
+                {
+                  name: brand.name,
+                  url: url.href,
+                  updated: store.publishedAt.slice(0, 10),
+                },
+              ];
+            } catch {
+              return [];
+            }
+          })}
+        />
       </body>
     </html>
   );

@@ -1,4 +1,5 @@
 "use client";
+import { useDialogBackdrop } from "@/lib/useDialogBackdrop";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 import { ArrowCounterClockwiseIcon } from "@phosphor-icons/react/dist/csr/ArrowCounterClockwise";
@@ -38,6 +39,7 @@ export function OrderDialog({
   regionId: string;
   onClose: () => void;
 }) {
+  const backdrop = useDialogBackdrop(onClose);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const [cupSize, setCupSize] = useState(
@@ -242,17 +244,7 @@ export function OrderDialog({
         e.preventDefault();
         onClose();
       }}
-      onClick={(event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        if (
-          event.target === event.currentTarget &&
-          (event.clientX < rect.left ||
-            event.clientX > rect.right ||
-            event.clientY < rect.top ||
-            event.clientY > rect.bottom)
-        )
-          onClose();
-      }}
+      {...backdrop}
     >
       <div className="dialog-head">
         <div>

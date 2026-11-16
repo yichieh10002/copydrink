@@ -26,6 +26,14 @@ textarea,
 select {
   font-size: var(--text-input);
 }
+input:is([type="checkbox"], [type="radio"]) {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  margin: 0;
+  accent-color: var(--color-brand);
+  cursor: pointer;
+}
 button {
   cursor: pointer;
 }
@@ -78,21 +86,26 @@ a {
   animation: fade-up 700ms var(--ease-out-expo) both;
 }
 .wordmark {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   flex: none;
-  font-family: var(--font-display);
-  font-size: var(--text-title-sm);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-decoration: none;
-  color: transparent;
-  background: var(--gradient-brand) 0 0 / 220% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  transition: background-position 700ms var(--ease-out-expo);
+  color: var(--color-brand);
 }
-.wordmark:hover {
-  background-position: 100% 0;
+.brand-logo-cup,
+.brand-logo-name {
+  display: block;
+  overflow: hidden;
+  flex: none;
+  fill: currentColor;
+}
+.wordmark .brand-logo-cup {
+  width: 42px;
+  height: 40px;
+}
+.wordmark .brand-logo-name {
+  width: 142px;
+  height: 32px;
 }
 .required-mark {
   color: var(--color-accent);

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
+import { BrandLogo } from "./BrandLogo";
 import { HomeTools, type QuickStore } from "@/features/home/HomeTools";
 export function SiteHeader({
   stores,
@@ -12,7 +13,7 @@ export function SiteHeader({
     <header className="site-header">
       <div className="container nav-inner">
         <Link href="/" className="wordmark" aria-label="copydrink 首頁">
-          copydrink
+          <BrandLogo />
         </Link>
         <HomeTools stores={stores} notices={notices} />
         <div className="nav-right">

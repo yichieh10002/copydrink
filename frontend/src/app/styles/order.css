@@ -13,9 +13,11 @@
   overflow-y: auto;
 }
 .dialog-head h2 {
-  margin: 0 0 12px;
+  margin: 0 0 6px;
 }
 .dialog-head p {
+  margin: 0 0 8px;
+  font-size: var(--text-small);
   white-space: pre-line;
   line-height: 1.5;
 }
@@ -34,12 +36,14 @@
 }
 .order-copy-preview {
   flex: none;
-  padding: 16px 28px 8px;
+  padding: 10px 24px 12px;
   background: inherit;
 }
 .copy-preview {
-  padding-bottom: 20px;
-  border-bottom: 1px dashed var(--color-border);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-accent-border);
+  background: var(--color-selected);
+  color: var(--color-brand-strong);
 }
 .copy-preview-heading {
   display: flex;
@@ -47,21 +51,21 @@
   justify-content: space-between;
   gap: 12px;
 }
-.copy-preview strong {
-  color: var(--color-brand);
+.copy-preview-heading > strong {
+  color: var(--color-brand-strong);
 }
 .copy-preview output {
   display: block;
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-field);
-  padding: 19px;
-  min-height: 72px;
-  margin: 12px 0;
+  border: 1px solid var(--color-accent-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-paper);
+  padding: 10px 12px;
+  min-height: 0;
+  margin: 6px 0 8px;
   font-weight: 700;
-  color: var(--color-brand);
+  color: var(--color-brand-strong);
   white-space: pre-wrap;
-  max-height: 96px;
+  max-height: 64px;
   overflow-y: auto;
 }
 .copy-button,
@@ -81,6 +85,13 @@
   background: var(--color-disabled);
   color: var(--color-disabled-text);
   cursor: not-allowed;
+}
+.copy-preview .copy-button:disabled {
+  color: var(--color-text-muted);
+}
+.copy-preview .copy-reset {
+  border-color: var(--color-accent-border);
+  color: var(--color-brand-strong);
 }
 .copy-reset {
   display: inline-flex;
@@ -198,7 +209,10 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  margin: 18px 0;
+  min-height: 44px;
+  padding: 8px 4px;
+  margin: 10px 0;
+  cursor: pointer;
 }
 .inline-check input,
 .pill input {
@@ -222,6 +236,7 @@
   margin-top: 8px;
 }
 .pill {
+  min-height: 44px;
   border: 1.5px solid var(--color-border);
   border-radius: 999px;
   background: var(--color-field);
@@ -302,5 +317,25 @@
 @keyframes shimmer {
   to {
     background-position-x: -200%;
+  }
+}
+
+/* Keep the fixed order summary compact so the choices retain the scroll area. */
+.order-copy-preview .copy-button {
+  min-height: 44px;
+  padding: 9px 16px;
+}
+@media (max-width: 620px) {
+  .order-dialog .dialog-head {
+    padding: 12px 16px;
+    max-height: 23dvh;
+  }
+  .order-dialog .dialog-body {
+    padding-top: var(--space-3);
+  }
+  .order-copy-preview output {
+    max-height: 56px;
+    font-size: var(--text-small);
+    line-height: 1.5;
   }
 }

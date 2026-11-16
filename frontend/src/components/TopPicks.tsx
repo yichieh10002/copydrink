@@ -1,6 +1,6 @@
 "use client";
+import { useDialogBackdrop } from "@/lib/useDialogBackdrop";
 import { useRef } from "react";
-import { StarIcon } from "@phosphor-icons/react/dist/csr/Star";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/csr/ArrowRight";
 import type { MenuItem } from "@/lib/types";
@@ -17,6 +17,7 @@ export function TopPicks({
   items: Array<{ item: MenuItem; note: string }>;
   storeKey: string;
 }) {
+  const backdrop = useDialogBackdrop();
   const dialog = useRef<HTMLDialogElement>(null);
   const { setSelected } = useStoreSelection();
   if (!items.length) return null;
@@ -27,24 +28,13 @@ export function TopPicks({
         type="button"
         onClick={() => dialog.current?.showModal()}
       >
-        <StarIcon size={18} weight="fill" aria-hidden="true" />
         {title} · {items.length} 款
       </button>
       <dialog
         className="top-dialog utility-dialog"
         ref={dialog}
         aria-label={title}
-        onClick={(event) => {
-          const rect = event.currentTarget.getBoundingClientRect();
-          if (
-            event.target === event.currentTarget &&
-            (event.clientX < rect.left ||
-              event.clientX > rect.right ||
-              event.clientY < rect.top ||
-              event.clientY > rect.bottom)
-          )
-            event.currentTarget.close();
-        }}
+        {...backdrop}
       >
         <div className="top-dialog-heading utility-heading">
           <h2>{title}</h2>

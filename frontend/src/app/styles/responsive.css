@@ -1,4 +1,51 @@
 @media (max-width: 900px) {
+  .home-hero {
+    --hero-art-height: clamp(400px, 65vw, 540px);
+    min-height: 0;
+    grid-template-rows: auto var(--hero-art-height);
+    gap: var(--space-6);
+    align-items: start;
+    padding: calc(var(--header-offset) + 48px) 0 0;
+  }
+  .hero-layout {
+    grid-row: 1;
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 640px;
+    margin-left: max(24px, calc((100vw - 1180px) / 2));
+  }
+  /* Anchor decorations to the artwork, independently of text and viewport height. */
+  .hero-visual {
+    position: relative;
+    inset: auto;
+    grid-row: 2;
+    width: 100%;
+    height: var(--hero-art-height);
+  }
+  .hero-layer {
+    background-size: clamp(920px, 145vw, 1280px) auto;
+    background-position: calc(100% + 70px) bottom;
+  }
+  .hero-layer-back {
+    top: -140px;
+    -webkit-mask-image: linear-gradient(
+      to top,
+      var(--color-mask-solid) calc(var(--hero-art-height) - 120px),
+      transparent var(--hero-art-height)
+    );
+    mask-image: linear-gradient(
+      to top,
+      var(--color-mask-solid) calc(var(--hero-art-height) - 120px),
+      transparent var(--hero-art-height)
+    );
+  }
+  .hero-badge {
+    left: 9%;
+    top: 20px;
+    bottom: auto;
+  }
+  .hero-chip-a {
+    top: 28px;
+  }
   .store-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -28,7 +75,15 @@
   }
   .wordmark {
     padding: 0;
-    font-size: var(--text-ui-lg);
+    gap: 4px;
+  }
+  .wordmark .brand-logo-cup {
+    width: 29px;
+    height: 29px;
+  }
+  .wordmark .brand-logo-name {
+    width: 94px;
+    height: 24px;
   }
   .nav-right {
     order: 2;
@@ -97,8 +152,8 @@
     padding: 0 9px;
   }
   .home-hero {
-    min-height: 0;
-    padding: calc(var(--header-offset) + 28px) 0 96px;
+    --hero-art-height: clamp(330px, 94vw, 480px);
+    padding: calc(var(--header-offset) + 28px) 0 0;
   }
   .home-hero h1 {
     font-size: var(--text-mobile-display);
@@ -106,17 +161,38 @@
   }
   .hero-layout {
     grid-template-columns: 1fr;
-    gap: 36px;
-  }
-  .hero-visual {
-    width: min(100%, 420px);
+    max-width: none;
     margin-inline: auto;
+  }
+  .hero-layer {
+    background-size: clamp(680px, 210vw, 980px) auto;
+    background-position: calc(100% + 75px) bottom;
+  }
+  .hero-giant {
+    bottom: 0;
+    font-size: var(--text-footer-logo-mobile);
+  }
+  .hero-badge {
+    top: 0;
+    bottom: auto;
+    left: 5%;
+    width: 64px;
+  }
+  .hero-chip-a {
+    top: 28px;
+    right: 5%;
+  }
+  .hero-chip-b {
+    bottom: 8%;
+    right: 4%;
   }
   .hero-stats {
     margin-top: var(--space-6);
   }
-  .hero-chip {
-    right: 0;
+  .hero-pearl-1 {
+    top: 8%;
+    left: 52%;
+    --size: 16px;
   }
   .section-heading {
     margin-bottom: var(--space-8);
@@ -129,8 +205,11 @@
   }
   .menu-search input {
     min-height: 48px;
-    padding: 11px 16px;
+    padding: 11px 16px 11px 50px;
     border-radius: var(--radius-pill);
+  }
+  .menu-search > svg {
+    left: 18px;
   }
   .category-tabs {
     gap: 6px;
@@ -196,7 +275,7 @@
   }
   .store-intro-brand > .store-logo {
     grid-column: 1;
-    grid-row: 1 / span 2;
+    grid-row: 1;
   }
   .store-intro-main h1 {
     grid-column: 2;
@@ -209,22 +288,25 @@
     grid-column: 1 / -1;
   }
   .store-intro-stats {
-    grid-column: 2;
+    grid-column: 1 / -1;
     grid-row: 2;
-    gap: 0;
-    margin: var(--space-1) 0 0;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
     color: var(--color-text-muted);
     font-size: var(--text-caption);
   }
-  .store-intro-stats span {
+  .store-intro-stats > span {
     padding: 0;
     border: 0;
     border-radius: 0;
     background: transparent;
   }
-  .store-intro-stats span + span::before {
+  .store-intro-stats > span + span::before {
     content: "·";
     margin: 0 var(--space-2);
+  }
+  .store-intro-stats .top-button {
+    min-height: 36px;
   }
   .store-description {
     grid-row: 3;
@@ -279,6 +361,6 @@
     padding: 17px;
   }
   .order-copy-preview {
-    padding: 12px 17px 6px;
+    padding: 8px 17px 10px;
   }
 }

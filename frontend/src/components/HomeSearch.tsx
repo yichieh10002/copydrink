@@ -1,4 +1,5 @@
 "use client";
+import { useDialogBackdrop } from "@/lib/useDialogBackdrop";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/csr/MagnifyingGlass";
@@ -130,6 +131,7 @@ export function HomeSearch({
     };
   }, [stores, drinks, activeQuery]);
   const close = () => dialogRef.current?.close();
+  const backdrop = useDialogBackdrop(close);
   const links = () =>
     Array.from(listRef.current?.querySelectorAll<HTMLAnchorElement>("a") || []);
   function onInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
@@ -191,9 +193,7 @@ export function HomeSearch({
         ref={dialogRef}
         className="global-search-dialog"
         aria-label="搜尋店家與飲料"
-        onClick={(event) => {
-          if (event.target === event.currentTarget) close();
-        }}
+        {...backdrop}
       >
         <div className="global-search-shell">
           <div className="global-search-header">
@@ -235,7 +235,11 @@ export function HomeSearch({
               <XIcon size={22} weight="regular" aria-hidden="true" />
             </button>
           </div>
-          <p className="global-search-status" role="status" aria-live="polite">
+          <p
+            className={`global-search-status${activeQuery.trim() ? "" : " global-search-prompt"}`}
+            role="status"
+            aria-live="polite"
+          >
             {activeQuery.trim()
               ? results.total
                 ? `${results.total} 筆結果${results.total > results.stores.length + results.drinks.length ? `，先顯示 ${results.stores.length + results.drinks.length} 筆，請增加關鍵字縮小範圍` : ""}`

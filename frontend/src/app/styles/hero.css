@@ -9,11 +9,11 @@
   overflow: clip;
   display: grid;
   align-items: center;
-  min-height: min(880px, calc(100svh - var(--header-offset)));
+  min-height: max(760px, 100svh);
   margin-top: calc(-1 * var(--header-offset));
   padding: calc(var(--header-offset) + clamp(32px, 5vw, 72px)) 0
     clamp(96px, 12vw, 190px);
-  background: var(--color-canvas);
+  background: var(--color-hero-illustration);
   color: var(--color-text);
 }
 .home-hero::after {
@@ -64,25 +64,25 @@
   position: absolute;
   left: 0;
   bottom: -0.14em;
-  z-index: -1;
-  color: transparent;
+  z-index: 1;
+  color: var(--color-display-fill);
   font-family: var(--font-display);
   font-size: var(--text-giant);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
   white-space: nowrap;
-  -webkit-text-stroke: 1.5px var(--color-outline);
+  -webkit-text-stroke: 0;
   user-select: none;
   pointer-events: none;
   animation: giant-drift 36s linear infinite alternate;
 }
 .hero-layout {
   position: relative;
+  z-index: 5;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 550px);
   align-items: center;
-  gap: clamp(32px, 5vw, 72px);
 }
 .hero-copy {
   position: relative;
@@ -175,33 +175,37 @@
   content: counter(count);
 }
 .hero-visual {
-  position: relative;
-  aspect-ratio: 1.04;
-  animation: hero-in 1200ms var(--ease-out-expo) 200ms both;
-}
-.hero-visual::before {
-  content: "";
   position: absolute;
-  inset: 0 10% 10% 0;
-  z-index: -1;
-  border-radius: 58% 42% 46% 54% / 44% 56% 44% 56%;
-  background: var(--gradient-brand);
-  opacity: 0.85;
-  --depth: 26px;
-  animation: blob-morph 13s ease-in-out infinite alternate-reverse;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 }
-.hero-art {
+.hero-layer {
   position: absolute;
-  inset: 5% 2% 3% 7%;
-  border-radius: 46% 54% 52% 48% / 54% 44% 56% 46%;
-  background: url("/assets/copydrink-editorial-hero.webp") 72% center / cover
-    no-repeat;
-  box-shadow: var(--shadow-lg);
-  --depth: -16px;
-  animation: blob-morph 16s ease-in-out infinite alternate;
+  inset: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: hero-layer-in 1000ms var(--ease-out-expo) both;
 }
-.hero-visual::before,
-.hero-art,
+.hero-layer-back {
+  background-image: url("/assets/home-hero-background.webp");
+  animation-delay: 100ms;
+}
+.hero-layer-cup {
+  z-index: 2;
+  background-image: url("/assets/home-hero-cup.webp");
+  --depth: -8px;
+  animation-delay: 500ms;
+}
+.hero-layer-characters {
+  z-index: 3;
+  background-image: url("/assets/home-hero-characters.webp");
+  --depth: 12px;
+  animation-delay: 900ms;
+}
+.hero-layer-cup,
+.hero-layer-characters,
 .hero-badge,
 .hero-pearl,
 .hero-chip {
@@ -210,9 +214,10 @@
 }
 .hero-badge {
   position: absolute;
-  left: -2%;
-  bottom: 2%;
-  width: clamp(92px, 24%, 136px);
+  z-index: 4;
+  left: 52%;
+  bottom: 8%;
+  width: clamp(92px, 8vw, 136px);
   overflow: visible;
   font-family: var(--font-display);
   font-weight: 600;
@@ -233,6 +238,7 @@
 }
 .hero-pearl {
   position: absolute;
+  z-index: 4;
   width: var(--size, 22px);
   aspect-ratio: 1;
   border-radius: 50%;
@@ -283,6 +289,7 @@
 }
 .hero-chip {
   position: absolute;
+  z-index: 4;
   padding: var(--space-2) var(--space-4);
   border: 1px solid var(--color-glass-border);
   border-radius: var(--radius-pill);
@@ -297,16 +304,16 @@
   animation: bob 6.5s ease-in-out infinite alternate;
 }
 .hero-chip-a {
-  top: 12%;
-  right: 2%;
+  top: 28%;
+  right: 4%;
   --depth: 48px;
 }
 .hero-chip-b {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  bottom: 14%;
-  right: -2%;
+  bottom: 24%;
+  right: 3%;
   --depth: -40px;
   color: var(--color-accent-text);
   animation-duration: 8s;
@@ -318,6 +325,11 @@
   overflow: clip;
   margin-top: clamp(-76px, -6vw, -40px);
   padding: 22px 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    var(--color-store-directory) 50%
+  );
 }
 .marquee-band {
   width: 106%;
@@ -325,7 +337,6 @@
   padding: clamp(10px, 1.6vw, 20px) 0;
   background: var(--gradient-band);
   color: var(--color-on-dark);
-  box-shadow: var(--shadow-lg);
   transform: rotate(-1.6deg);
 }
 .marquee-track {

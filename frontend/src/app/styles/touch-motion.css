@@ -30,7 +30,6 @@
   .menu-category,
   .section-heading > *,
   .hero-giant,
-  .hero-visual::before,
   .hero-badge,
   .hero-pearl,
   .hero-chip,
@@ -45,7 +44,7 @@
   .hero-stats,
   .count-up,
   .hero-visual,
-  .hero-art {
+  .hero-layer {
     animation: none;
   }
 

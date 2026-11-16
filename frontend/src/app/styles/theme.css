@@ -31,6 +31,6 @@
   color: var(--color-on-brand);
   box-shadow: var(--shadow-sm);
 }
-html[data-theme="dark"] .hero-art {
-  filter: brightness(0.82) saturate(0.9);
+html[data-theme="dark"] .hero-layer {
+  filter: brightness(0.48) saturate(0.85);
 }

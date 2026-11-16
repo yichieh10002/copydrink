@@ -11,11 +11,13 @@
   background: var(--color-paper);
   color: var(--color-text);
   box-shadow: var(--shadow-lg);
+  pointer-events: auto;
 }
 
 :where(.order-dialog, .utility-dialog)::backdrop {
   background: var(--color-backdrop);
   backdrop-filter: blur(6px);
+  pointer-events: auto;
 }
 
 :where(.order-dialog, .utility-dialog)[open] {

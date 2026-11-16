@@ -64,8 +64,42 @@ export default async function Home({
         <span className="hero-glow hero-glow-a" aria-hidden="true" />
         <span className="hero-glow hero-glow-b" aria-hidden="true" />
         <span className="hero-glow hero-glow-c" aria-hidden="true" />
-        <div className="hero-giant" aria-hidden="true">
-          COPYDRINK
+        <div className="hero-visual" aria-hidden="true">
+          <div className="hero-layer hero-layer-back" />
+          <div className="hero-giant">COPYDRINK</div>
+          <div className="hero-layer hero-layer-cup" />
+          <div className="hero-layer hero-layer-characters" />
+          <svg className="hero-badge" viewBox="0 0 120 120">
+            <defs>
+              <path
+                id="hero-badge-path"
+                d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0"
+              />
+            </defs>
+            <circle className="hero-badge-disc" cx="60" cy="60" r="58" />
+            <text>
+              <textPath href="#hero-badge-path" textLength="270">
+                FIND · PICK · COPY · FIND · PICK · COPY ·
+              </textPath>
+            </text>
+            <StarFourIcon
+              className="hero-badge-mark"
+              x={43}
+              y={43}
+              width={34}
+              height={34}
+              weight="fill"
+            />
+          </svg>
+          <span className="hero-pearl hero-pearl-1" />
+          <span className="hero-pearl hero-pearl-2" />
+          <span className="hero-pearl hero-pearl-3" />
+          <span className="hero-pearl hero-pearl-4" />
+          <span className="hero-pearl hero-pearl-5" />
+          <span className="hero-chip hero-chip-a">半糖 · 少冰</span>
+          <span className="hero-chip hero-chip-b">
+            已複製 <CheckIcon size={16} weight="bold" />
+          </span>
         </div>
         <div className="container hero-layout">
           <div className="hero-copy">
@@ -102,40 +136,6 @@ export default async function Home({
                 </div>
               ))}
             </dl>
-          </div>
-          <div className="hero-visual" aria-hidden="true">
-            <div className="hero-art" />
-            <svg className="hero-badge" viewBox="0 0 120 120">
-              <defs>
-                <path
-                  id="hero-badge-path"
-                  d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0"
-                />
-              </defs>
-              <circle className="hero-badge-disc" cx="60" cy="60" r="58" />
-              <text>
-                <textPath href="#hero-badge-path" textLength="270">
-                  FIND · PICK · COPY · FIND · PICK · COPY ·
-                </textPath>
-              </text>
-              <StarFourIcon
-                className="hero-badge-mark"
-                x={43}
-                y={43}
-                width={34}
-                height={34}
-                weight="fill"
-              />
-            </svg>
-            <span className="hero-pearl hero-pearl-1" />
-            <span className="hero-pearl hero-pearl-2" />
-            <span className="hero-pearl hero-pearl-3" />
-            <span className="hero-pearl hero-pearl-4" />
-            <span className="hero-pearl hero-pearl-5" />
-            <span className="hero-chip hero-chip-a">半糖 · 少冰</span>
-            <span className="hero-chip hero-chip-b">
-              已複製 <CheckIcon size={16} weight="bold" />
-            </span>
           </div>
         </div>
       </section>

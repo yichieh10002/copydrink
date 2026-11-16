@@ -1,5 +1,5 @@
 import type { Store } from "@/lib/types";
-import { DiamondIcon } from "@phosphor-icons/react/dist/ssr/Diamond";
+import { ThermometerIcon } from "@phosphor-icons/react/dist/ssr/Thermometer";
 import { SnowflakeIcon } from "@phosphor-icons/react/dist/ssr/Snowflake";
 import { CirclesThreeIcon } from "@phosphor-icons/react/dist/ssr/CirclesThree";
 import { CoffeeIcon } from "@phosphor-icons/react/dist/ssr/Coffee";
@@ -64,7 +64,7 @@ export function StoreInfo({ store }: { store: Store }) {
     <div className="store-rules">
       {(
         [
-          ["甜度", "sweetness", DiamondIcon],
+          ["甜度", "sweetness", ThermometerIcon],
           ["冰量／溫度", "temperature", SnowflakeIcon],
           ["配料", "topping", CirclesThreeIcon],
           ["杯型容量", "cup", CoffeeIcon],
@@ -145,21 +145,19 @@ export function StoreInfo({ store }: { store: Store }) {
           <div className="store-intro-stats">
             <span>{store.regions.length} 個區域</span>
             <span>全品項 {store.items.length} 款飲品</span>
+            {top && (
+              <TopPicks
+                title={top.title || "必喝 TOP"}
+                description={top.description || ""}
+                storeKey={store.key}
+                items={(top.itemIds || []).flatMap((id) => {
+                  const item = store.items.find((i) => i.id === id);
+                  return item ? [{ item, note: top.notes?.[id] || "" }] : [];
+                })}
+              />
+            )}
           </div>
         </div>
-        {top && (
-          <div className="store-intro-actions">
-            <TopPicks
-              title={top.title || "必喝 TOP"}
-              description={top.description || ""}
-              storeKey={store.key}
-              items={(top.itemIds || []).flatMap((id) => {
-                const item = store.items.find((i) => i.id === id);
-                return item ? [{ item, note: top.notes?.[id] || "" }] : [];
-              })}
-            />
-          </div>
-        )}
       </div>
       <div className="store-intro-details">
         <div className="desktop-store-extras">{rules}</div>
