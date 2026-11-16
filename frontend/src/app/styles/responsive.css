@@ -152,8 +152,64 @@
     padding: 0 9px;
   }
   .home-hero {
-    --hero-art-height: clamp(330px, 94vw, 480px);
+    /* Mobile: one continuous illustration behind copy and artwork. */
+    --hero-art-height: clamp(560px, 155vw, 740px);
+    display: block;
+    min-height: calc(var(--header-offset) + 660px);
     padding: calc(var(--header-offset) + 28px) 0 0;
+    background: var(--color-hero-illustration);
+  }
+  .home-hero .hero-visual {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .home-hero .hero-layer {
+    inset: 0;
+    background-repeat: no-repeat;
+    background-size: auto 78%;
+    background-position: center bottom;
+  }
+  .home-hero .hero-layer-back {
+    top: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+    background-size: cover;
+    background-position: center;
+  }
+  .home-hero .hero-layer-cup {
+    background-size: auto 76%;
+    background-position: calc(50% + 120px) bottom;
+  }
+  .home-hero .hero-layer-characters {
+    background-size: auto 72%;
+    background-position: calc(50% + 30px) bottom;
+  }
+  .home-hero .hero-layout {
+    position: relative;
+    z-index: 5;
+    padding-bottom: clamp(380px, 112vw, 540px);
+  }
+  .home-hero .hero-stats {
+    position: relative;
+    z-index: 6;
+    gap: var(--space-4);
+    max-width: 240px;
+  }
+  .home-hero .hero-stats > div {
+    padding-left: var(--space-2);
+  }
+  .home-hero .hero-badge {
+    top: auto;
+    bottom: 18%;
+    left: 4%;
+  }
+  .home-hero .hero-chip-a {
+    top: 48%;
+  }
+  .home-hero .hero-chip-b {
+    bottom: 12%;
   }
   .home-hero h1 {
     font-size: var(--text-mobile-display);
