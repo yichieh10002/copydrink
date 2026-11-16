@@ -15,7 +15,7 @@
 | 工作分支 | `ui/claude-visual-refresh` |
 | 最新功能提交 | `e1048d2d0ea544c1e759e4897679f4addec1c73c`：淺藍複製預覽區與文字／按鈕對比 |
 | 最近成功部署的功能版本 | `e1048d2`：包含目前所有累積功能修正 |
-| 尚未部署 | 無待部署功能；後續交接文件更新僅在本機提交 |
+| 尚未部署 | **有**：2026-11-16 動效三項調整（首頁載入骨架、觸控按壓回饋、Hero 進場時間），在 `/Users/yichieh/Desktop/copydrink` **已提交於本機、未推送、未部署**，見下方紀錄 |
 | 最新預覽狀態 | 2026-11-16 查驗 `READY`，建置成功；77 個來源檔 SHA1 全數與本機一致 |
 | 舊版還原點 | Tag `copydrink-before-layered-hero-20261115` → `b32a81699bbbc6e152efb78eec16359578d2ded7` |
 | 程式保存 | 本文件隨最新來源快照同步 GitHub 分支；GitHub 提交 SHA 與原本機功能 SHA 不同，請看上方接手說明 |
@@ -132,6 +132,21 @@ find /workspace/scratch -type d \( -name node_modules -o -name .next \) -prune \
 - 驗證：`npm run build`（含 TypeScript）、`npm run style:check`、`git diff --check` 通過。依實際色碼計算淺色模式對比：預覽標題 7.58:1、複製文案 8.79:1、可用按鈕 6.32:1、停用按鈕 4.61:1。本次沒有追加瀏覽器畫面驗收。
 - 當時沒有推送或部署；其後已納入 11/16 的預覽部署。
 
+### 2026-11-16 動效三項調整（Claude，已提交於本機、未推送、未部署）
+
+基準 GitHub 同步提交 `d246949`。評估依據是已部署預覽的量測，結論是動效不需要加強，先修三件事。
+
+- `frontend/src/app/loading.tsx`：首頁載入骨架改成與 Hero 同尺寸的外殼（沿用 `.home-hero`，文案區以 `visibility: hidden` 佔位）。原因：原本共用的矮骨架約 598px，內容串流進來時主區塊被撐開、頁尾被推走，預覽量測首頁 CLS 0.957（桌機 Chrome 157、1470×780，三次重現）。**修改 Hero 文案或結構時，這個檔案要一起改，否則高度會對不上。** 店家頁的 `stores/[slug]/loading.tsx` 未動（量測 CLS 為 0）。
+- `frontend/src/app/styles/hero.css`：新增 `.home-hero-loading .hero-copy` 一條規則；三層插畫延遲由 100／500／900ms 改為 0／150／300ms，時長 1000ms 改 700ms（約 1 秒到位）；數字跳動 2200ms＠700ms 改 1200ms＠500ms；說明、搜尋、統計的延遲改為 320／400／500ms。
+- `frontend/src/app/styles/touch-motion.css`：檔尾新增觸控專用 `:active` 區塊。卡片與按鈕縮放 0.97，列表型項目換底色 `--color-hover`。原因：觸控裝置的 hover 已被中和，原本全站沒有任何 `:active`，手機點擊沒有視覺回饋。選擇器加 `:not(:disabled)` 是為了和前面的 hover 重設同權重、靠順序勝出，不要拿掉。
+- 觸控裝置的進場與循環動畫仍維持停用，沒有開啟任何新動畫。
+
+驗證（本機 `next start`，埠 4177）：`npm run build`、`npm run typecheck`、`npm test`（8/8）、`npm run style:check`、Prettier、`git diff --check` 通過。首頁 CLS 在 1440×780 與 390×844（模擬觸控）皆為 0；骨架與實際 Hero 高度相同（1440 寬 811＝811px，390 寬 827＝827px）；串流 HTML 內確認有骨架。**未驗證**：`:active` 回饋沒有在實機 iOS Safari／Android 上按過；進場節奏的觀感需要小潔看過；本機資料回應快，慢速網路下的骨架停留時間未測。
+
+本機 `node_modules` 原為舊版，缺 `@phosphor-icons/react`，已用 `npm ci` 依 lockfile 重裝。`next build` 改到的 `next-env.d.ts` 已還原。
+
+尚未處理的評估建議（等小潔決定）：移除跑馬條星星旋轉與「口味」漸層循環、確認後刪除被插畫蓋住的三個 `hero-glow`、Hero 離開畫面時暫停循環動畫、店家卡片捲動進場範圍收短、搜尋彈窗補進場動畫、`home-hero-background.webp`（1.4MB）與 `copydrink-logo-short-black.webp`（530kB，顯示僅約 190px 寬）壓縮。
+
 ## Vercel 預覽的精確資訊
 
 | 項目 | 值 |
@@ -195,7 +210,7 @@ npm run start -- --hostname 0.0.0.0 --port 4177
 
 ## 下一步
 
-目前已完成使用者要求的預覽部署，無待部署功能。等待下一個要求，無須重做已完成的插畫拆層或重部署同一版本。
+預覽部署仍是 `e1048d2` 的內容。本機有上述動效三項調整已提交但尚未推送；等小潔看過本機畫面後，再決定是否推送與部署，以及要不要做其餘評估建議。無須重做已完成的插畫拆層。
 
 ## 給下一段對話的開場文字
 

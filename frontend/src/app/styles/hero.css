@@ -28,6 +28,9 @@
   );
   pointer-events: none;
 }
+.home-hero-loading .hero-copy {
+  visibility: hidden;
+}
 .hero-glow {
   position: absolute;
   z-index: -2;
@@ -136,16 +139,16 @@
   color: var(--color-text-muted);
   font-size: var(--text-body-lg);
   line-height: 1.8;
-  animation: fade-up 800ms var(--ease-out-expo) 420ms both;
+  animation: fade-up 800ms var(--ease-out-expo) 320ms both;
 }
 .home-hero .home-search {
-  animation: fade-up 800ms var(--ease-out-expo) 520ms both;
+  animation: fade-up 800ms var(--ease-out-expo) 400ms both;
 }
 .hero-stats {
   display: flex;
   gap: var(--space-8);
   margin: var(--space-8) 0 0;
-  animation: fade-up 800ms var(--ease-out-expo) 640ms both;
+  animation: fade-up 800ms var(--ease-out-expo) 500ms both;
 }
 .hero-stats > div {
   display: flex;
@@ -169,7 +172,7 @@
 }
 .count-up {
   counter-reset: count var(--count);
-  animation: count-up 2200ms var(--ease-out-expo) 700ms both;
+  animation: count-up 1200ms var(--ease-out-expo) 500ms both;
 }
 .count-up::after {
   content: counter(count);
@@ -186,23 +189,22 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  animation: hero-layer-in 1000ms var(--ease-out-expo) both;
+  animation: hero-layer-in 700ms var(--ease-out-expo) both;
 }
 .hero-layer-back {
   background-image: url("/assets/home-hero-background.webp");
-  animation-delay: 100ms;
 }
 .hero-layer-cup {
   z-index: 2;
   background-image: url("/assets/home-hero-cup.webp");
   --depth: -8px;
-  animation-delay: 500ms;
+  animation-delay: 150ms;
 }
 .hero-layer-characters {
   z-index: 3;
   background-image: url("/assets/home-hero-characters.webp");
   --depth: 12px;
-  animation-delay: 900ms;
+  animation-delay: 300ms;
 }
 .hero-layer-cup,
 .hero-layer-characters,

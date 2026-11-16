@@ -170,3 +170,26 @@
     padding-left: var(--space-4);
   }
 }
+
+/* Hover is neutralised above, so touch needs its own press feedback.
+   :not(:disabled) keeps specificity level with the hover resets it follows. */
+@media (hover: none), (pointer: coarse) {
+  .store-card:active:not(:disabled),
+  .home-search-trigger:active:not(:disabled),
+  .top-button:active:not(:disabled),
+  .copy-button:active:not(:disabled),
+  .store-directory-end button:active:not(:disabled),
+  .category-tabs button:active:not(:disabled),
+  .region-tabs button:active:not(:disabled),
+  .recent-searches button:active:not(:disabled) {
+    scale: 0.97;
+  }
+  .drink-row:active:not(:disabled),
+  .home-tool:active:not(:disabled),
+  .global-search-result:active:not(:disabled),
+  .top-item-action:active:not(:disabled),
+  .back-to-top:active:not(:disabled),
+  .back-to-stores:active:not(:disabled) {
+    background: var(--color-hover);
+  }
+}
