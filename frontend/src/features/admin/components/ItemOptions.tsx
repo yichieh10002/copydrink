@@ -2,7 +2,12 @@
 import { useState } from "react";
 import type { AdminDocument, AdminItem } from "../types";
 import type { OptionGroup } from "@/lib/types";
-import { changeOptionMode, optionEditorState } from "../model";
+import {
+  changeOptionMode,
+  optionEditorState,
+  setFixedDescription,
+  setOnlyHot,
+} from "../model";
 import { FormField, GrowingTextarea } from "./FormField";
 import { AdditionalChoices } from "./AdditionalChoices";
 
@@ -152,7 +157,7 @@ export function ItemOptions({
                     onChange(changeOptionMode(item, group, e.target.value))
                   }
                 >
-                  {legacy && (
+                  {legacy && mode !== "fixed-text" && (
                     <option
                       value={
                         fixedChoice || unmatchedFixedLabel
@@ -170,28 +175,73 @@ export function ItemOptions({
                   <option value="inherit">沿用店家預設</option>
                   <option value="disabled">這杯不顯示</option>
                   <option value="fixed" disabled={!choices.length}>
-                    固定選項
+                    固定為店家選項
                   </option>
+                  {(group.role === "sweetness" ||
+                    group.role === "temperature") && (
+                    <option value="fixed-text">固定說明（自訂文字）</option>
+                  )}
                   <option value="custom" disabled={!choices.length}>
                     只提供指定選項
                   </option>
                 </select>
               </div>
-              {(mode === "legacy" || mode === "legacy-fixed") &&
-                !unmatchedFixedLabel && (
-                  <p className="text-sm text-blue-800">
-                    {fixedChoice
-                      ? `舊版設定固定為：${fixedChoice.label}。`
-                      : `舊版設定目前只提供：${choices.map((choice) => choice.label).join("、") || "無可選項"}。`}
-                    改選「沿用店家預設」才會移除這杯的舊限制。
-                  </p>
-                )}
-              {unmatchedFixedLabel && mode === "legacy-fixed" && (
+              {mode === "legacy" && (
                 <p className="text-sm text-blue-800">
-                  這杯的店家固定說明為「{unmatchedFixedLabel}
-                  」，前台會直接顯示在{group.name}
-                  ，無需選擇。若要指定明確比例，可改選「固定選項」。
+                  舊版設定目前只提供：
+                  {choices.map((choice) => choice.label).join("、") ||
+                    "無可選項"}
+                  。 改選「沿用店家預設」才會移除這杯的舊限制。
                 </p>
+              )}
+              {(mode === "legacy-fixed" || mode === "fixed-text") && (
+                <FormField
+                  label={
+                    group.role === "sweetness"
+                      ? "固定甜度文字"
+                      : "固定冰量／溫度文字"
+                  }
+                  required
+                  hint="會直接顯示在原本的甜度或冰量欄，也會寫進複製文字；顧客無需再選。"
+                  error={
+                    error === "請填寫固定顯示文字" &&
+                    !(
+                      group.role === "sweetness"
+                        ? item.fixedSugar
+                        : item.fixedIce
+                    )?.trim()
+                      ? error
+                      : undefined
+                  }
+                >
+                  <input
+                    className="admin-input"
+                    aria-invalid={
+                      error === "請填寫固定顯示文字" &&
+                      !(
+                        group.role === "sweetness"
+                          ? item.fixedSugar
+                          : item.fixedIce
+                      )?.trim()
+                    }
+                    value={
+                      group.role === "sweetness"
+                        ? item.fixedSugar || ""
+                        : item.fixedIce || ""
+                    }
+                    maxLength={60}
+                    onChange={(event) =>
+                      onChange(
+                        setFixedDescription(item, group, event.target.value),
+                      )
+                    }
+                    placeholder={
+                      group.role === "sweetness"
+                        ? "例如：甜度固定"
+                        : "例如：固定少冰"
+                    }
+                  />
+                </FormField>
               )}
               {group.role === "temperature" && !!item.variants?.length && (
                 <p className="text-sm text-amber-800">
@@ -222,6 +272,34 @@ export function ItemOptions({
                   </select>
                 </FormField>
               )}
+              {group.role === "temperature" && (
+                <div className="admin-row">
+                  <button
+                    className="admin-btn"
+                    type="button"
+                    onClick={() => {
+                      if (
+                        (item.variants?.length ||
+                          item.cups.some(
+                            (cup) =>
+                              cup.showWhenChoiceIds?.length ||
+                              cup.optionChoiceIds?.[group.id]?.length,
+                          )) &&
+                        !window.confirm(
+                          "只做熱飲會取代這杯原有的杯型溫度限制；杯型和價格會保留。確定套用？",
+                        )
+                      )
+                        return;
+                      onChange(setOnlyHot(item, group));
+                    }}
+                  >
+                    只做熱飲
+                  </button>
+                  <span className="text-sm text-slate-500">
+                    只保留熱飲選項；店家沒設定熱飲時，會為這杯加入熱飲。
+                  </span>
+                </div>
+              )}
               {mode === "custom" && (
                 <div className="admin-row">
                   {availableChoices.map((choice) => (
@@ -246,6 +324,7 @@ export function ItemOptions({
               )}
               {mode !== "legacy" &&
                 mode !== "legacy-fixed" &&
+                mode !== "fixed-text" &&
                 (group.role === "sweetness" ||
                   group.role === "temperature") && (
                   <AdditionalChoices

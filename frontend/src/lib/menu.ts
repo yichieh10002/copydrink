@@ -108,10 +108,18 @@ export function effectiveGroups(
     const override = item.optionOverrides?.[g.id],
       mode = override?.mode || "inherit";
     if (mode === "disabled") return [];
-    let choices = [
-      ...(g.choices || []),
-      ...(override?.additionalChoices || []),
-    ];
+    const fixedLabel =
+      g.role === "sweetness"
+        ? item.fixedSugar?.trim()
+        : g.role === "temperature"
+          ? item.fixedIce?.trim()
+          : null;
+    let choices =
+      mode === "fixed-text"
+        ? fixedLabel
+          ? [{ id: `${g.id}-fixed-text`, label: fixedLabel, price: 0 }]
+          : []
+        : [...(g.choices || []), ...(override?.additionalChoices || [])];
     if (mode === "custom" || mode === "fixed")
       choices = choices.filter((c) => override?.choiceIds?.includes(c.id));
     const allowed = cup.optionChoiceIds?.[g.id];
@@ -145,12 +153,6 @@ export function effectiveGroups(
     if (g.role === "topping" && Array.isArray(item.allowedToppings))
       choices = choices.filter((c) => item.allowedToppings?.includes(c.label));
     if (!choices.length) return [];
-    const fixedLabel =
-      g.role === "sweetness"
-        ? item.fixedSugar?.trim()
-        : g.role === "temperature"
-          ? item.fixedIce?.trim()
-          : null;
     const matchingFixedChoice = choices.find(
       (c) =>
         fixedLabel &&
@@ -163,9 +165,13 @@ export function effectiveGroups(
         ? { id: `${g.id}-legacy-fixed`, label: fixedLabel, price: 0 }
         : null;
     if (legacyFixedChoice) choices = [legacyFixedChoice];
-    const fixed = mode === "fixed" || (mode === "inherit" && !!fixedLabel);
+    const fixed =
+      mode === "fixed" ||
+      mode === "fixed-text" ||
+      (mode === "inherit" && !!fixedLabel);
     const fixedChoiceId =
       (mode === "fixed" ? override?.fixedChoiceId : null) ||
+      (mode === "fixed-text" ? `${g.id}-fixed-text` : null) ||
       matchingFixedChoice?.id ||
       choices[0].id;
     return [

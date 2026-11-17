@@ -286,7 +286,8 @@ export function ItemEditor({
                 杯型與地區價格 <span className="text-orange-600">＊</span>
               </h3>
               <p className="text-sm text-slate-500">
-                價格留空表示未提供，0 元請填 0。
+                只勾選這杯販售的杯型；例如僅中杯，就只勾中杯。取消杯型會移除該杯型的價格。價格留空表示未提供，0
+                元請填 0。
               </p>
             </div>
             {errors.cups && (

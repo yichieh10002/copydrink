@@ -8,6 +8,8 @@ import {
   reconcileChoices,
   optionEditorState,
   changeOptionMode,
+  setFixedDescription,
+  setOnlyHot,
 } from "../src/features/admin/model";
 import { effectiveGroups } from "../src/lib/menu";
 import { copyDrinkText } from "../src/lib/copy";
@@ -100,6 +102,122 @@ test("店家選項插入與重排不會把舊識別碼配到別的選項", () =>
   );
   const renamed = reconcileChoices(old, ["正常冰", "少少冰"], "temperature");
   assert.equal(renamed[1].id, "less");
+});
+
+test("單杯可直接輸入固定甜度，舊版固定說明也可改寫或恢復預設", () => {
+  const sweetness = {
+    id: "sweetness",
+    name: "甜度",
+    role: "sweetness" as const,
+    kind: "single" as const,
+    required: true,
+    choices: [{ id: "half", label: "半糖", price: 0 }],
+  };
+  const withOptions = {
+    ...document,
+    brand: { ...document.brand, optionGroups: [sweetness] },
+  };
+  const legacy = { ...document.items[0], fixedSugar: "甜度固定" };
+  assert.equal(optionEditorState(legacy, sweetness).mode, "legacy-fixed");
+  const edited = setFixedDescription(legacy, sweetness, "固定三分糖");
+  assert.equal(optionEditorState(edited, sweetness).mode, "fixed-text");
+  const group = effectiveGroups(withOptions, edited, edited.cups[0])[0];
+  assert.deepEqual(
+    group.choices.map((choice) => choice.label),
+    ["固定三分糖"],
+  );
+  assert.equal(group.required, false);
+  assert.equal(group.fixedChoiceId, "sweetness-fixed-text");
+  const newFixed = changeOptionMode(document.items[0], sweetness, "fixed-text");
+  assert.equal(newFixed.fixedSugar, "甜度固定");
+  assert.equal(
+    validateItem(setFixedDescription(newFixed, sweetness, ""), withOptions)
+      .options,
+    "請填寫固定顯示文字",
+  );
+  const inherited = changeOptionMode(edited, sweetness, "inherit");
+  assert.equal(inherited.fixedSugar, null);
+  assert.deepEqual(
+    effectiveGroups(withOptions, inherited, inherited.cups[0])[0].choices.map(
+      (choice) => choice.label,
+    ),
+    ["半糖"],
+  );
+});
+
+test("只做熱飲為單杯補熱飲並取代舊冷飲限制，杯型價格不變", () => {
+  const temperatureGroup = {
+    id: "temperature",
+    name: "冰量／溫熱",
+    role: "temperature" as const,
+    kind: "single" as const,
+    required: true,
+    choices: [{ id: "cold", label: "少冰", price: 0 }],
+  };
+  const withOptions = {
+    ...document,
+    brand: { ...document.brand, optionGroups: [temperatureGroup] },
+  };
+  const oldItem: AdminItem = {
+    ...document.items[0],
+    fixedIce: "少冰",
+    variants: [{ size: "中杯", temp: "冷" }],
+    cups: [
+      {
+        ...document.items[0].cups[0],
+        showWhenChoiceIds: ["cold"],
+        optionChoiceIds: { temperature: ["cold"] },
+      },
+    ],
+  };
+  const hotOnly = setOnlyHot(oldItem, temperatureGroup);
+  assert.equal(hotOnly.fixedIce, null);
+  assert.equal(hotOnly.variants, undefined);
+  assert.deepEqual(hotOnly.cups[0].prices, oldItem.cups[0].prices);
+  assert.deepEqual(hotOnly.cups[0].showWhenChoiceIds, []);
+  assert.deepEqual(hotOnly.cups[0].optionChoiceIds, {});
+  assert.equal(optionEditorState(hotOnly, temperatureGroup).mode, "custom");
+  assert.deepEqual(
+    effectiveGroups(withOptions, hotOnly, hotOnly.cups[0])[0].choices.map(
+      (choice) => choice.label,
+    ),
+    ["熱飲"],
+  );
+  const fixedIce = setFixedDescription(oldItem, temperatureGroup, "固定少冰");
+  assert.equal(fixedIce.variants, undefined);
+  assert.deepEqual(
+    effectiveGroups(withOptions, fixedIce, fixedIce.cups[0])[0].choices.map(
+      (choice) => choice.label,
+    ),
+    ["固定少冰"],
+  );
+  assert.equal(
+    effectiveGroups(withOptions, fixedIce, fixedIce.cups[0])[0].mode,
+    "fixed",
+  );
+  const storeHot = {
+    ...temperatureGroup,
+    choices: [
+      ...temperatureGroup.choices,
+      { id: "hot", label: "熱飲", temperature: "hot" as const, price: 5 },
+    ],
+  };
+  const existingHot = setOnlyHot(document.items[0], storeHot);
+  assert.deepEqual(existingHot.optionOverrides?.temperature.choiceIds, ["hot"]);
+  assert.deepEqual(
+    existingHot.optionOverrides?.temperature.additionalChoices,
+    [],
+  );
+  const legacySurcharge = setOnlyHot(
+    {
+      ...oldItem,
+      optionGroups: [
+        { ...temperatureGroup, inheritDefault: false, hotSurcharge: 5 },
+      ],
+    },
+    temperatureGroup,
+  );
+  assert.equal(legacySurcharge.optionOverrides?.temperature.hotSurcharge, 5);
 });
 
 test("舊版單杯限制在後台顯示原選項，明確改為店家預設才移除", () => {

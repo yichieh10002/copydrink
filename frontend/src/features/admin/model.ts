@@ -1,6 +1,6 @@
 import type { AdminDocument, AdminItem } from "./types";
 import { clone } from "./types";
-import { legacyGroups } from "@/lib/menu";
+import { legacyGroups, temperature } from "@/lib/menu";
 import type { Choice, OptionGroup } from "@/lib/types";
 
 export function optionEditorState(item: AdminItem, group: OptionGroup) {
@@ -73,9 +73,18 @@ export function changeOptionMode(
           : item.optionGroups,
     };
   }
+  if (mode === "fixed-text")
+    return setFixedDescription(
+      item,
+      group,
+      (group.role === "sweetness" ? item.fixedSugar : item.fixedIce) ||
+        (group.role === "sweetness" ? "甜度固定" : "冰量固定"),
+    );
   const firstId = choices[0]?.id;
   return {
     ...item,
+    ...(group.role === "sweetness" ? { fixedSugar: null } : {}),
+    ...(group.role === "temperature" ? { fixedIce: null } : {}),
     ...(group.role === "topping" && (mode === "custom" || mode === "fixed")
       ? { allowedToppings: null }
       : {}),
@@ -91,6 +100,83 @@ export function changeOptionMode(
               ? [firstId]
               : override.choiceIds,
         fixedChoiceId: firstId,
+      },
+    },
+  };
+}
+
+export function setFixedDescription(
+  item: AdminItem,
+  group: OptionGroup,
+  label: string,
+): AdminItem {
+  if (group.role !== "sweetness" && group.role !== "temperature") return item;
+  const own = item.optionGroups?.find((entry) => entry.id === group.id);
+  const surcharge =
+    item.optionOverrides?.[group.id]?.hotSurcharge ?? own?.hotSurcharge;
+  return {
+    ...item,
+    ...(group.role === "sweetness"
+      ? { fixedSugar: label }
+      : { fixedIce: label, variants: undefined }),
+    cups: item.cups.map((cup) => {
+      const optionChoiceIds = { ...cup.optionChoiceIds };
+      delete optionChoiceIds[group.id];
+      return {
+        ...cup,
+        optionChoiceIds,
+        ...(group.role === "temperature" ? { showWhenChoiceIds: [] } : {}),
+      };
+    }),
+    optionGroups: item.optionGroups?.filter((own) => own.id !== group.id),
+    optionOverrides: {
+      ...item.optionOverrides,
+      [group.id]: {
+        mode: "fixed-text",
+        ...(group.role === "temperature" && surcharge !== undefined
+          ? { hotSurcharge: surcharge }
+          : {}),
+      },
+    },
+  };
+}
+
+export function setOnlyHot(item: AdminItem, group: OptionGroup): AdminItem {
+  if (group.role !== "temperature") return item;
+  const override = item.optionOverrides?.[group.id] || {};
+  const own = item.optionGroups?.find((entry) => entry.id === group.id);
+  const surcharge = override.hotSurcharge ?? own?.hotSurcharge;
+  const choices = [...group.choices, ...(override.additionalChoices || [])];
+  const hotChoices = choices.filter((choice) => temperature(choice) === "hot");
+  const added: Choice | null = hotChoices.length
+    ? null
+    : {
+        id: `hot-${crypto.randomUUID()}`,
+        label: "熱飲",
+        price: 0,
+        temperature: "hot",
+      };
+  return {
+    ...item,
+    fixedIce: null,
+    variants: undefined,
+    optionGroups: item.optionGroups?.filter((own) => own.id !== group.id),
+    cups: item.cups.map((cup) => {
+      const optionChoiceIds = { ...cup.optionChoiceIds };
+      delete optionChoiceIds[group.id];
+      return { ...cup, optionChoiceIds, showWhenChoiceIds: [] };
+    }),
+    optionOverrides: {
+      ...item.optionOverrides,
+      [group.id]: {
+        mode: "custom",
+        choiceIds: (added ? [added] : hotChoices).map((choice) => choice.id),
+        additionalChoices: [
+          ...(override.additionalChoices || []),
+          ...(added ? [added] : []),
+        ],
+        hotCupSizes: [],
+        ...(surcharge !== undefined ? { hotSurcharge: surcharge } : {}),
       },
     },
   };
@@ -217,6 +303,15 @@ export function validateItem(item: AdminItem, document: AdminDocument) {
     ? document.brand.optionGroups
     : legacyGroups(document);
   for (const [id, override] of Object.entries(item.optionOverrides || {})) {
+    if (
+      override.mode === "fixed-text" &&
+      !(
+        defaults.find((group) => group.id === id)?.role === "sweetness"
+          ? item.fixedSugar
+          : item.fixedIce
+      )?.trim()
+    )
+      errors.options = "請填寫固定顯示文字";
     if (override.mode === "custom" && !(override.choiceIds || []).length)
       errors.options = `「${defaults.find((g) => g.id === id)?.name || id}」請至少選一個選項`;
     const existing = defaults.find((g) => g.id === id)?.choices || [];
