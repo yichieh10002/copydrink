@@ -68,7 +68,7 @@ export function TopPicks({
               >
                 <span className="top-item-rank" data-rank={index + 1}>
                   {index < 3 ? (
-                    <MedalIcon size={18} weight="regular" aria-hidden="true" />
+                    <MedalIcon size={18} weight="fill" aria-hidden="true" />
                   ) : null}
                   TOP {index + 1}
                 </span>

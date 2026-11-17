@@ -5,6 +5,7 @@ import {
   sortedItems,
   upsertItem,
   validateItem,
+  reconcileChoices,
 } from "../src/features/admin/model";
 import type { AdminDocument, AdminItem } from "../src/features/admin/types";
 
@@ -72,6 +73,28 @@ test("最新、分類和原順序只調整列表視圖，不改寫草稿", () =>
     document.items.map((i) => i.id),
     original,
   );
+});
+
+test("店家選項插入與重排不會把舊識別碼配到別的選項", () => {
+  const old = [
+    { id: "normal", label: "正常冰", price: 0 },
+    { id: "less", label: "少冰", price: 0 },
+  ];
+  const inserted = reconcileChoices(
+    old,
+    ["正常冰", "微冰", "少冰"],
+    "temperature",
+  );
+  assert.equal(inserted[0].id, "normal");
+  assert.equal(inserted[2].id, "less");
+  assert.notEqual(inserted[1].id, "less");
+  const reordered = reconcileChoices(old, ["少冰", "正常冰"], "temperature");
+  assert.deepEqual(
+    reordered.map((choice) => choice.id),
+    ["less", "normal"],
+  );
+  const renamed = reconcileChoices(old, ["正常冰", "少少冰"], "temperature");
+  assert.equal(renamed[1].id, "less");
 });
 
 test("複製／新建飲料需要分類與杯型，0 元價格有效", () => {

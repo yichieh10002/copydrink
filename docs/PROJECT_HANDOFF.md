@@ -1,10 +1,43 @@
 # Copydrink 專案接手文件
 
-> 2026-11-17 最新：新版後台在本機 `feature/admin-workspace-v2`，並由相同 tree 建立 GitHub `preview/admin-workspace-v2-20261117`，受保護 Vercel Preview 已 `READY`：`https://copydrink-github-preview-znxa7e1gl-yichiehs-projects-5086e20d.vercel.app/admin`，部署 `dpl_4WXhjZLifuT1PdLoz1WaBSSNeNHf`，GitHub 提交 `86668c3a049c13a4f6d9cb35d45bc6468d4e221b`。沒有部署正式站、沒有寫入 Supabase；舊後台不變。回退標記 `admin-v1-before-rebuild-20261117`。登入及互動尚待驗收，詳細見 [admin-v2-rebuild.md](admin-v2-rebuild.md)。下方 11/16 舊部署紀錄僅供追溯。
+## 2026-11-17 最新交接（Asia/Taipei；優先讀本節）
 
-> 同日追加的單杯甜度／冰量／溫熱選項目前只在本機，尚未重新部署。使用者決定發布紀錄不需無限保留，目標每店「目前正式版＋前 5 次發布」；先記錄決定，舊紀錄尚未清理，待發布／還原流程驗收後實作。
+小潔正在檢查新版後台預覽，助手負責保存交接資訊。她暫時不操作 Supabase。**不要把資料庫當成要替換的舊版**：新後台直接讀寫原本的 Supabase 草稿及發布表。正式後台入口尚未切換，新後台預覽仍需 Vercel 登入；網站保持受保護，不要擅自開放或部署。
 
-最後更新：2026-11-16（Asia/Taipei）。
+同日接續：小潔上傳黑色蠟筆毛邊杯子圖，要求替換官網 Logo 並注意上色。本機 Next.js 共用 `BrandLogo` 已改用原圖作杯子，透過 SVG 反向亮度遮色移除白底／臉部深色方框，沿用 `currentColor`（頁首與頁尾品牌藍色）；字標與其他內容不動。新素材 `frontend/public/assets/copydrink-cup-crayon-black.png`，改動 `frontend/src/components/BrandLogo.tsx`。typecheck、style:check、format:check、production build 通過；**尚未推送、尚未部署，也尚未完成真實瀏覽器畫面驗收**。生成式去背嘗試吃掉五官，沒有採用；原圖保留五官較準確。若下一步需檢查畫面或部署，先核對本機提交與來源再做。
+
+同日後續：小潔以必喝 TOP 截圖要求前三名獎牌改成實色 icon、拿掉排名膠囊外框，第四名以後灰底深灰字。`frontend/src/components/TopPicks.tsx` 的前三名 `MedalIcon` 改為 `weight="fill"`；`frontend/src/app/styles/store.css` 的排名標籤保留既有柔和金／銀／銅底色，移除描邊，非前三名沿用中性灰底與灰字 token。飲料名稱／列表排版不動，淺色深色 token 共用。typecheck、style:check、format:check、production build 通過；**尚未推送、尚未部署**。
+
+| 項目 | 現況 |
+| --- | --- |
+| 本回合工作副本 | `/workspace/scratch/745b259be742/copydrink-mobile`，分支 `feature/admin-workspace-v2`；`origin` 是 Sites 來源倉庫 `git.chatgpt-team.site`，GitHub 專案另為 `yichieh10002/copydrink`。先 `git status --short`、`git log -5 --oneline`，不要假定 scratch 路徑在新環境仍存在。 |
+| 交接前功能基線 | `df9179a`：記錄已套用的資料庫修補；前面 `4e566f4` 交易測試、`e94cc7c` 店家選項 ID 修正。這些提交未推送／未重新部署；交接文件提交會再新增一筆 commit。下一次接手先重新核對 HEAD。 |
+| 最新可供使用者檢查的新版後台 | `https://copydrink-github-preview-rchgot9ry-yichiehs-projects-5086e20d.vercel.app/admin`；Vercel deployment `dpl_7YhVKUinXqbMehgNvefd4H9KAE25`，`READY`；GitHub 預覽分支 `preview/admin-workspace-v2-20261117`、提交 `5189d0425a0ef1096325a4f81681a2f705ac2d90`，tree 與本機功能提交 `c804527` 相同。後續本機 `e94cc7c` 沒進此部署。 |
+| Vercel 專案 | Team `yichiehs-projects-5086e20d`／`team_Psh7hzLfJ6JW38xbK1r8IeIK`；project `copydrink-github-preview`／`prj_FewA218UKpJkao7G8BWRigxZw66p`；framework Next.js，root `frontend`，Preview。正式站／別名沒有因新版後台切換。 |
+| 回退 | 原靜態後台 `dist/admin.html` 保留；改版前 tag `admin-v1-before-rebuild-20261117` → `fdd97ad`；舊預覽 `dpl_4WXhjZLifuT1PdLoz1WaBSSNeNHf`。程式回退不能回復已發布資料，發布前仍須備份草稿。 |
+| Supabase | Project `tea-menu`，ID `rdbcwhuhxahekxhrwekd`；原本 `public.menu_drafts`、`public.menu_publications`、`public.menu_admins`，均啟用 RLS。正式 DB 於 11/17 套用 `sanitize_public_menu_publications_20261117`；SQL 檔 `database/harden-publications.sql`，回滾測試 `database/test-publications.sql`。沒有建立新資料庫。 |
+| 資料庫修補後核對 | 草稿 15、發布紀錄 135、目前正式版 14；sanitizer trigger 1；120 份舊版管理欄位快照存在私有 `tea_private.publication_private_snapshots`；公開品項 `source`／`internalNote` 鍵 0。模擬匿名角色只讀目前 14 份版本，舊版 0。測試店家交易皆 rollback，沒有留下測試店家。 |
+
+### 使用者目前的驗收與待做
+
+1. 小潔正在受保護預覽中自行登入、檢查操作；收到她的畫面、錯誤或意見後，先修對應問題。**沒有收到她驗收完成，不要稱新版已正式可用。**
+2. 本機 `e94cc7c` 修正店家預設選項增刪、排序時沿原標籤保留 ID，通過 16 項前後台測試／建置／格式檢查；預覽仍是較早的 `c804527` 功能 tree。若要讓她驗收這筆新修正，需另行部署受保護 Preview，先依當次授權確認。
+3. 草稿備份尚未完成。新版後台選定一家店後，主內容標題右側有「匯出草稿備份」；會在瀏覽器下載 `<store_key>-draft-<revision>.json`，每次只匯出目前選取店家，不是全資料庫備份，也**沒有匯入／覆蓋按鈕**。使用者先前在 Supabase 首頁找不到匯出，是因為這個按鈕在新版後台，不在該頁。必要時規劃安全的全店備份／還原演練，勿把私有快照當完整備份。
+4. 使用隔離測試店家驗收新後台的新增、儲存、重新登入、發布、前台顯示、還原；真實草稿先做唯讀比對，勿用正式店家測試寫入。確認特殊選項、地區價格、溫熱提醒的語意後，才能切換入口。
+5. 使用者偏好每店保留「目前正式版＋前 5 次發布」，目前**僅記錄決策，未實作清理，也沒刪除舊紀錄**。在發布與還原驗收後才實作與清理。
+6. 安全後續：部署／驗證 Next.js 基本安全標頭和有限 CSP（程式已在本機、線上尚未驗證）、登入保護及資料備份；Supabase advisor 仍有 leaked password protection 未啟用。私有封存表 RLS 無 policy 是刻意不授權客戶端角色。詳見 [SECURITY_REVIEW.md](SECURITY_REVIEW.md)。
+
+### 架構、圖片匯入與部署方式
+
+- 新後台 Next.js `/admin` 在 `frontend/src/app/(admin)/admin`，主要功能拆於 `frontend/src/features/admin/`；使用 `frontend/src/features/admin/client.ts` 透過 Supabase REST／Auth 讀寫同一資料庫，JWT 只在頁面記憶體。舊 `dist/admin.html` 未動；前台 `/`、`/stores/[slug]` 不變。
+- 新後台「匯出草稿備份」是瀏覽器 `Blob` 產生 JSON 並下載到使用者裝置；店家 Logo 選本地圖片後在瀏覽器處理成 WebP data URL 隨草稿保存，不是上傳到 Supabase Storage。後台畫面與舊版的實際差異、已做功能見 [admin-v2-rebuild.md](admin-v2-rebuild.md)。
+- 新後台最新 Preview 是 GitHub 預覽分支建立的獨立受保護部署。舊前台預覽曾使用 Vercel `create_deployment` 來源檔案上傳：掃描 `frontend/`，排除 `.git`、`node_modules`、`.next`、`.env*`、`*.tsbuildinfo`，新素材可由 `upload_file` 傳 SHA1／size，文字檔 inline base64；根目錄仍是 `frontend`。兩種部署途徑不可混成「已推送就等於已部署」，部署後一定查 deployment `READY` 與實際來源。詳細舊流程見下方「Vercel 預覽的精確資訊」。
+- 沒有當次明確部署要求就只修改／檢查／記錄，不推送可能自動部署的分支；不切正式別名、不關閉 Vercel Authentication。需要部署時先檢查 `frontend/AGENTS.md`、`npm run build`、`npm run typecheck`、`npm run test`、`npm run style:check`、`npm run format:check`；不要假設建置通過就等於登入、手機版與發布流程驗收通過。
+- 不記錄權杖、Cookie、密碼、分享參數或 API 秘鑰。Supabase public publishable key 是前端公開設定，授權仍由 RLS 管；不要把私有管理欄位、完整草稿備份放進公開 Git。
+
+---
+
+## 2026-11-16 舊版前台與部署紀錄（歷史資料，以下「目前／最新」不代表 11/17 現況）
 
 ## 先看這裡
 
@@ -354,7 +387,7 @@ npm run start -- --hostname 0.0.0.0 --port 4177
 - Deployment dpl_J4BikEXE77PV467HADVwiJaPxkTx，READY；網址：https://copydrink-github-preview-51jt2j06u-yichiehs-projects-5086e20d.vercel.app
 - 未以登入身分做瀏覽器畫面驗收；產品來源與保護設定已核對。剩餘安全修補依舊工作副本docs/SECURITY_REVIEW.md：發布欄位投影／備註、Next安全標頭、登入防護等；本批未處理。以上浮動導覽修改已部署，無其他待部署產品變更。
 
-## 2026-11-17 資安修補準備（尚未套用／部署）
+## 2026-11-17 資安修補準備（歷史紀錄；資料庫修補已套用）
 
-- 目前工作副本新增 `docs/SECURITY_REVIEW.md`，其中 2026-11-17 節是最新狀態，前段為歷史基線。`database/harden-publications.sql` 是尚未執行的交易修補稿；`database/test-publications.sql` 增加發布／還原私人欄位回歸檢查。`frontend/next.config.ts` 增加基本安全標頭與有限範圍 CSP，尚未部署。
+- 當時新增 `docs/SECURITY_REVIEW.md` 並準備 `database/harden-publications.sql`、`database/test-publications.sql`；資料庫修補及交易測試現已執行，最新結果見該文件末節。`frontend/next.config.ts` 增加基本安全標頭與有限範圍 CSP，尚未部署。
 - 正式 DB 唯讀核對資料與 Supabase advisor；資料庫工具的回滾測試確認逾時，沒有修改正式資料或設定。Next production build、TypeScript、設計 token、routes-manifest 標頭及 diff 通過；尚未完成真實 HTTP／DB 交易驗證。Vercel 仍維持 SSO 登入保護，最新部署仍為 dpl_J4BikEXE77PV467HADVwiJaPxkTx。下一步先驗證資料庫交易與保留語意，再按結果套用及部署；不要把本機修補稿描述成已生效。

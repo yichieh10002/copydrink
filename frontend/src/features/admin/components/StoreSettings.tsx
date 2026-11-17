@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { AdminDocument } from "../types";
 import { clone } from "../types";
 import { FormField, GrowingTextarea } from "./FormField";
+import { reconcileChoices } from "../model";
 
 export function StoreSettings({
   document,
@@ -231,7 +232,6 @@ export function StoreSettings({
           .filter((d) => d.labels.length)
           .map((d) => {
             const old = groups.find((g) => g.id === d.id);
-            const used = new Set<string>();
             return {
               ...old,
               id: d.id,
@@ -239,22 +239,12 @@ export function StoreSettings({
               name: old?.name || d.name,
               kind: old?.kind || d.kind,
               required: old?.required ?? d.required,
-              choices: d.labels.map((label, i) => {
-                const previous =
-                  old?.choices.find((c) => c.label === label) ||
-                  old?.choices.find((c) => !used.has(c.id));
-                const id = previous?.id || `${d.id}-${crypto.randomUUID()}`;
-                used.add(id);
-                return {
-                  ...previous,
-                  id,
-                  label,
-                  price:
-                    d.id === "topping"
-                      ? toppings[i].price
-                      : previous?.price || 0,
-                };
-              }),
+              choices: reconcileChoices(
+                old?.choices || [],
+                d.labels,
+                d.id,
+                d.id === "topping" ? toppings.map((t) => t.price) : undefined,
+              ),
             };
           }),
       );

@@ -65,7 +65,7 @@
 - 真實 API 五項匿名 GET、正式 DB policy/grant/函式檢查、一般非管理者 READ ONLY 查詢完成。
 - 下一階段先處理第1項公開欄位投影及復原語意，再處理第3項 Next.js headers；設定變更與發布後仍需驗證，現在不開放網站、不更動現有菜單。
 
-## 2026-11-17 修補進度（目前僅本機，尚未套用）
+## 2026-11-17 修補準備（當時狀態；後續結果見文末）
 
 - 目前工作副本是 `/workspace/scratch/745b259be742/copydrink-mobile`，以本節為最新狀態。Vercel 專案已重新開啟 SSO 登入保護；新舊預覽網址匿名請求都導往 Vercel 驗證。這不影響 Supabase 公開菜單 API 的匿名讀取。
 - 正式 DB 唯讀複查：135 筆發布（14 筆目前版本）、目前版本 243 個品項含 `internalNote` 與 `source` 鍵；所有發布版本 `internalNote` 非空 0 筆，`source` 非空 861 筆。`source` 在後台標為「僅後台」，因此也列入移除清單。
@@ -73,3 +73,16 @@
 - `database/test-publications.sql` 加入假備註／來源，斷言發布後不在公開 JSON 且還原不丟現有草稿備註。此交易測試尚未在正式 DB 執行；資料庫工具要求確認但確認逾時，因此沒有寫入、沒有執行 migration。唯讀核對目前 14 份菜單投影的 root/brand 欄位沒有漏掉現存鍵，品項只會排除 `internalNote` 和 `source`；精簡 JSON 投影語法的 SELECT 已成功執行。完整 trigger／還原交易仍須在隔離環境或授權的回滾測試中驗證。
 - `frontend/next.config.ts` 增加 nosniff、Referrer-Policy、Permissions-Policy、X-Frame-Options DENY，以及限定 frame-ancestors/base-uri/object-src 的 CSP。完整 script-src CSP 仍待依 Next.js inline hydration 與外部資源做 Report-Only 測試。Next production build 與型別、設計 token 檢查通過，建置 routes-manifest 已列出五個標頭；本機 HTTP preview 因執行環境網路介面錯誤未取得實際回應，且尚未部署，線上回應標頭沒有變更。
 - Supabase security advisor 唯讀複查仍只回報 `auth_leaked_password_protection` warning；登入設定、管理員撤權／備份演練及圖片匯入限制仍未完成。後續先完成資料庫交易測試與部署後匿名 API 驗證，再部署 Next 標頭並核對真實回應；產品與資料庫現在仍是原版本。
+
+### 同日後續核對
+
+- 正式資料庫再次唯讀確認 135 筆發布、14 筆目前正式版，`sanitize_publication_document` trigger 尚未安裝，私有封存表也不存在。歷史 `internalNote` 非空的品項 0 筆；發布快照中的欄位鍵依然可見，**安全遷移尚未套用**。
+- `database/test-publications.sql` 改為交易內建立獨立測試店家、發布兩次、還原、以匿名角色查詢，最後 `rollback`；不再使用既有的得正草稿，也不假設得正發布紀錄只有兩筆。測試腳本目前仍未在正式資料庫執行。
+- 嘗試執行 `database/harden-publications.sql` 的交易回滾預演時，資料庫工具的確認逾時，沒有執行 SQL。不要將此視為測試通過或修補完成；後續必須完成交易預演、正式套用、匿名 API 與還原驗證，才能讓新版後台正式發布。
+
+## 2026-11-17 後續執行結果
+
+- 再次唯讀核對後，交易回滾預演與同一交易內的隔離測試店家發布兩次、還原、匿名可見性檢查均通過；之後正式套用 `sanitize_public_menu_publications_20261117` migration。
+- 套用後重新執行 `database/test-publications.sql`（最後 `rollback`）通過。草稿 15 筆、發布 135 筆、目前正式版 14 筆均維持不變；sanitizer trigger 1 個；120 筆含管理欄位的發布快照已存到 `tea_private.publication_private_snapshots`；公開品項的 `source`／`internalNote` 鍵 0 筆。
+- 模擬匿名角色可讀目前正式版 14 筆、舊版 0 筆，且目前版中含上述私人品項鍵 0 筆。私有 schema 拒絕匿名存取。這是 SQL／RLS 驗證；正式網站上的登入與發布流程仍待人工驗收。
+- Supabase 安全 advisor 仍報 leaked password protection 未啟用，以及私有封存表啟用 RLS 卻沒有 policy。封存表刻意不授權客戶端角色，後一項為預期提示。前一項可依 [官方設定說明](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection)另行處理。

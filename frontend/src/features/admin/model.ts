@@ -1,8 +1,38 @@
 import type { AdminDocument, AdminItem } from "./types";
 import { clone } from "./types";
 import { legacyGroups } from "@/lib/menu";
+import type { Choice } from "@/lib/types";
 
 export type SortMode = "menu" | "newest" | "category" | "name";
+
+export function reconcileChoices(
+  previous: Choice[],
+  labels: string[],
+  prefix: string,
+  prices?: number[],
+): Choice[] {
+  const remaining = new Set(previous.map((choice) => choice.id));
+  return labels.map((label, index) => {
+    const exact = previous.find(
+      (choice) => remaining.has(choice.id) && choice.label === label,
+    );
+    const samePosition = previous[index];
+    const renamed =
+      samePosition &&
+      remaining.has(samePosition.id) &&
+      !labels.includes(samePosition.label)
+        ? samePosition
+        : undefined;
+    const source = exact || renamed;
+    if (source) remaining.delete(source.id);
+    return {
+      ...source,
+      id: source?.id || `${prefix}-${crypto.randomUUID()}`,
+      label,
+      price: prices ? prices[index] : (source?.price ?? 0),
+    };
+  });
+}
 
 export function sortedItems(
   items: AdminItem[],
