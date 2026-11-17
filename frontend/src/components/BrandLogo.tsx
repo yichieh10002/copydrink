@@ -1,7 +1,7 @@
 import { useId } from "react";
 
 const cupImage = "/assets/copydrink-cup-crayon-black.png";
-const nameImage = "/assets/copydrink-logo-handdrawn-white.png";
+const nameImage = "/assets/copydrink-wordmark-custom-black.webp";
 
 function LogoPart({ part }: { part: "cup" | "name" }) {
   const filterId = useId();
@@ -10,7 +10,7 @@ function LogoPart({ part }: { part: "cup" | "name" }) {
   return (
     <svg
       className={cup ? "brand-logo-cup" : "brand-logo-name"}
-      viewBox={cup ? "0 0 358 436" : "646 487 888 187"}
+      viewBox={cup ? "0 0 358 436" : "129 122 1959 479"}
       aria-hidden="true"
       focusable="false"
     >
@@ -26,19 +26,11 @@ function LogoPart({ part }: { part: "cup" | "name" }) {
           <feColorMatrix
             in="SourceGraphic"
             type="matrix"
-            values={
-              cup
-                ? "0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.2126 -0.7152 -0.0722 0 1"
-                : "0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.2126 0.7152 0.0722 0 0"
-            }
-            result="lightPixels"
+            values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.2126 -0.7152 -0.0722 0 1"
+            result="darkPixels"
           />
-          <feComponentTransfer in="lightPixels" result="ink">
-            <feFuncA
-              type="linear"
-              slope={cup ? "2" : "1.5"}
-              intercept={cup ? "-0.4" : "-0.1"}
-            />
+          <feComponentTransfer in="darkPixels" result="ink">
+            <feFuncA type="linear" slope="2" intercept="-0.4" />
           </feComponentTransfer>
           <feFlood floodColor="currentColor" result="brandColor" />
           <feComposite in="brandColor" in2="ink" operator="in" />

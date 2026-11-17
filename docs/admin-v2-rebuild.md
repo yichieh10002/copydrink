@@ -4,11 +4,13 @@
 
 小潔正在檢查最新受保護預覽的實際操作。草稿備份尚未匯出；選店後標題右上角「匯出草稿備份」只下載該店的 `<store_key>-draft-<revision>.json` 到本機，沒有匯入功能。正式入口切換及使用者互動驗收尚未完成。請先讀 [PROJECT_HANDOFF.md](PROJECT_HANDOFF.md) 開頭的最新交接。
 
-後續本機修正（尚未重新部署）：店家設定在選項中間插入、重排或重新命名時，優先依原標籤保留選項識別碼，避免舊單杯限制被意外對到其他選項。16 項前台／後台測試、建置與格式檢查通過。
+後續修正（已包含於 11/17 最新受保護預覽）：店家設定在選項中間插入、重排或重新命名時，優先依原標籤保留選項識別碼，避免舊單杯限制被意外對到其他選項。16 項前台／後台測試、建置與格式檢查通過；同批亦加入蠟筆杯子 Logo 與必喝 TOP 排名視覺調整。
 
 修補前只讀核對（2026-11-17）：Supabase 有 13 家 `menu-cms` 草稿，其中 11 家共 297 杯飲料；既有飲料的 `categoryId` 均有值。各店的甜度、冰量、配料文字清單與對應 `optionGroups` 標籤一致。原有發布快照含管理欄位；修補後 15 份草稿、135 筆發布紀錄、14 份目前正式版仍在，公開品項的 `source` 與 `internalNote` 鍵均已移除。
 
-最新預覽後台：`https://copydrink-github-preview-rchgot9ry-yichiehs-projects-5086e20d.vercel.app/admin`。部署 `dpl_7YhVKUinXqbMehgNvefd4H9KAE25`，狀態 `READY`；GitHub 提交 `5189d0425a0ef1096325a4f81681a2f705ac2d90`，tree SHA `d9e9772bc40cc5824211fbcb9fd3b3588581970c` 與本機功能提交 `c804527` 相同。包括單杯甜度／冰量／溫熱新增店家預設外選項。下方 `znxa7e1gl` 是前一個預覽部署。
+最新預覽後台：`https://copydrink-github-preview-gcqryxi2q-yichiehs-projects-5086e20d.vercel.app/admin`。部署 `dpl_5KAQch7WE8RbzUpgGciatsUxnPzc`，狀態 `READY`；GitHub 提交 `9147e9223408025eacae3da88fa4a0096b266638`，tree SHA `af79d0fdba7f88fe2028ed2e50792ab2261acd75` 與本機 `934b5ea` 相同。Vercel SSO 保護仍啟用，正式站未切換。登入後的實際畫面／互動尚待驗收。
+
+前次預覽後台：`https://copydrink-github-preview-rchgot9ry-yichiehs-projects-5086e20d.vercel.app/admin`。部署 `dpl_7YhVKUinXqbMehgNvefd4H9KAE25`，狀態 `READY`；GitHub 提交 `5189d0425a0ef1096325a4f81681a2f705ac2d90`，tree SHA `d9e9772bc40cc5824211fbcb9fd3b3588581970c` 與本機功能提交 `c804527` 相同。包括單杯甜度／冰量／溫熱新增店家預設外選項。
 
 2026-11-17 後續修改：單杯甜度／冰量／溫熱可新增店家預設以外的選項；少數熱飲可只在指定飲料按「這杯可做熱飲」，不必修改店家預設或逐杯關閉。已包含在最新受保護預覽。另記錄使用者的發布歷史偏好：**每店保留目前正式版與前 5 次發布**，無需無限保留或只做畫面分頁；清理舊資料的規則尚未實作，待新版發布與還原流程驗收後處理，目前不刪除既有資料。
 

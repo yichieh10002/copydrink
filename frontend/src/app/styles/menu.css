@@ -20,7 +20,8 @@ body:has(.menu-section) {
   flex-wrap: wrap;
   margin-top: 18px;
 }
-.region-tabs {
+.region-tabs,
+.category-tabs {
   align-items: center;
 }
 .region-label {

@@ -143,6 +143,7 @@ export function MenuExperience({
           role="group"
           aria-label="飲料分類，可複選"
         >
+          <span className="region-label">種類（可複選）</span>
           <button
             type="button"
             aria-pressed={!selectedCategories.length}

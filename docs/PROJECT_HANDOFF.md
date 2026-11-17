@@ -4,15 +4,17 @@
 
 小潔正在檢查新版後台預覽，助手負責保存交接資訊。她暫時不操作 Supabase。**不要把資料庫當成要替換的舊版**：新後台直接讀寫原本的 Supabase 草稿及發布表。正式後台入口尚未切換，新後台預覽仍需 Vercel 登入；網站保持受保護，不要擅自開放或部署。
 
-同日接續：小潔上傳黑色蠟筆毛邊杯子圖，要求替換官網 Logo 並注意上色。本機 Next.js 共用 `BrandLogo` 已改用原圖作杯子，透過 SVG 反向亮度遮色移除白底／臉部深色方框，沿用 `currentColor`（頁首與頁尾品牌藍色）；字標與其他內容不動。新素材 `frontend/public/assets/copydrink-cup-crayon-black.png`，改動 `frontend/src/components/BrandLogo.tsx`。typecheck、style:check、format:check、production build 通過；**尚未推送、尚未部署，也尚未完成真實瀏覽器畫面驗收**。生成式去背嘗試吃掉五官，沒有採用；原圖保留五官較準確。若下一步需檢查畫面或部署，先核對本機提交與來源再做。
+**最新預覽部署（11/17 後續）**：小潔要求部署，已把本機 `934b5ea` 的完整 tree `af79d0fdba7f88fe2028ed2e50792ab2261acd75` 同步為 GitHub 預覽分支提交 `9147e9223408025eacae3da88fa4a0096b266638`，Vercel Preview `dpl_5KAQch7WE8RbzUpgGciatsUxnPzc` 已 `READY`：`https://copydrink-github-preview-gcqryxi2q-yichiehs-projects-5086e20d.vercel.app/`；後台路徑加 `/admin`。包含新杯子 Logo、必喝 TOP 排名、店家選項 ID 修正、文件和安全測試檔。Vercel 專案 `ssoProtection.enabled=true`／`all_except_custom_domains`，`target=null`，正式站與正式別名未切換。已核對本機 tree SHA 與上傳 tree 完全一致、部署提交及 READY；尚未在登入後瀏覽器驗收實際畫面。
 
-同日後續：小潔以必喝 TOP 截圖要求前三名獎牌改成實色 icon、拿掉排名膠囊外框，第四名以後灰底深灰字。`frontend/src/components/TopPicks.tsx` 的前三名 `MedalIcon` 改為 `weight="fill"`；`frontend/src/app/styles/store.css` 的排名標籤保留既有柔和金／銀／銅底色，移除描邊，非前三名沿用中性灰底與灰字 token。飲料名稱／列表排版不動，淺色深色 token 共用。typecheck、style:check、format:check、production build 通過；**尚未推送、尚未部署**。
+同日接續：小潔上傳黑色蠟筆毛邊杯子圖，要求替換官網 Logo 並注意上色。Next.js 共用 `BrandLogo` 已改用原圖作杯子，透過 SVG 反向亮度遮色移除白底／臉部深色方框，沿用 `currentColor`（頁首與頁尾品牌藍色）；字標與其他內容不動。新素材 `frontend/public/assets/copydrink-cup-crayon-black.png`，改動 `frontend/src/components/BrandLogo.tsx`。typecheck、style:check、format:check、production build 通過；已包含於上方最新預覽，尚未完成登入後真實瀏覽器畫面驗收。生成式去背嘗試吃掉五官，沒有採用；原圖保留五官較準確。
+
+同日後續：小潔以必喝 TOP 截圖要求前三名獎牌改成實色 icon、拿掉排名膠囊外框，第四名以後灰底深灰字。`frontend/src/components/TopPicks.tsx` 的前三名 `MedalIcon` 改為 `weight="fill"`；`frontend/src/app/styles/store.css` 的排名標籤保留既有柔和金／銀／銅底色，移除描邊，非前三名沿用中性灰底與灰字 token。飲料名稱／列表排版不動，淺色深色 token 共用。typecheck、style:check、format:check、production build 通過；已包含於上方最新預覽。
 
 | 項目 | 現況 |
 | --- | --- |
 | 本回合工作副本 | `/workspace/scratch/745b259be742/copydrink-mobile`，分支 `feature/admin-workspace-v2`；`origin` 是 Sites 來源倉庫 `git.chatgpt-team.site`，GitHub 專案另為 `yichieh10002/copydrink`。先 `git status --short`、`git log -5 --oneline`，不要假定 scratch 路徑在新環境仍存在。 |
 | 交接前功能基線 | `df9179a`：記錄已套用的資料庫修補；前面 `4e566f4` 交易測試、`e94cc7c` 店家選項 ID 修正。這些提交未推送／未重新部署；交接文件提交會再新增一筆 commit。下一次接手先重新核對 HEAD。 |
-| 最新可供使用者檢查的新版後台 | `https://copydrink-github-preview-rchgot9ry-yichiehs-projects-5086e20d.vercel.app/admin`；Vercel deployment `dpl_7YhVKUinXqbMehgNvefd4H9KAE25`，`READY`；GitHub 預覽分支 `preview/admin-workspace-v2-20261117`、提交 `5189d0425a0ef1096325a4f81681a2f705ac2d90`，tree 與本機功能提交 `c804527` 相同。後續本機 `e94cc7c` 沒進此部署。 |
+| 最新可供使用者檢查的新版後台 | `https://copydrink-github-preview-gcqryxi2q-yichiehs-projects-5086e20d.vercel.app/admin`；Vercel deployment `dpl_5KAQch7WE8RbzUpgGciatsUxnPzc`，`READY`；GitHub 預覽分支 `preview/admin-workspace-v2-20261117`、提交 `9147e9223408025eacae3da88fa4a0096b266638`，tree 與本機 `934b5ea` 完全一致。上一個 `rchgot9ry` 是舊版。 |
 | Vercel 專案 | Team `yichiehs-projects-5086e20d`／`team_Psh7hzLfJ6JW38xbK1r8IeIK`；project `copydrink-github-preview`／`prj_FewA218UKpJkao7G8BWRigxZw66p`；framework Next.js，root `frontend`，Preview。正式站／別名沒有因新版後台切換。 |
 | 回退 | 原靜態後台 `dist/admin.html` 保留；改版前 tag `admin-v1-before-rebuild-20261117` → `fdd97ad`；舊預覽 `dpl_4WXhjZLifuT1PdLoz1WaBSSNeNHf`。程式回退不能回復已發布資料，發布前仍須備份草稿。 |
 | Supabase | Project `tea-menu`，ID `rdbcwhuhxahekxhrwekd`；原本 `public.menu_drafts`、`public.menu_publications`、`public.menu_admins`，均啟用 RLS。正式 DB 於 11/17 套用 `sanitize_public_menu_publications_20261117`；SQL 檔 `database/harden-publications.sql`，回滾測試 `database/test-publications.sql`。沒有建立新資料庫。 |
@@ -21,7 +23,7 @@
 ### 使用者目前的驗收與待做
 
 1. 小潔正在受保護預覽中自行登入、檢查操作；收到她的畫面、錯誤或意見後，先修對應問題。**沒有收到她驗收完成，不要稱新版已正式可用。**
-2. 本機 `e94cc7c` 修正店家預設選項增刪、排序時沿原標籤保留 ID，通過 16 項前後台測試／建置／格式檢查；預覽仍是較早的 `c804527` 功能 tree。若要讓她驗收這筆新修正，需另行部署受保護 Preview，先依當次授權確認。
+2. `e94cc7c` 修正店家預設選項增刪、排序時沿原標籤保留 ID，通過 16 項前後台測試／建置／格式檢查；已包含於最新預覽。讓小潔繼續驗收此版本。
 3. 草稿備份尚未完成。新版後台選定一家店後，主內容標題右側有「匯出草稿備份」；會在瀏覽器下載 `<store_key>-draft-<revision>.json`，每次只匯出目前選取店家，不是全資料庫備份，也**沒有匯入／覆蓋按鈕**。使用者先前在 Supabase 首頁找不到匯出，是因為這個按鈕在新版後台，不在該頁。必要時規劃安全的全店備份／還原演練，勿把私有快照當完整備份。
 4. 使用隔離測試店家驗收新後台的新增、儲存、重新登入、發布、前台顯示、還原；真實草稿先做唯讀比對，勿用正式店家測試寫入。確認特殊選項、地區價格、溫熱提醒的語意後，才能切換入口。
 5. 使用者偏好每店保留「目前正式版＋前 5 次發布」，目前**僅記錄決策，未實作清理，也沒刪除舊紀錄**。在發布與還原驗收後才實作與清理。
