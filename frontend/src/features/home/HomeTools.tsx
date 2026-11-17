@@ -14,6 +14,8 @@ export type QuickStore = {
     sizes: string[];
     sugars: string[];
     ices: string[];
+    fixedSugar?: string;
+    fixedIce?: string;
     toppings: string[];
     customGroups: Array<{
       id: string;

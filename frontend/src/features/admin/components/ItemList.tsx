@@ -79,11 +79,11 @@ export function ItemList({
           <span className="admin-field-label">搜尋飲料</span>
           <span className="relative">
             <Search
-              className="absolute left-3 top-3 text-slate-400"
+              className="pointer-events-none absolute left-3 top-3 text-slate-400"
               size={20}
             />
             <input
-              className="admin-input pl-10"
+              className="admin-input admin-search-input"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="品名或分類"

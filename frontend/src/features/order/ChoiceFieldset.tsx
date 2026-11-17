@@ -43,11 +43,14 @@ export function ChoiceFieldset({
   selected: string[];
   onChoose: (choice: Choice) => void;
 }) {
+  const fixedLabel =
+    group.choices.find((c) => c.id === group.fixedChoiceId)?.label ||
+    group.choices[0]?.label;
   return (
     <fieldset className="choice-group">
       <legend>
         {group.name}{" "}
-        {group.required ? (
+        {group.mode === "fixed" ? null : group.required ? (
           <>
             （必選）
             <RequiredMark />
@@ -58,9 +61,8 @@ export function ChoiceFieldset({
       </legend>
       {group.mode === "fixed" ? (
         <p className="fixed-choice">
-          {group.choices.find((c) => c.id === group.fixedChoiceId)?.label ||
-            group.choices[0]?.label}
-          （固定）
+          {fixedLabel}
+          {fixedLabel?.includes("固定") ? "" : "（店家固定）"}
         </p>
       ) : (
         <div className="choice-list">

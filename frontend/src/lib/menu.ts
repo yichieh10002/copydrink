@@ -145,7 +145,12 @@ export function effectiveGroups(
     if (g.role === "topping" && Array.isArray(item.allowedToppings))
       choices = choices.filter((c) => item.allowedToppings?.includes(c.label));
     if (!choices.length) return [];
-    const fixedLabel = g.role === "sweetness" ? item.fixedSugar : item.fixedIce;
+    const fixedLabel =
+      g.role === "sweetness"
+        ? item.fixedSugar?.trim()
+        : g.role === "temperature"
+          ? item.fixedIce?.trim()
+          : null;
     const matchingFixedChoice = choices.find(
       (c) =>
         fixedLabel &&
@@ -153,10 +158,16 @@ export function effectiveGroups(
           c.label.startsWith(fixedLabel + "（") ||
           c.label.startsWith(fixedLabel + " ")),
     );
-    const fixed =
-      mode === "fixed" || (mode === "inherit" && !!matchingFixedChoice);
+    const legacyFixedChoice =
+      mode === "inherit" && fixedLabel && !matchingFixedChoice
+        ? { id: `${g.id}-legacy-fixed`, label: fixedLabel, price: 0 }
+        : null;
+    if (legacyFixedChoice) choices = [legacyFixedChoice];
+    const fixed = mode === "fixed" || (mode === "inherit" && !!fixedLabel);
     const fixedChoiceId =
-      override?.fixedChoiceId || matchingFixedChoice?.id || choices[0].id;
+      (mode === "fixed" ? override?.fixedChoiceId : null) ||
+      matchingFixedChoice?.id ||
+      choices[0].id;
     return [
       {
         ...g,

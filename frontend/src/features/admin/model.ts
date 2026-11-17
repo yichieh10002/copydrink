@@ -1,7 +1,100 @@
 import type { AdminDocument, AdminItem } from "./types";
 import { clone } from "./types";
 import { legacyGroups } from "@/lib/menu";
-import type { Choice } from "@/lib/types";
+import type { Choice, OptionGroup } from "@/lib/types";
+
+export function optionEditorState(item: AdminItem, group: OptionGroup) {
+  const own = item.optionGroups?.find(
+    (own) => own.id === group.id && own.inheritDefault === false,
+  );
+  const override = item.optionOverrides?.[group.id] || {};
+  const legacyToppings =
+    group.role === "topping" && Array.isArray(item.allowedToppings)
+      ? group.choices.filter((choice) =>
+          item.allowedToppings?.includes(choice.label),
+        )
+      : undefined;
+  const choices = own?.choices || legacyToppings || group.choices;
+  const fixedLabel =
+    group.role === "sweetness"
+      ? item.fixedSugar
+      : group.role === "temperature"
+        ? item.fixedIce
+        : null;
+  const fixedChoice = choices.find(
+    (choice) =>
+      fixedLabel &&
+      (choice.label === fixedLabel ||
+        choice.label.startsWith(fixedLabel + "（") ||
+        choice.label.startsWith(fixedLabel + " ")),
+  );
+  const unmatchedFixedLabel = fixedLabel && !fixedChoice ? fixedLabel : null;
+  const legacy = own || legacyToppings || fixedChoice || unmatchedFixedLabel;
+  return {
+    own,
+    legacy,
+    override,
+    mode:
+      legacy && (!override.mode || override.mode === "inherit")
+        ? fixedChoice || unmatchedFixedLabel
+          ? "legacy-fixed"
+          : "legacy"
+        : override.mode || "inherit",
+    choices,
+    fixedChoice,
+    unmatchedFixedLabel,
+  };
+}
+
+export function changeOptionMode(
+  item: AdminItem,
+  group: OptionGroup,
+  mode: string,
+): AdminItem {
+  const { own, legacy, override, choices } = optionEditorState(item, group);
+  if (mode === "inherit" || mode === "legacy" || mode === "legacy-fixed") {
+    const optionOverrides = { ...item.optionOverrides };
+    delete optionOverrides[group.id];
+    return {
+      ...item,
+      optionOverrides,
+      ...(mode === "inherit" && group.role === "sweetness"
+        ? { fixedSugar: null }
+        : {}),
+      ...(mode === "inherit" && group.role === "temperature"
+        ? { fixedIce: null }
+        : {}),
+      ...(mode === "inherit" && group.role === "topping"
+        ? { allowedToppings: null }
+        : {}),
+      optionGroups:
+        mode === "inherit" && own
+          ? item.optionGroups?.filter((entry) => entry !== own)
+          : item.optionGroups,
+    };
+  }
+  const firstId = choices[0]?.id;
+  return {
+    ...item,
+    ...(group.role === "topping" && (mode === "custom" || mode === "fixed")
+      ? { allowedToppings: null }
+      : {}),
+    optionOverrides: {
+      ...item.optionOverrides,
+      [group.id]: {
+        ...override,
+        mode,
+        choiceIds:
+          mode === "custom" && legacy
+            ? choices.map((choice) => choice.id)
+            : mode === "fixed" && firstId
+              ? [firstId]
+              : override.choiceIds,
+        fixedChoiceId: firstId,
+      },
+    },
+  };
+}
 
 export type SortMode = "menu" | "newest" | "category" | "name";
 

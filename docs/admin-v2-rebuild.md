@@ -8,7 +8,7 @@
 
 修補前只讀核對（2026-11-17）：Supabase 有 13 家 `menu-cms` 草稿，其中 11 家共 297 杯飲料；既有飲料的 `categoryId` 均有值。各店的甜度、冰量、配料文字清單與對應 `optionGroups` 標籤一致。原有發布快照含管理欄位；修補後 15 份草稿、135 筆發布紀錄、14 份目前正式版仍在，公開品項的 `source` 與 `internalNote` 鍵均已移除。
 
-最新預覽後台：`https://copydrink-github-preview-mudayrri6-yichiehs-projects-5086e20d.vercel.app/admin`。部署 `dpl_FJ13ZPaFtkq8CF2n3N7uSDbKWimx`，狀態 `READY`；GitHub 提交 `0158c7fc9b1198316dfbc9221e01651a7787baf8`，tree SHA `393e46ee027994212a4af3dbf3c53b1111ab5572` 與本機 `c8a05fb` 相同。新增自訂字標、種類（可複選）標籤。Vercel SSO 保護仍啟用，正式站未切換。登入後的實際畫面／互動尚待驗收。
+最新預覽後台：`https://copydrink-github-preview-9h9my8pe8-yichiehs-projects-5086e20d.vercel.app/admin`。部署 `dpl_AAV5om7jqBUCEJ8YZ5sWyT7R3iC4`，狀態 `READY`；GitHub 提交 `c07a6cc316430b6a3346fbda25ed9584f0af632d`，tree SHA `929336a63a3229efc6b2b99608566c4dd80ad31b` 與本機 `961e7cf` 相同。新增通用品牌 404；先前自訂字標、種類（可複選）標籤仍在。Vercel SSO 保護仍啟用，正式站未切換。登入後的實際畫面／互動尚待驗收。
 
 前次預覽後台：`https://copydrink-github-preview-rchgot9ry-yichiehs-projects-5086e20d.vercel.app/admin`。部署 `dpl_7YhVKUinXqbMehgNvefd4H9KAE25`，狀態 `READY`；GitHub 提交 `5189d0425a0ef1096325a4f81681a2f705ac2d90`，tree SHA `d9e9772bc40cc5824211fbcb9fd3b3588581970c` 與本機功能提交 `c804527` 相同。包括單杯甜度／冰量／溫熱新增店家預設外選項。
 

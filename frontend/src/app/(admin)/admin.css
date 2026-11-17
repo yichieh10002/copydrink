@@ -49,6 +49,9 @@ button {
   padding: 9px 12px;
   outline: none;
 }
+.admin-search-input {
+  padding-left: 42px;
+}
 .admin-input:focus {
   border-color: #2c63ad;
   box-shadow: 0 0 0 3px #d8e8ff;

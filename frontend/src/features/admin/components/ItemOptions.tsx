@@ -2,6 +2,7 @@
 import { useState } from "react";
 import type { AdminDocument, AdminItem } from "../types";
 import type { OptionGroup } from "@/lib/types";
+import { changeOptionMode, optionEditorState } from "../model";
 import { FormField, GrowingTextarea } from "./FormField";
 import { AdditionalChoices } from "./AdditionalChoices";
 
@@ -124,10 +125,16 @@ export function ItemOptions({
       {defaults
         .filter((g) => g.choices.length)
         .map((group) => {
-          const override = overrides[group.id] || {},
-            mode = override.mode || "inherit",
+          const {
+              legacy,
+              override,
+              mode,
+              choices,
+              fixedChoice,
+              unmatchedFixedLabel,
+            } = optionEditorState(item, group),
             availableChoices = [
-              ...group.choices,
+              ...choices,
               ...(override.additionalChoices || []),
             ];
           return (
@@ -142,27 +149,64 @@ export function ItemOptions({
                   aria-label={`${group.name}設定方式`}
                   value={mode}
                   onChange={(e) =>
-                    setOverride(group.id, {
-                      mode: e.target.value,
-                      choiceIds:
-                        e.target.value === "fixed"
-                          ? [group.choices[0].id]
-                          : override.choiceIds,
-                      fixedChoiceId: group.choices[0].id,
-                    })
+                    onChange(changeOptionMode(item, group, e.target.value))
                   }
                 >
+                  {legacy && (
+                    <option
+                      value={
+                        fixedChoice || unmatchedFixedLabel
+                          ? "legacy-fixed"
+                          : "legacy"
+                      }
+                    >
+                      {unmatchedFixedLabel
+                        ? "沿用舊版固定說明"
+                        : fixedChoice
+                          ? "沿用舊版固定選項"
+                          : "沿用舊版單杯限制"}
+                    </option>
+                  )}
                   <option value="inherit">沿用店家預設</option>
                   <option value="disabled">這杯不顯示</option>
-                  <option value="fixed">固定選項</option>
-                  <option value="custom">只提供指定選項</option>
+                  <option value="fixed" disabled={!choices.length}>
+                    固定選項
+                  </option>
+                  <option value="custom" disabled={!choices.length}>
+                    只提供指定選項
+                  </option>
                 </select>
               </div>
+              {(mode === "legacy" || mode === "legacy-fixed") &&
+                !unmatchedFixedLabel && (
+                  <p className="text-sm text-blue-800">
+                    {fixedChoice
+                      ? `舊版設定固定為：${fixedChoice.label}。`
+                      : `舊版設定目前只提供：${choices.map((choice) => choice.label).join("、") || "無可選項"}。`}
+                    改選「沿用店家預設」才會移除這杯的舊限制。
+                  </p>
+                )}
+              {unmatchedFixedLabel && mode === "legacy-fixed" && (
+                <p className="text-sm text-blue-800">
+                  這杯的店家固定說明為「{unmatchedFixedLabel}
+                  」，前台會直接顯示在{group.name}
+                  ，無需選擇。若要指定明確比例，可改選「固定選項」。
+                </p>
+              )}
+              {group.role === "temperature" && !!item.variants?.length && (
+                <p className="text-sm text-amber-800">
+                  既有杯型溫度限制仍會生效：
+                  {item.variants
+                    .map((variant) => `${variant.size} ${variant.temp}`)
+                    .join("、")}
+                  。修改上方選項不會移除這些限制。
+                </p>
+              )}
               {mode === "fixed" && (
                 <FormField label="固定為">
                   <select
                     className="admin-input"
-                    value={override.fixedChoiceId || group.choices[0].id}
+                    value={override.fixedChoiceId || choices[0].id}
                     onChange={(e) =>
                       setOverride(group.id, {
                         fixedChoiceId: e.target.value,
@@ -200,48 +244,51 @@ export function ItemOptions({
                   ))}
                 </div>
               )}
-              {(group.role === "sweetness" || group.role === "temperature") && (
-                <AdditionalChoices
-                  group={group}
-                  choices={override.additionalChoices || []}
-                  usedChoiceIds={item.cups.flatMap((cup) => [
-                    ...(cup.showWhenChoiceIds || []),
-                    ...Object.values(cup.optionChoiceIds || {}).flat(),
-                  ])}
-                  onChange={(choices) => {
-                    const valid = new Set(choices.map((choice) => choice.id));
-                    const previous = override.additionalChoices || [];
-                    const removed = new Set(
-                      previous
-                        .filter((choice) => !valid.has(choice.id))
-                        .map((choice) => choice.id),
-                    );
-                    const added = choices
-                      .filter(
-                        (choice) =>
-                          !previous.some((old) => old.id === choice.id),
-                      )
-                      .map((choice) => choice.id);
-                    setOverride(group.id, {
-                      additionalChoices: choices,
-                      choiceIds:
-                        mode === "custom"
-                          ? [
-                              ...(override.choiceIds || []).filter(
+              {mode !== "legacy" &&
+                mode !== "legacy-fixed" &&
+                (group.role === "sweetness" ||
+                  group.role === "temperature") && (
+                  <AdditionalChoices
+                    group={group}
+                    choices={override.additionalChoices || []}
+                    usedChoiceIds={item.cups.flatMap((cup) => [
+                      ...(cup.showWhenChoiceIds || []),
+                      ...Object.values(cup.optionChoiceIds || {}).flat(),
+                    ])}
+                    onChange={(choices) => {
+                      const valid = new Set(choices.map((choice) => choice.id));
+                      const previous = override.additionalChoices || [];
+                      const removed = new Set(
+                        previous
+                          .filter((choice) => !valid.has(choice.id))
+                          .map((choice) => choice.id),
+                      );
+                      const added = choices
+                        .filter(
+                          (choice) =>
+                            !previous.some((old) => old.id === choice.id),
+                        )
+                        .map((choice) => choice.id);
+                      setOverride(group.id, {
+                        additionalChoices: choices,
+                        choiceIds:
+                          mode === "custom"
+                            ? [
+                                ...(override.choiceIds || []).filter(
+                                  (id) => !removed.has(id),
+                                ),
+                                ...added,
+                              ]
+                            : override.choiceIds?.filter(
                                 (id) => !removed.has(id),
                               ),
-                              ...added,
-                            ]
-                          : override.choiceIds?.filter(
-                              (id) => !removed.has(id),
-                            ),
-                      fixedChoiceId: removed.has(override.fixedChoiceId || "")
-                        ? group.choices[0].id
-                        : override.fixedChoiceId,
-                    });
-                  }}
-                />
-              )}
+                        fixedChoiceId: removed.has(override.fixedChoiceId || "")
+                          ? choices[0].id
+                          : override.fixedChoiceId,
+                      });
+                    }}
+                  />
+                )}
             </div>
           );
         })}

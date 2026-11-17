@@ -170,7 +170,9 @@ export function QuickNote({ stores }: { stores: QuickStore[] }) {
         .map((group) => [group.id, [group.fixedChoiceId!]]),
     );
     setCustomSelections(fixed);
-  }, [selectedDrink?.id]);
+    setSugar(selectedDrink?.fixedSugar || "");
+    setIce(selectedDrink?.fixedIce || "");
+  }, [selectedStore?.slug, selectedDrink?.id]);
   useEffect(() => {
     if (!copyNotice) return;
     const timeout = window.setTimeout(() => setCopyNotice(0), 2000);

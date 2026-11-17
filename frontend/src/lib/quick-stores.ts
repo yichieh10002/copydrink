@@ -12,6 +12,12 @@ export function buildQuickStores(published: Store[]) {
       items: s.items.map((i) => {
         const cups = availableCups(i, s.regions[0]?.id || "");
         const groups = cups[0] ? effectiveGroups(s.document, i, cups[0]) : [];
+        const fixedLabel = (role: string) => {
+          const group = groups.find((g) => g.role === role);
+          return group?.mode === "fixed"
+            ? group.choices.find((c) => c.id === group.fixedChoiceId)?.label
+            : undefined;
+        };
         const labels = (role: string) =>
           groups.find((g) => g.role === role)?.choices.map((c) => c.label) ||
           [];
@@ -37,6 +43,8 @@ export function buildQuickStores(published: Store[]) {
           sizes: [...new Set(i.cups.map((c) => c.size))],
           sugars: labels("sweetness"),
           ices: labels("temperature"),
+          fixedSugar: fixedLabel("sweetness"),
+          fixedIce: fixedLabel("temperature"),
           toppings: labels("topping"),
           customGroups,
         };

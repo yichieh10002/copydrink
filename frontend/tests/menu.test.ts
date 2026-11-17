@@ -195,13 +195,18 @@ test("複製文字包含選擇與數量，不會帶入未選的欄位", () => {
     "曼非紅茶｜中杯｜三分糖｜熱飲｜1 杯",
   );
 });
-test("舊資料的固定甜度若未對到實際選項，不會誤鎖第一個選項", () => {
+test("舊資料的特殊固定甜度直接顯示原說明，不誤鎖第一個預設選項", () => {
   const d = document(),
     item = d.items[0];
   item.fixedSugar = "甜度固定";
   const group = effectiveGroups(d, item, item.cups[0]).find(
     (g) => g.role === "sweetness",
   );
-  assert.equal(group?.mode, "inherit");
-  assert.equal(group?.required, true);
+  assert.equal(group?.mode, "fixed");
+  assert.equal(group?.required, false);
+  assert.deepEqual(
+    group?.choices.map((choice) => choice.label),
+    ["甜度固定"],
+  );
+  assert.equal(group?.fixedChoiceId, "sweetness-legacy-fixed");
 });
