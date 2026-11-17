@@ -4,6 +4,8 @@
 
 小潔正在檢查新版後台預覽，助手負責保存交接資訊。她暫時不操作 Supabase。**不要把資料庫當成要替換的舊版**：新後台直接讀寫原本的 Supabase 草稿及發布表。正式後台入口尚未切換，新後台預覽仍需 Vercel 登入；網站保持受保護，不要擅自開放或部署。
 
+**最新預覽部署（11/17 字標及種類標籤）**：本機功能提交 `c8a05fb`，tree `393e46ee027994212a4af3dbf3c53b1111ab5572` 同步至 GitHub 預覽分支提交 `0158c7fc9b1198316dfbc9221e01651a7787baf8`。Vercel `dpl_FJ13ZPaFtkq8CF2n3N7uSDbKWimx` 已 `READY`：`https://copydrink-github-preview-mudayrri6-yichiehs-projects-5086e20d.vercel.app/`，後台加 `/admin`。頁首／頁尾共用 `BrandLogo` 換上黑色自訂 `copydrink` 字標，以 SVG 遮色沿用現有品牌色；保留杯子圖；種類篩選新增同色「種類（可複選）」。typecheck、style:check、format:check 和 build 通過。Vercel SSO `enabled=true`、`all_except_custom_domains`，正式站未切換；登入後實際畫面尚待驗收。
+
 **最新預覽部署（11/17 後續）**：小潔要求部署，已把本機 `934b5ea` 的完整 tree `af79d0fdba7f88fe2028ed2e50792ab2261acd75` 同步為 GitHub 預覽分支提交 `9147e9223408025eacae3da88fa4a0096b266638`，Vercel Preview `dpl_5KAQch7WE8RbzUpgGciatsUxnPzc` 已 `READY`：`https://copydrink-github-preview-gcqryxi2q-yichiehs-projects-5086e20d.vercel.app/`；後台路徑加 `/admin`。包含新杯子 Logo、必喝 TOP 排名、店家選項 ID 修正、文件和安全測試檔。Vercel 專案 `ssoProtection.enabled=true`／`all_except_custom_domains`，`target=null`，正式站與正式別名未切換。已核對本機 tree SHA 與上傳 tree 完全一致、部署提交及 READY；尚未在登入後瀏覽器驗收實際畫面。
 
 同日接續：小潔上傳黑色蠟筆毛邊杯子圖，要求替換官網 Logo 並注意上色。Next.js 共用 `BrandLogo` 已改用原圖作杯子，透過 SVG 反向亮度遮色移除白底／臉部深色方框，沿用 `currentColor`（頁首與頁尾品牌藍色）；字標與其他內容不動。新素材 `frontend/public/assets/copydrink-cup-crayon-black.png`，改動 `frontend/src/components/BrandLogo.tsx`。typecheck、style:check、format:check、production build 通過；已包含於上方最新預覽，尚未完成登入後真實瀏覽器畫面驗收。生成式去背嘗試吃掉五官，沒有採用；原圖保留五官較準確。
@@ -14,7 +16,7 @@
 | --- | --- |
 | 本回合工作副本 | `/workspace/scratch/745b259be742/copydrink-mobile`，分支 `feature/admin-workspace-v2`；`origin` 是 Sites 來源倉庫 `git.chatgpt-team.site`，GitHub 專案另為 `yichieh10002/copydrink`。先 `git status --short`、`git log -5 --oneline`，不要假定 scratch 路徑在新環境仍存在。 |
 | 交接前功能基線 | `df9179a`：記錄已套用的資料庫修補；前面 `4e566f4` 交易測試、`e94cc7c` 店家選項 ID 修正。這些提交未推送／未重新部署；交接文件提交會再新增一筆 commit。下一次接手先重新核對 HEAD。 |
-| 最新可供使用者檢查的新版後台 | `https://copydrink-github-preview-gcqryxi2q-yichiehs-projects-5086e20d.vercel.app/admin`；Vercel deployment `dpl_5KAQch7WE8RbzUpgGciatsUxnPzc`，`READY`；GitHub 預覽分支 `preview/admin-workspace-v2-20261117`、提交 `9147e9223408025eacae3da88fa4a0096b266638`，tree 與本機 `934b5ea` 完全一致。上一個 `rchgot9ry` 是舊版。 |
+| 最新可供使用者檢查的新版後台 | `https://copydrink-github-preview-mudayrri6-yichiehs-projects-5086e20d.vercel.app/admin`；Vercel deployment `dpl_FJ13ZPaFtkq8CF2n3N7uSDbKWimx`，`READY`；GitHub 預覽分支 `preview/admin-workspace-v2-20261117`、提交 `0158c7fc9b1198316dfbc9221e01651a7787baf8`，tree 與本機 `c8a05fb` 完全一致。上一個 `gcqryxi2q` 是舊版。 |
 | Vercel 專案 | Team `yichiehs-projects-5086e20d`／`team_Psh7hzLfJ6JW38xbK1r8IeIK`；project `copydrink-github-preview`／`prj_FewA218UKpJkao7G8BWRigxZw66p`；framework Next.js，root `frontend`，Preview。正式站／別名沒有因新版後台切換。 |
 | 回退 | 原靜態後台 `dist/admin.html` 保留；改版前 tag `admin-v1-before-rebuild-20261117` → `fdd97ad`；舊預覽 `dpl_4WXhjZLifuT1PdLoz1WaBSSNeNHf`。程式回退不能回復已發布資料，發布前仍須備份草稿。 |
 | Supabase | Project `tea-menu`，ID `rdbcwhuhxahekxhrwekd`；原本 `public.menu_drafts`、`public.menu_publications`、`public.menu_admins`，均啟用 RLS。正式 DB 於 11/17 套用 `sanitize_public_menu_publications_20261117`；SQL 檔 `database/harden-publications.sql`，回滾測試 `database/test-publications.sql`。沒有建立新資料庫。 |

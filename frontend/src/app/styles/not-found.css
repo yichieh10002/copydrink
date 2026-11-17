@@ -1,0 +1,107 @@
+.not-found-page {
+  display: grid;
+  min-height: min(720px, 80svh);
+  padding: 64px 24px 96px;
+  place-items: center;
+  background:
+    radial-gradient(circle at 18% 20%, var(--color-mesh-a), transparent 35%),
+    radial-gradient(circle at 88% 86%, var(--color-mesh-b), transparent 38%),
+    var(--color-canvas);
+}
+
+.not-found-card {
+  width: min(100%, 620px);
+  text-align: center;
+}
+
+.not-found-code {
+  display: block;
+  color: var(--color-brand);
+  font-family: var(--font-display);
+  font-size: clamp(100px, 22vw, 190px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.09em;
+}
+
+.not-found-eyebrow {
+  margin: 12px 0 14px;
+  color: var(--color-brand-strong);
+  font-family: var(--font-display);
+  font-size: var(--text-caption);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.not-found-card h1 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(32px, 6vw, 48px);
+  line-height: 1.25;
+}
+
+.not-found-description {
+  max-width: 440px;
+  margin: 20px auto 32px;
+  color: var(--color-text-muted);
+}
+
+.not-found-home {
+  display: inline-flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 24px;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.not-found-home:hover {
+  background: var(--color-brand-strong);
+}
+
+.not-found-standalone {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+.not-found-standalone .not-found-page {
+  min-height: calc(100svh - 92px);
+  padding-top: 32px;
+}
+
+.not-found-brand {
+  display: inline-flex;
+  height: 72px;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 24px;
+  color: var(--color-brand);
+}
+
+.not-found-brand .brand-logo-cup {
+  width: 32px;
+  height: 39px;
+}
+
+.not-found-brand .brand-logo-name {
+  width: 145px;
+  height: 36px;
+}
+
+@media (max-width: 600px) {
+  .not-found-page {
+    min-height: 70svh;
+    padding: 48px 24px 72px;
+  }
+
+  .not-found-description {
+    font-size: var(--text-body);
+  }
+}

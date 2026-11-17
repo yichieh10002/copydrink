@@ -19,6 +19,7 @@ import "../styles/motion.css";
 import "../styles/responsive.css";
 import "../styles/touch-motion.css";
 import "../styles/footer.css";
+import "../styles/not-found.css";
 
 export const metadata: Metadata = {
   title: { default: "copydrink｜飲料小抄", template: "%s｜copydrink" },
