@@ -5,20 +5,20 @@ import { BackToTop } from "@/components/BackToTop";
 import { MotionEffects } from "@/components/MotionEffects";
 import { getStores, getWarmNotices } from "@/lib/data";
 import { buildQuickStores } from "@/lib/quick-stores";
-import "./styles/tokens.css";
-import "./styles/base.css";
-import "./styles/hero.css";
-import "./styles/home.css";
-import "./styles/store.css";
-import "./styles/menu.css";
-import "./styles/order.css";
-import "./styles/utilities.css";
-import "./styles/modal.css";
-import "./styles/theme.css";
-import "./styles/motion.css";
-import "./styles/responsive.css";
-import "./styles/touch-motion.css";
-import "./styles/footer.css";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import "../styles/hero.css";
+import "../styles/home.css";
+import "../styles/store.css";
+import "../styles/menu.css";
+import "../styles/order.css";
+import "../styles/utilities.css";
+import "../styles/modal.css";
+import "../styles/theme.css";
+import "../styles/motion.css";
+import "../styles/responsive.css";
+import "../styles/touch-motion.css";
+import "../styles/footer.css";
 
 export const metadata: Metadata = {
   title: { default: "copydrink｜飲料小抄", template: "%s｜copydrink" },

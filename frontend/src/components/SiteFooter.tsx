@@ -3,7 +3,7 @@ import { useDialogBackdrop } from "@/lib/useDialogBackdrop";
 
 import { useEffect, useRef } from "react";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
-import { BrandLogo } from "./BrandLogo";
+import { BrandLogo, StampBorder } from "./BrandLogo";
 
 type Source = { name: string; url: string; updated: string };
 
@@ -57,6 +57,7 @@ export function SiteFooter({ sources }: { sources: Source[] }) {
           </div>
           <span className="footer-notebook-ribbon" />
           <span className="footer-stamp">
+            <StampBorder />
             <BrandLogo />
           </span>
         </div>
@@ -91,13 +92,6 @@ export function SiteFooter({ sources }: { sources: Source[] }) {
           <button type="button" onClick={() => dialog.current?.showModal()}>
             資料來源與權利說明
           </button>
-          <a
-            href="https://github.com/yichieh10002/copydrink/issues/new?title=copydrink%20%E5%95%8F%E9%A1%8C%E5%9B%9E%E5%A0%B1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            問題回報 ↗
-          </a>
         </nav>
       </div>
       <dialog
@@ -130,13 +124,7 @@ export function SiteFooter({ sources }: { sources: Source[] }) {
               </li>
             ))}
           </ul>
-          <p>
-            品牌名稱、商標與相關素材之權利屬各權利人所有。如有資料錯誤或權利疑慮，請透過問題回報聯繫，並提供涉及的頁面與內容。
-          </p>
-          <p className="footer-report-note">
-            問題回報使用 GitHub Issues，需登入
-            GitHub；請勿提交個人訂單、電話或其他私人資訊。
-          </p>
+          <p>品牌名稱、商標與相關素材之權利屬各權利人所有。</p>
         </div>
       </dialog>
     </footer>

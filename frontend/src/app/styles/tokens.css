@@ -14,7 +14,13 @@
   --color-text-muted: #626873;
   --color-search-placeholder: #858b95;
   --color-border: #dce0e5;
+  --color-decorative-divider: color-mix(
+    in srgb,
+    var(--color-brand-strong) 18%,
+    transparent
+  );
   --color-focus: #285fac;
+  --color-required: #ad3f21;
   --color-on-brand: #ffffff;
   --color-on-dark: #ffffff;
   --color-mask-solid: #000000;
@@ -24,6 +30,8 @@
   --color-field: #ffffff;
   --color-hover: #edf3fa;
   --color-selected: #e7eff9;
+  --color-copy-preview-surface: #f1f6fc;
+  --color-copy-disabled-surface: #f0f2f5;
   --color-selected-border: #285fac;
   --color-selected-text: #1a4a8a;
   --color-accent-surface: #edf3fa;
@@ -35,6 +43,12 @@
   --color-recommendation-surface: #fff5e9;
   --color-recommendation-text: #8b4e16;
   --color-recommendation-border: #dbb98d;
+  --color-rank-gold: #7a5b1b;
+  --color-rank-gold-surface: #fff7df;
+  --color-rank-silver: #4b637c;
+  --color-rank-silver-surface: #edf3fa;
+  --color-rank-bronze: #8b5034;
+  --color-rank-bronze-surface: #fcf0e8;
   --color-disabled: #e7e9ec;
   --color-disabled-text: #858b95;
   --color-toast: #173b62;
@@ -153,6 +167,7 @@ html[data-theme="dark"] {
   --color-search-placeholder: #a4adb8;
   --color-border: #444d57;
   --color-focus: #8fb8e6;
+  --color-required: #ffb08a;
   --color-on-brand: #12253b;
   --color-on-dark: #f1f3f5;
   --color-hero-start: #272c32;
@@ -161,6 +176,8 @@ html[data-theme="dark"] {
   --color-field: #272c32;
   --color-hover: #303e4d;
   --color-selected: #243d59;
+  --color-copy-preview-surface: #203247;
+  --color-copy-disabled-surface: #2a333d;
   --color-selected-border: #8fb8e6;
   --color-selected-text: #f1f3f5;
   --color-accent-surface: #273b50;
@@ -172,6 +189,12 @@ html[data-theme="dark"] {
   --color-recommendation-surface: #3b3025;
   --color-recommendation-text: #f1c690;
   --color-recommendation-border: #92704c;
+  --color-rank-gold: #e8c77e;
+  --color-rank-gold-surface: #3a3220;
+  --color-rank-silver: #bdcfe2;
+  --color-rank-silver-surface: #2b3744;
+  --color-rank-bronze: #efb99a;
+  --color-rank-bronze-surface: #3c2e27;
   --color-disabled: #30363e;
   --color-disabled-text: #89929d;
   --color-toast: #263b52;

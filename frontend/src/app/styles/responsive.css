@@ -1,3 +1,44 @@
+@media (min-width: 901px) {
+  .home-hero {
+    min-height: max(600px, 75svh);
+    padding: calc(var(--header-offset) + 24px) 0 40px;
+  }
+  .home-hero h1 {
+    margin-block: var(--space-4);
+  }
+  .home-hero .home-search {
+    margin-top: var(--space-6);
+  }
+  .hero-stats {
+    margin-top: var(--space-5);
+  }
+  .hero-layer-cup,
+  .hero-layer-characters {
+    background-size: auto 112%;
+    background-position: right bottom;
+  }
+  .home-list {
+    padding-top: var(--space-8);
+  }
+  .home-list .section-heading {
+    margin-bottom: var(--space-6);
+  }
+  .nav-inner {
+    width: min(960px, 100%);
+  }
+  .wordmark {
+    min-height: 44px;
+    gap: 4px;
+  }
+  .wordmark .brand-logo-cup {
+    width: 21px;
+    height: 20px;
+  }
+  .wordmark .brand-logo-name {
+    width: 71px;
+    height: 16px;
+  }
+}
 @media (max-width: 900px) {
   .home-hero {
     --hero-art-height: clamp(400px, 65vw, 540px);
@@ -155,8 +196,8 @@
     /* Mobile: one continuous illustration behind copy and artwork. */
     --hero-art-height: clamp(560px, 155vw, 740px);
     display: block;
-    min-height: calc(var(--header-offset) + 660px);
-    padding: calc(var(--header-offset) + 28px) 0 0;
+    min-height: 0;
+    padding: calc(var(--header-offset) + 40px) 0 0;
     background: var(--color-hero-illustration);
   }
   .home-hero .hero-visual {
@@ -179,17 +220,17 @@
     background-position: center;
   }
   .home-hero .hero-layer-cup {
-    background-size: auto 76%;
-    background-position: calc(50% + 120px) bottom;
+    background-size: clamp(660px, 195vw, 1200px) auto;
+    background-position: right bottom;
   }
   .home-hero .hero-layer-characters {
-    background-size: auto 72%;
-    background-position: calc(50% + 30px) bottom;
+    background-size: clamp(620px, 185vw, 1140px) auto;
+    background-position: right bottom;
   }
   .home-hero .hero-layout {
     position: relative;
     z-index: 5;
-    padding-bottom: clamp(380px, 112vw, 540px);
+    padding-bottom: clamp(260px, 74vw, 360px);
   }
   .home-hero .hero-stats {
     position: relative;
@@ -206,7 +247,8 @@
     left: 4%;
   }
   .home-hero .hero-chip-a {
-    top: 48%;
+    top: auto;
+    bottom: 38%;
   }
   .home-hero .hero-chip-b {
     bottom: 12%;

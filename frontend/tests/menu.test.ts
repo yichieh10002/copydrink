@@ -101,6 +101,16 @@ test("熱飲只在中杯可選，並與加價選項相連", () => {
   assert.equal(priceFor(item.cups[1], "north"), 35);
   assert.equal(priceFor(item.cups[1], "north")! + hot.price!, 40);
 });
+test("單杯熱飲加價覆蓋熱飲選項金額，不重複加價", () => {
+  const d = document(),
+    item = d.items[0];
+  item.optionGroups![0].hotSurcharge = 7;
+  const group = effectiveGroups(d, item, item.cups[1]).find(
+    (g) => g.role === "temperature",
+  );
+  assert.equal(group?.choices.find((c) => c.id === "hot")?.price, 7);
+  assert.equal(group?.choices.find((c) => c.id === "cold")?.price, 0);
+});
 test("僅選熱飲才顯示的中杯不會平時出現在杯型", () => {
   const d = document(),
     item = d.items[0];

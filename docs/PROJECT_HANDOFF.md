@@ -1,5 +1,7 @@
 # Copydrink 專案接手文件
 
+> 2026-11-17 最新：新版後台在本機 `feature/admin-workspace-v2` 開發，回退標記 `admin-v1-before-rebuild-20261117`。未推送、未部署、未寫入 Supabase；舊後台不變。已完成的範圍、未完成的功能與驗證見 [admin-v2-rebuild.md](admin-v2-rebuild.md)。下方 11/16 舊部署紀錄仍供追溯，不表示這次後台已上線。
+
 最後更新：2026-11-16（Asia/Taipei）。
 
 ## 先看這裡
@@ -220,3 +222,137 @@ npm run start -- --hostname 0.0.0.0 --port 4177
 請接續 Copydrink。先讀專案根目錄 AGENTS.md 與 docs/PROJECT_HANDOFF.md，再查 git status、目前分支與最近提交。以文件和實際程式確認最新進度，特別區分已部署與未部署；這次先不要部署。
 已知工作根目錄：/workspace/scratch/a7db30489a21/site-workspace/.sites-checkout
 ```
+
+## 2026-11-16 手機裁切修正（最新線上來源 fd248d6；本次未部署）
+
+- 最新 Vercel `dpl_DTXdV6e6rhEvbA6ez6DmSZKtiVFx`／`https://copydrink-github-preview-nh7pxkqdr-yichiehs-projects-5086e20d.vercel.app` 是 GitHub `fd248d622550e7b080bd7817f04ab52c8e57c55e`，並非舊工作副本 a9783e8。這次從該實際線上來源建立獨立工作樹 `/workspace/scratch/745b259be742/copydrink-mobile`，分支 `fix/mobile-framing-20261116`。
+- 問題：mobile characters 用 auto 72% 並置中偏30px，畫面越長素材越大，因原圖左半為留白，熊貓與右側男孩被裁掉；文案離 sticky header 太近。
+- 修正：characters 改由視窗寬控制 clamp(620px,185vw,1140px) 並右下對齊；cup 195vw右下對齊，解除插畫大小對整段高度的依賴。文字頂部改 header offset +40px；取消固定最低高度，文案底部留白由380–540px減至260–360px；半糖標籤改由底部38%定位。僅620px以下生效，保留最新線上文案與其餘設定。
+- 瀏覽器實際檢查 iframe 外寬360／390px（桌機 scrollbar佔15px，內容寬345／375px）：三名角色可見、無橫向溢出，header與eyebrow間距47.8125px。768px一併檢視，未修改其既有排版。
+- 截圖 `/workspace/shared/copydrink-mobile-check.jpg` 為本機QA，不是Vercel部署畫面。臨時 QA HTML 不納入產品或部署。
+- 沒有推送GitHub或部署，現有暫時公開設定未變更。要部署本次修正，必須使用此新工作樹，不能從a9783e8舊副本發版覆蓋fd248d6。
+- 注意：fd248d6相較舊副本缺少部分先前SEO、logo、頁尾與CSS修改；本次只修手機裁切，不擅自整份還原。後續整合應逐項比較，安全檢查報告在舊工作副本docs/SECURITY_REVIEW.md。
+
+- 最終production build（含TypeScript）、設計token與git diff --check通過；沒有新增與CSS實作重複的測試。
+
+## 2026-11-16 手機修正版 Vercel 預覽
+
+- 小潔要求查看此修正版部署，本次從新工作樹發布 `08b6bc9b4a5d5614e70bacca71cb3c402be05212`，基底fd248d6。已核對GitHub仍fd248d6，沒有覆蓋新的遠端修改。
+- Deployment `dpl_9VyfQJLFxdPUQMSrki6oeSNuBTjz`。
+- URL：https://copydrink-github-preview-49zh24cfw-yichiehs-projects-5086e20d.vercel.app
+- 沿用既有Team/Project，preview，直接Vercel files部署；未推送GitHub或修改正式別名，維持ssoProtection.enabled=false的暫時公開設定。
+- 已有production build/TypeScript/設計token/diff檢查及手機寬度瀏覽器驗證，本次來源未變不重複建置；不包含臨時QA HTML。
+
+- 最終READY；匿名HTTP GET 200、無登入轉址，HTML含首頁Hero與店家區。上段未部署為歷史狀態，此修正已上線。
+
+## 2026-11-16 切換頁面捲動修正（尚未部署）
+
+- 小潔指出從首頁進店家時會由底部滑到頂部，要求先修正。原因是base.css將html全站設scroll-behavior:smooth；Next.js 16預設不會為路由自動覆寫smooth，安裝版upgrading/version-16.md已核對。
+- 將全域html捲動改為auto；BackToTop按鈕原本已用window.scrollTo顯式指定smooth（尊重prefers-reduced-motion），不需增加路由effect或手動scrollTo，保留Next.js返回位置恢復。
+- 本機瀏覽器實測：首頁往下至店家列表後點得正，切換完成/stores/dezheng的scrollY=0；瀏覽器back後回到首頁scrollY=1181（與點選前的位置一致）；點回頂部按鈕後先仍在1181，再觀察動畫完成到0。computed scrollBehavior=auto。
+- 設計token與git diff --check通過。純一行CSS，不增加與實作重複的單元測試；未做手機Safari實機驗收。
+- 本次只修改並本機提交，沒有推送／部署。現有線上仍為dpl_9VyfQJLFxdPUQMSrki6oeSNuBTjz，暫時公開設定不變。
+
+## 2026-11-16 恢復被新版來源蓋回的分隔線／預覽樣式（尚未部署）
+
+- 小潔確認首頁統計直線、頁尾橫線與複製文字外框曾改過卻回舊版。原因是目前線上與新工作樹的基底fd248d6未包含早先0faa733及73472ec的調整；本次在現用分支逐項恢復，不覆蓋最新手機版。
+- 新增--color-decorative-divider：品牌深藍18%透明混色；統計左線改1px，頁尾橫線套同色。共用copy-preview output改border:0，白底和文字保留，自填及飲品設定同步。
+- 依先前明確要求，也再次移除新版基底帶回的頁尾GitHub問題回報與失效指引。
+- 保留c774984的全站auto捲動、08b6bc9的手機裁切修正。沒有改其餘樣式或資料，未推送／部署；線上仍是dpl_9VyfQJLFxdPUQMSrki6oeSNuBTjz。
+- 設計token、TypeScript型別與git diff --check皆通過。本次不新增瀏覽器畫面驗收。
+
+## 2026-11-16 恢復確認版 Logo／印章／桌機頁首（尚未部署）
+
+- 小潔指出Logo也被舊版蓋回；從已確認提交0c8492d精準取回BrandLogo.tsx與copydrink-logo-handdrawn-white.png，不重新生成、不換設計。
+- 共用Logo同步頁首與頁尾印章；恢復StampBorder斑駁雙圈。保留上一筆已補回的頁尾淡藍分隔線與已刪除的問題回報。
+- 恢復901px以上Logo圖案21×20px、字標71×16px、gap4px（原尺寸50%），導覽列最大寬960px；手機Logo尺寸不變。沒有覆蓋最新手機Hero規則。
+- 待部署整批：c774984路由捲動、a2536f0淡藍線／去預覽框／移除回報，以及這次Logo與印章／桌機頁首恢復。線上仍是08b6bc9版，沒有自動推送或部署。
+
+- production build（含TypeScript）、設計token、git diff --check通過；本次未新增瀏覽器畫面驗收。
+
+## 2026-11-16 整批恢復與捲動修正部署
+
+- 小潔明確要求一起部署；產品來源 `a66aa18089daea6b462b16e5269616eabe9c506d`，包含c774984、a2536f0及a66aa18。發布前核對GitHub仍fd248d6，沒有新的遠端差異。
+- 內容：進店家直接到頂部、瀏覽器返回恢復位置、回頂部按鈕保留平滑；淡藍分隔線、複製output無邊框、移除頁尾問題回報；確認版Logo與斑駁印章、桌機半尺寸Logo與960px導覽列；保留手機裁切修正。
+- Deployment `dpl_E2faKQ4964qjQnZHxnzHVab8Jizd`，既有Vercel project/team，preview，直接files部署。未推送GitHub或修改正式別名；ssoProtection維持關閉的暫時公開狀態，等小潔要求恢復。
+- URL：https://copydrink-github-preview-n0zpvpwhn-yichiehs-projects-5086e20d.vercel.app
+- 產品來源在前回合已通過production build/TypeScript/token/diff；捲動與手機裁切已做本機瀏覽器檢查，沒有重跑未變更來源的建置。
+
+- 最終READY；匿名GET首頁200、不轉登入。線上HTML確認新版Logo路徑、無問題回報入口；下載實際CSS確認decorative-divider、html auto捲動及copy-preview output border:0皆已生效。上方待部署為歷史紀錄，整批目前已部署。
+
+## 2026-11-16 恢復背景大字透明度（尚未部署）
+
+- 小潔指出背景COPYDRINK大字透明度被舊版來源蓋回；在目前分支hero.css共用.hero-giant恢復opacity:0.3，即原確認的30%不透明度。桌機／手機共用，未加模糊或改動版型／動畫。
+- 前次整批已部署a66aa18，此次只有透明度待部署；目前線上仍dpl_E2faKQ4964qjQnZHxnzHVab8Jizd。其他已恢復的Logo、淡藍分隔線、去框與捲動不動。
+
+## 2026-11-16 店家 Logo 陰影縮小（尚未部署）
+
+- 小潔要求店家資訊區Logo陰影擴散小一些。只將store-intro-main .store-logo由shadow-lg改為shadow-md：淺色從0 20px 50px 12%改0 4px 20px 8%，減少偏移、模糊範圍與濃度；深色沿用對應token。
+- 套用所有店家詳細頁，首頁卡片與其他元件陰影不變。與背景大字opacity:0.3一起待部署；上一批修正已在線上dpl_E2faKQ4964qjQnZHxnzHVab8Jizd。
+
+## 2026-11-16 必喝TOP前三名獎牌（尚未部署）
+
+- 小潔同意前三名加同款線條獎牌icon與霧金／灰藍／淺銅標籤。共用TopPicks使用既有Phosphor MedalIcon，只在index<3顯示，aria-hidden避免重複朗讀，TOP數字保留；第4名以後原樣。
+- 僅排名標籤著色，整列背景、點擊設定與複製行為不變。新增淺／深色對應rank tokens，標籤用inline-flex容納icon；無新增套件或client boundary。
+- 尚未部署，與背景大字30%不透明度、店家Logo陰影縮小一起待發佈。現有暫時公開設定不變。
+
+## 2026-11-16 小抄欄位標題辨識（尚未部署）
+
+- 小潔要求每個欄位標題前有細長藍色直條，必填星號改紅／橘。使用3px寬、1em高、右距8px的空白CSS pseudo-element，覆蓋飲品dialog與自填小抄的legend、label.field及PickerInput標題；不在每個選項前加條。
+- RequiredMark共用顏色改為--color-required：淺色#ad3f21、深色#ffb08a，與藍條分開；保留aria-label必填、原fieldset/legend/label關聯與選項互動，沒有使用文字方塊字元或新增JS。
+- 設計token與git diff --check通過；純CSS沒有新增鏡像測試或瀏覽器驗收。
+- 與前三名獎牌、背景大字30%不透明度及Logo陰影縮小一起尚未部署。線上仍dpl_E2faKQ4964qjQnZHxnzHVab8Jizd，暫時公開設定不變。
+
+## 2026-11-16 小抄標題／前三名獎牌等整批部署
+
+- 小潔明確要求部署，來源f4dc02f441bc0bea7f3b43c940a9fd53fe31fd54。包含背景大字opacity0.3、店家Logo shadow-md、TOP1–3獎牌與配色、小抄欄位細藍直條及橘紅必填星號，保留之前修正。
+- 已核對GitHub仍fd248d6；本機production build/TypeScript/設計token/diff通過，生成next-env.d.ts已還原。直接Vercel files部署，不推送GitHub。
+- Deployment dpl_9ESNpvqNCKuTznfpuoAygZVVE92i，既有Team/Project、preview，暫時公開設定維持，不改正式別名。
+- URL：https://copydrink-github-preview-62vhg9py7-yichiehs-projects-5086e20d.vercel.app
+
+- 最終READY；匿名首頁與得正頁HTTP200，實際部署CSS確認hero opacity0.3、required token、欄位標題marker、前三名rank tokens、Logo shadow-md；店家HTML有data-rank1/2/3。以上待部署項目現已整批上線，沒有新的瀏覽器畫面驗收。
+
+## 2026-11-16 恢復桌機Hero較低高度（尚未部署）
+
+- 小潔指出電腦首頁又變高；目前基底仍為max(760px,100svh)，新版換版時漏掉先前8643b80的桌機高度規則。
+- 精準取回該提交901px以上的Hero高度／留白／圖層縮放／店家區頂部間距：max(600px,75svh)、header+24px/底40px，h1 16px、搜尋24px、統計20px；人物與杯auto112%靠右下，店家上留白32px／標題下24px。
+- 保留最新手機CSS、現有文案、背景大字opacity0.3與其他已發布調整。Loading共用CSS同步套用；極矮視窗仍允許內容自然撐高。
+- 本次僅本機保存，未推送／部署，線上仍dpl_9ESNpvqNCKuTznfpuoAygZVVE92i。
+
+## 2026-11-16 小抄複製預覽配色收斂（尚未部署）
+
+- 小潔明確駁回「拿掉飲料文字白底」；保留.copy-preview output的白色／深色主題paper底、深藍字、原圓角與無邊框，不改內容或功能。
+- 其他依討論調整：整區淺藍更淡（新增copy-preview-surface，light #f1f6fc／dark #203247）；標題改muted深灰、text-small、weight600；底部分隔改既有淡藍decorative-divider。
+- 重設改灰色icon＋文字、無框透明背景，保留至少44px點擊高與既有focus；可複製按鈕仍藍底白字；停用按鈕底色改更淡灰（light #f0f2f5／dark #2a333d），文字維持muted可讀。
+- 共用CSS同步飲品設定與首頁自填小抄，必填橘紅星號與藍色標題直條保留。
+- 設計token及git diff --check通過；本次純CSS，未新增瀏覽器驗收。尚未部署，與桌機Hero高度恢復一起待發布；線上仍dpl_9ESNpvqNCKuTznfpuoAygZVVE92i。
+
+## 2026-11-16 桌機首頁高度與小抄配色部署完成
+
+- 小潔明確要求部署，來源1134a749c78c5a86fdab54d5faa2544b2c0d67bf，包含30f99f1桌機Hero高度恢復與1134a74預覽配色。飲料文字白底／深藍字／無框保留，手機排版不變。
+- production build、TypeScript、設計token、git diff --check通過；生成next-env.d.ts已還原。核對GitHub仍fd248d6，Vercel前次最新為dpl_9ESNpvqNCKuTznfpuoAygZVVE92i。直接files部署，沒有推送GitHub或變更正式別名。
+- Deployment：dpl_Dyv6k57zEKQc2jhhFwvgQ2VuhhW2，preview，READY，既有project/team，暫時公開權限維持。
+- URL：https://copydrink-github-preview-d6vomqs7v-yichiehs-projects-5086e20d.vercel.app
+- 匿名首頁與得正頁HTTP200、不轉登入；下載線上CSS確認75svh、preview新色、停用按鈕新色、output paper底及無框reset。這次未新增瀏覽器畫面驗收。上述兩項待部署均已上線，目前無新的產品修改待部署。
+
+## 2026-11-16 手機版浮動導覽透明度（尚未部署）
+
+- 小潔希望截圖右下「回頂部／回全部」按鈕透明一點。手機版620px以下共用容器背景由paper 90%改為72%，與桌機既有glass透明度相近；背景模糊6px改8px，保留藍色文字／icon、點擊範圍與功能。淺色／深色由paper token自動對應。
+- 只修改frontend/src/app/styles/base.css；設計token檢查與git diff --check通過，純CSS低風險變更未新增瀏覽器驗收。已本機提交，未推送／部署；最新線上仍為dpl_Dyv6k57zEKQc2jhhFwvgQ2VuhhW2，URL記於上一節。
+
+## 2026-11-16 浮動導覽透明度同步電腦版（尚未部署）
+
+- 小潔補充電腦版也要透明。共用.floating-nav背景改成以paper token混合64%不透明，桌機由原glass 72%降低、手機由前筆72%再降低；移除手機背景覆寫，只保留手機較低的8px模糊。其他共用glass token和站內元件不動，淺／深色皆適用。
+- 樣式token及git diff --check通過，純CSS；本機提交，未推送／部署。以上一節手機72%為歷史中間狀態，待部署的最終桌機與手機均為64%。線上仍dpl_Dyv6k57zEKQc2jhhFwvgQ2VuhhW2。
+
+## 2026-11-17 浮動導覽部署與預覽站重新上鎖
+
+- 小潔要求先關閉網站公開，再部署剩餘修改。Vercel專案prj_FewA218UKpJkao7G8BWRigxZw66p的ssoProtection恢復deploymentType=all_except_custom_domains；設定回讀enabled=true。最新與前版deployment網址匿名GET都回302導往Vercel驗證，沒有網站內容。此設定僅保護Vercel站點，Supabase匿名公開菜單API仍依自身RLS公開。
+- 產品來源be0d480557194c68f7c2b7303656dce4b96336fe，包含7ca80be與be0d480，最終手機／電腦浮動導覽容器背景paper 64%不透明。部署前production build/TypeScript、設計token、diff通過，生成next-env.d.ts已還原；GitHub遠端仍fd248d6。直接Vercel files preview部署，沒有推送GitHub或調整正式別名。
+- Deployment dpl_J4BikEXE77PV467HADVwiJaPxkTx，READY；網址：https://copydrink-github-preview-51jt2j06u-yichiehs-projects-5086e20d.vercel.app
+- 未以登入身分做瀏覽器畫面驗收；產品來源與保護設定已核對。剩餘安全修補依舊工作副本docs/SECURITY_REVIEW.md：發布欄位投影／備註、Next安全標頭、登入防護等；本批未處理。以上浮動導覽修改已部署，無其他待部署產品變更。
+
+## 2026-11-17 資安修補準備（尚未套用／部署）
+
+- 目前工作副本新增 `docs/SECURITY_REVIEW.md`，其中 2026-11-17 節是最新狀態，前段為歷史基線。`database/harden-publications.sql` 是尚未執行的交易修補稿；`database/test-publications.sql` 增加發布／還原私人欄位回歸檢查。`frontend/next.config.ts` 增加基本安全標頭與有限範圍 CSP，尚未部署。
+- 正式 DB 唯讀核對資料與 Supabase advisor；資料庫工具的回滾測試確認逾時，沒有修改正式資料或設定。Next production build、TypeScript、設計 token、routes-manifest 標頭及 diff 通過；尚未完成真實 HTTP／DB 交易驗證。Vercel 仍維持 SSO 登入保護，最新部署仍為 dpl_J4BikEXE77PV467HADVwiJaPxkTx。下一步先驗證資料庫交易與保留語意，再按結果套用及部署；不要把本機修補稿描述成已生效。

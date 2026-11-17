@@ -130,6 +130,15 @@ export function effectiveGroups(
           temps.has({ cold: "冷", warm: "溫", hot: "熱" }[temperature(c)]),
         );
     }
+    if (
+      g.role === "temperature" &&
+      (g.hotSurcharge ?? override?.hotSurcharge) !== undefined
+    ) {
+      const surcharge = g.hotSurcharge ?? override?.hotSurcharge;
+      choices = choices.map((c) =>
+        temperature(c) === "hot" ? { ...c, price: surcharge } : c,
+      );
+    }
     if (g.role === "topping" && Array.isArray(item.allowedToppings))
       choices = choices.filter((c) => item.allowedToppings?.includes(c.label));
     if (!choices.length) return [];

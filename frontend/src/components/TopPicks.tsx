@@ -2,6 +2,7 @@
 import { useDialogBackdrop } from "@/lib/useDialogBackdrop";
 import { useRef } from "react";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
+import { MedalIcon } from "@phosphor-icons/react/dist/csr/Medal";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/csr/ArrowRight";
 import type { MenuItem } from "@/lib/types";
 import { useStoreSelection } from "@/features/menu/StoreSelection";
@@ -65,7 +66,12 @@ export function TopPicks({
                 }}
                 aria-label={`設定並複製${item.item.name}`}
               >
-                <span className="top-item-rank">TOP {index + 1}</span>
+                <span className="top-item-rank" data-rank={index + 1}>
+                  {index < 3 ? (
+                    <MedalIcon size={18} weight="regular" aria-hidden="true" />
+                  ) : null}
+                  TOP {index + 1}
+                </span>
                 <span className="top-item-copy">
                   <strong>{item.item.name}</strong>
                   {item.note && <small>{item.note}</small>}

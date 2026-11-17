@@ -41,8 +41,8 @@
 }
 .copy-preview {
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--color-accent-border);
-  background: var(--color-selected);
+  border-bottom: 1px solid var(--color-decorative-divider);
+  background: var(--color-copy-preview-surface);
   color: var(--color-brand-strong);
 }
 .copy-preview-heading {
@@ -52,11 +52,13 @@
   gap: 12px;
 }
 .copy-preview-heading > strong {
-  color: var(--color-brand-strong);
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  font-weight: 600;
 }
 .copy-preview output {
   display: block;
-  border: 1px solid var(--color-accent-border);
+  border: 0;
   border-radius: var(--radius-sm);
   background: var(--color-paper);
   padding: 10px 12px;
@@ -87,11 +89,20 @@
   cursor: not-allowed;
 }
 .copy-preview .copy-button:disabled {
+  background: var(--color-copy-disabled-surface);
   color: var(--color-text-muted);
 }
 .copy-preview .copy-reset {
-  border-color: var(--color-accent-border);
-  color: var(--color-brand-strong);
+  min-height: 44px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+.copy-preview .copy-reset:hover {
+  color: var(--color-text);
 }
 .copy-reset {
   display: inline-flex;
@@ -340,4 +351,20 @@
     font-size: var(--text-small);
     line-height: 1.5;
   }
+}
+
+/* Shared section markers for the drink dialog and the free-form note. */
+.order-dialog legend::before,
+.order-dialog label.field::before,
+.quick-note legend::before,
+.quick-note label.field::before,
+.quick-note .quick-picker-field > label::before {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  margin-right: var(--space-2);
+  border-radius: 1px;
+  background: var(--color-brand);
+  vertical-align: -0.1em;
 }

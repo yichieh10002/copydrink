@@ -40,7 +40,7 @@
   border-right: 1px solid var(--color-border);
 }
 .store-intro-main .store-logo {
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
 }
 .store-intro-brand {
   min-width: 0;
@@ -380,6 +380,10 @@
   background: var(--color-hover);
 }
 .top-item-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
   flex: none;
   padding: var(--space-1) var(--space-3);
   border: 1px solid var(--color-border);
@@ -388,6 +392,24 @@
   font-weight: 800;
   color: var(--color-brand-strong);
   white-space: nowrap;
+}
+.top-item-rank svg {
+  flex: none;
+}
+.top-item-rank[data-rank="1"] {
+  color: var(--color-rank-gold);
+  background: var(--color-rank-gold-surface);
+  border-color: color-mix(in srgb, var(--color-rank-gold) 28%, transparent);
+}
+.top-item-rank[data-rank="2"] {
+  color: var(--color-rank-silver);
+  background: var(--color-rank-silver-surface);
+  border-color: color-mix(in srgb, var(--color-rank-silver) 28%, transparent);
+}
+.top-item-rank[data-rank="3"] {
+  color: var(--color-rank-bronze);
+  background: var(--color-rank-bronze-surface);
+  border-color: color-mix(in srgb, var(--color-rank-bronze) 28%, transparent);
 }
 .top-dialog li small {
   display: block;

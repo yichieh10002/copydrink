@@ -14,6 +14,14 @@ declare
   second_publication uuid;
   restored_revision bigint;
 begin
+  -- A real draft keeps these fields, but its public snapshot must not.
+  update public.menu_drafts
+  set document = jsonb_set(
+    jsonb_set(document, '{items,0,internalNote}', '"private test note"'),
+    '{items,0,source}', '"private test source"'
+  )
+  where store_key = 'menu-dezheng';
+
   select revision
   into draft_revision
   from public.menu_drafts
@@ -25,6 +33,15 @@ begin
 
   if first_publication is null then
     raise exception 'First publication was not created';
+  end if;
+
+  if exists (
+    select 1 from public.menu_publications p
+    cross join lateral jsonb_array_elements(p.document->'items') as i(item)
+    where p.id = first_publication
+      and (i.item ? 'internalNote' or i.item ? 'source')
+  ) then
+    raise exception 'Admin-only fields appeared in a public snapshot';
   end if;
 
   select id
@@ -51,12 +68,35 @@ begin
     raise exception 'Expected two immutable publication records';
   end if;
 
+  update public.menu_drafts
+  set document = jsonb_set(
+    document, '{items,0,internalNote}', '"newer private note"'
+  )
+  where store_key = 'menu-dezheng';
+
+  select revision into draft_revision
+  from public.menu_drafts where store_key = 'menu-dezheng';
+
   select revision
   into restored_revision
   from public.restore_menu_publication(first_publication, draft_revision);
 
   if restored_revision <> draft_revision + 1 then
     raise exception 'Restoring must create a newer draft revision';
+  end if;
+
+  if (
+    select document #>> '{items,0,internalNote}'
+    from public.menu_drafts where store_key = 'menu-dezheng'
+  ) is distinct from 'newer private note' then
+    raise exception 'Restoring lost the current admin-only note';
+  end if;
+
+  if (
+    select document #>> '{items,0,source}'
+    from public.menu_drafts where store_key = 'menu-dezheng'
+  ) is distinct from 'private test source' then
+    raise exception 'Restoring lost the current admin-only source';
   end if;
 end;
 $test$;
