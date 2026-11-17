@@ -119,3 +119,31 @@ test("單杯客製未選選項與無效加價會被攔下", () => {
   item.optionGroups![0].choices[0].price = 10;
   assert.deepEqual(validateItem(item, document), {});
 });
+
+test("單杯新增選項不可重複或填負數，合法熱飲可存入草稿", () => {
+  const doc = structuredClone(document);
+  doc.brand.optionGroups = [
+    {
+      id: "temperature",
+      name: "冰量",
+      kind: "single",
+      role: "temperature",
+      required: true,
+      choices: [{ id: "cold", label: "少冰" }],
+    },
+  ];
+  const item = structuredClone(doc.items[0]);
+  item.optionOverrides = {
+    temperature: {
+      additionalChoices: [
+        { id: "hot", label: "熱飲", temperature: "hot", price: 5 },
+      ],
+    },
+  };
+  assert.deepEqual(validateItem(item, doc), {});
+  item.optionOverrides.temperature.additionalChoices![0].price = -1;
+  assert.ok(validateItem(item, doc).options);
+  item.optionOverrides.temperature.additionalChoices![0].price = 5;
+  item.optionOverrides.temperature.additionalChoices![0].label = "少冰";
+  assert.ok(validateItem(item, doc).options);
+});

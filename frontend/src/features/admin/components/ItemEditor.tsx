@@ -57,6 +57,13 @@ export function ItemEditor({
       id: `temperature-${i}`,
       label,
     }));
+  const temperatureGroupId =
+    document.brand.optionGroups?.find((group) => group.role === "temperature")
+      ?.id || "temperature";
+  const allTemperatureChoices = [
+    ...temperatureChoices,
+    ...(item.optionOverrides?.[temperatureGroupId]?.additionalChoices || []),
+  ];
   const setCupCondition = (size: string, ids: string[]) =>
     update({
       ...item,
@@ -348,7 +355,7 @@ export function ItemEditor({
                           </label>
                         </div>
                       ))}
-                      {!!temperatureChoices.length && (
+                      {!!allTemperatureChoices.length && (
                         <div className="rounded-lg bg-blue-50 p-3">
                           <label className="admin-row font-semibold">
                             <input
@@ -358,7 +365,7 @@ export function ItemEditor({
                                 setCupCondition(
                                   cup.size,
                                   e.target.checked
-                                    ? [temperatureChoices[0].id]
+                                    ? [allTemperatureChoices[0].id]
                                     : [],
                                 )
                               }
@@ -367,7 +374,7 @@ export function ItemEditor({
                           </label>
                           {!!cup.showWhenChoiceIds?.length && (
                             <div className="admin-row mt-3">
-                              {temperatureChoices.map((choice) => (
+                              {allTemperatureChoices.map((choice) => (
                                 <label className="admin-row" key={choice.id}>
                                   <input
                                     type="checkbox"

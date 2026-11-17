@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { AdminDocument, AdminItem } from "../types";
 import type { OptionGroup } from "@/lib/types";
 import { FormField, GrowingTextarea } from "./FormField";
+import { AdditionalChoices } from "./AdditionalChoices";
 
 export function ItemOptions({
   document,
@@ -124,7 +125,11 @@ export function ItemOptions({
         .filter((g) => g.choices.length)
         .map((group) => {
           const override = overrides[group.id] || {},
-            mode = override.mode || "inherit";
+            mode = override.mode || "inherit",
+            availableChoices = [
+              ...group.choices,
+              ...(override.additionalChoices || []),
+            ];
           return (
             <div
               key={group.id}
@@ -165,7 +170,7 @@ export function ItemOptions({
                       })
                     }
                   >
-                    {group.choices.map((choice) => (
+                    {availableChoices.map((choice) => (
                       <option key={choice.id} value={choice.id}>
                         {choice.label}
                       </option>
@@ -175,7 +180,7 @@ export function ItemOptions({
               )}
               {mode === "custom" && (
                 <div className="admin-row">
-                  {group.choices.map((choice) => (
+                  {availableChoices.map((choice) => (
                     <label className="admin-row" key={choice.id}>
                       <input
                         type="checkbox"
@@ -194,6 +199,48 @@ export function ItemOptions({
                     </label>
                   ))}
                 </div>
+              )}
+              {(group.role === "sweetness" || group.role === "temperature") && (
+                <AdditionalChoices
+                  group={group}
+                  choices={override.additionalChoices || []}
+                  usedChoiceIds={item.cups.flatMap((cup) => [
+                    ...(cup.showWhenChoiceIds || []),
+                    ...Object.values(cup.optionChoiceIds || {}).flat(),
+                  ])}
+                  onChange={(choices) => {
+                    const valid = new Set(choices.map((choice) => choice.id));
+                    const previous = override.additionalChoices || [];
+                    const removed = new Set(
+                      previous
+                        .filter((choice) => !valid.has(choice.id))
+                        .map((choice) => choice.id),
+                    );
+                    const added = choices
+                      .filter(
+                        (choice) =>
+                          !previous.some((old) => old.id === choice.id),
+                      )
+                      .map((choice) => choice.id);
+                    setOverride(group.id, {
+                      additionalChoices: choices,
+                      choiceIds:
+                        mode === "custom"
+                          ? [
+                              ...(override.choiceIds || []).filter(
+                                (id) => !removed.has(id),
+                              ),
+                              ...added,
+                            ]
+                          : override.choiceIds?.filter(
+                              (id) => !removed.has(id),
+                            ),
+                      fixedChoiceId: removed.has(override.fixedChoiceId || "")
+                        ? group.choices[0].id
+                        : override.fixedChoiceId,
+                    });
+                  }}
+                />
               )}
             </div>
           );

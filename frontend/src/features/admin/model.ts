@@ -1,5 +1,6 @@
 import type { AdminDocument, AdminItem } from "./types";
 import { clone } from "./types";
+import { legacyGroups } from "@/lib/menu";
 
 export type SortMode = "menu" | "newest" | "category" | "name";
 
@@ -89,10 +90,33 @@ export function validateItem(item: AdminItem, document: AdminDocument) {
         errors[`price-${cup.size}-${region.id}`] =
           "請填 0～1000000 的整數，或留空";
     }
-  const defaults = document.brand.optionGroups || [];
+  const defaults = document.brand.optionGroups?.length
+    ? document.brand.optionGroups
+    : legacyGroups(document);
   for (const [id, override] of Object.entries(item.optionOverrides || {})) {
     if (override.mode === "custom" && !(override.choiceIds || []).length)
       errors.options = `「${defaults.find((g) => g.id === id)?.name || id}」請至少選一個選項`;
+    const existing = defaults.find((g) => g.id === id)?.choices || [];
+    const extra = override.additionalChoices || [];
+    if (
+      extra.length > 20 ||
+      extra.some(
+        (choice) =>
+          !choice.id ||
+          !choice.label.trim() ||
+          choice.label.length > 60 ||
+          !Number.isInteger(choice.price ?? 0) ||
+          (choice.price ?? 0) < 0 ||
+          (choice.price ?? 0) > 1_000_000 ||
+          existing.some(
+            (original) => original.label.trim() === choice.label.trim(),
+          ),
+      ) ||
+      new Set(extra.map((choice) => choice.id)).size !== extra.length ||
+      new Set(extra.map((choice) => choice.label.trim())).size !== extra.length
+    )
+      errors.options =
+        "單杯新增選項不可重複或留空；加價請填 0～1000000 的整數，最多 20 筆。";
   }
   for (const group of item.optionGroups || []) {
     if (

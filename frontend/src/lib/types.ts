@@ -43,6 +43,7 @@ export type MenuItem = {
       mode?: string;
       choiceIds?: string[];
       fixedChoiceId?: string;
+      additionalChoices?: Choice[];
       hotCupSizes?: string[];
       hotSurcharge?: number;
     }

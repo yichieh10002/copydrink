@@ -1,6 +1,8 @@
 # Copydrink 專案接手文件
 
-> 2026-11-17 最新：新版後台在本機 `feature/admin-workspace-v2` 開發，回退標記 `admin-v1-before-rebuild-20261117`。未推送、未部署、未寫入 Supabase；舊後台不變。已完成的範圍、未完成的功能與驗證見 [admin-v2-rebuild.md](admin-v2-rebuild.md)。下方 11/16 舊部署紀錄仍供追溯，不表示這次後台已上線。
+> 2026-11-17 最新：新版後台在本機 `feature/admin-workspace-v2`，並由相同 tree 建立 GitHub `preview/admin-workspace-v2-20261117`，受保護 Vercel Preview 已 `READY`：`https://copydrink-github-preview-znxa7e1gl-yichiehs-projects-5086e20d.vercel.app/admin`，部署 `dpl_4WXhjZLifuT1PdLoz1WaBSSNeNHf`，GitHub 提交 `86668c3a049c13a4f6d9cb35d45bc6468d4e221b`。沒有部署正式站、沒有寫入 Supabase；舊後台不變。回退標記 `admin-v1-before-rebuild-20261117`。登入及互動尚待驗收，詳細見 [admin-v2-rebuild.md](admin-v2-rebuild.md)。下方 11/16 舊部署紀錄僅供追溯。
+
+> 同日追加的單杯甜度／冰量／溫熱選項目前只在本機，尚未重新部署。使用者決定發布紀錄不需無限保留，目標每店「目前正式版＋前 5 次發布」；先記錄決定，舊紀錄尚未清理，待發布／還原流程驗收後實作。
 
 最後更新：2026-11-16（Asia/Taipei）。
 

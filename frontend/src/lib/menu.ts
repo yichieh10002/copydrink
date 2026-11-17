@@ -108,7 +108,10 @@ export function effectiveGroups(
     const override = item.optionOverrides?.[g.id],
       mode = override?.mode || "inherit";
     if (mode === "disabled") return [];
-    let choices = g.choices || [];
+    let choices = [
+      ...(g.choices || []),
+      ...(override?.additionalChoices || []),
+    ];
     if (mode === "custom" || mode === "fixed")
       choices = choices.filter((c) => override?.choiceIds?.includes(c.id));
     const allowed = cup.optionChoiceIds?.[g.id];

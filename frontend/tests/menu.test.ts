@@ -101,6 +101,39 @@ test("熱飲只在中杯可選，並與加價選項相連", () => {
   assert.equal(priceFor(item.cups[1], "north"), 35);
   assert.equal(priceFor(item.cups[1], "north")! + hot.price!, 40);
 });
+
+test("店家預設沒有熱飲時，只讓指定飲料額外提供熱飲", () => {
+  const d = document();
+  const target = d.items[0];
+  target.optionGroups = undefined;
+  target.optionOverrides = {
+    temperature: {
+      mode: "inherit",
+      additionalChoices: [
+        { id: "drink-hot", label: "熱飲", temperature: "hot", price: 5 },
+      ],
+    },
+  };
+  const other = { ...target, optionOverrides: undefined };
+  assert.deepEqual(
+    effectiveGroups(d, target, target.cups[0])
+      .find((group) => group.role === "temperature")
+      ?.choices.map((choice) => choice.id),
+    ["cold", "drink-hot"],
+  );
+  assert.deepEqual(
+    effectiveGroups(d, other, other.cups[0])
+      .find((group) => group.role === "temperature")
+      ?.choices.map((choice) => choice.id),
+    ["cold"],
+  );
+  assert.deepEqual(
+    d.brand.optionGroups
+      ?.find((group) => group.role === "temperature")
+      ?.choices.map((choice) => choice.id),
+    ["cold"],
+  );
+});
 test("單杯熱飲加價覆蓋熱飲選項金額，不重複加價", () => {
   const d = document(),
     item = d.items[0];
