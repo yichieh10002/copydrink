@@ -195,7 +195,7 @@ export class AdminClient {
 
   async publications(storeKey: string) {
     return this.request<Publication[]>(
-      `/rest/v1/menu_publications?select=id,source_revision,published_at,is_current&store_key=eq.${encodeURIComponent(storeKey)}&order=published_at.desc`,
+      `/rest/v1/menu_publications?select=id,source_revision,published_at,is_current&store_key=eq.${encodeURIComponent(storeKey)}&order=published_at.desc,id.desc&limit=6`,
     );
   }
   async loadWarm() {

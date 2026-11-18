@@ -1,5 +1,12 @@
 # Copydrink 資安檢查紀錄
 
+## 2026-11-18 狀態更新
+
+- `sanitize_public_menu_publications_20261117` 已正式套用，發布邊界移除 `source`／`internalNote`，私有快照保留管理欄位；公開快照相關鍵已查為 0。下方「待處理」為第一輪發現時的歷史狀態。
+- Next.js 的 `frontend/next.config.ts` 已有 nosniff、Referrer-Policy、Permissions-Policy、X-Frame-Options 與有限 CSP；來源已部署到受保護 Preview，但尚未取得登入後真實 HTTP 回應標頭。完整 script-src CSP 尚未設計／驗證。
+- `retain_recent_menu_publications_20261118` 已正式套用：公開發布紀錄每店最多目前版＋5 次，較舊快照與私有欄位進 `tea_private.menu_publication_archive`。RLS 無客戶端 policy 及 grant，Supabase advisor 對私有表的提示屬預期。Auth leaked password protection 仍有 WARNING，尚未啟用；MFA、註冊開關、Auth rate limit 與 CAPTCHA 仍未驗收。
+- 新後台的草稿匯入與自動先下載當前草稿尚待受保護 Preview UI 驗收；私有封存不是異地備份，災難復原仍需要獨立備份策略。網站開放與正式入口切換前應再核對這些界線。
+
 檢查日期：2026-11-16（Asia/Taipei）。產品來源 `0faa733`；檢查開始前工作樹乾淨。這是第一輪原始碼與正式資料庫唯讀檢查，不是完整滲透測試或安全保證。
 
 ## 結論與開放狀態

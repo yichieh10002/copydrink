@@ -82,11 +82,14 @@ export function PublishPanel({
           </div>
         )}
         <p className="mt-3 text-sm text-slate-500">
-          發布會更新網站上的菜單，之前的正式版會保留於下方紀錄。
+          發布會更新網站上的菜單；下方保留目前正式版及最近 5 次發布。
         </p>
       </section>
       <section className="admin-card">
         <h2 className="text-xl font-bold mb-3">發布紀錄</h2>
+        <p className="text-sm text-slate-500 mb-3">
+          較舊版本已私有封存；需要找回時可請管理者協助。
+        </p>
         {!history.length && <p>尚無發布紀錄。</p>}
         {history.map((p) => (
           <div

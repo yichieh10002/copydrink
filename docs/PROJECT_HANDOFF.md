@@ -1,6 +1,15 @@
 # Copydrink 專案接手文件
 
+## 2026-11-18 發布紀錄與草稿備份（最新）
+
+- 小潔授權把新版後台剩餘驗收一路做到最後。工作樹 `/workspace/scratch/745b259be742/copydrink-mobile`，分支 `feature/admin-workspace-v2`。本節記錄本輪狀態；下方較舊的「待部署」描述是歷史紀錄。
+- Supabase 專案 `rdbcwhuhxahekxhrwekd` 已套用 migration `retain_recent_menu_publications_20261118`，來源 `database/retain-recent-publications.sql`。每店的公開發布表保留目前正式版及最近 5 次舊版；其餘完整快照及相應管理者私有品項欄位進 `tea_private.menu_publication_archive`，無 anon/authenticated table grant、開啟 RLS 且沒有客戶端 policy。交易內先封存再刪公開紀錄，失敗整筆發布回滾。14 店、138 筆原發布收斂為公開 69 筆＋私有 69 筆；14 筆目前正式版均在，每店公開最多 6 筆。每次新發布的觸發器在管理者登入角色的 8 次發布交易演練通過，演練最後 ROLLBACK，測試店資料為 0。私有封存仍會長期累積，須另外規劃封存清理／外部備份政策，不能宣稱資料量永久固定。
+- 新後台前端待部署變更：發布紀錄請求最多 6 筆；新增同店 JSON 草稿備份匯入，檢查來源／格式／2 MB 上限，二次確認後先自動下載目前草稿，再以預期 revision 建立新草稿，不會自動發布；成功／失敗沿用 toast。現行匯出草稿備份保留。舊發布版本若不在畫面中，須從私有封存由管理者另行取回；前台不直接提供存取。
+- 21 項 frontend 測試、typecheck、style:check、format:check、production build 通過。正式發布中的無飲仍有 17 杯 `fixedSugar=甜度固定`，得正仍有 5 杯 `fixedIce=少冰`，未更改其資料。此輪尚未推送前端或更新受保護 Vercel Preview；線上仍為 `dpl_EpBqG4mGcGWfH6SqdSio3QofdgbH`／GitHub 預覽分支 `3b837e3d4df04c4b6016e18ddb9616cef08aa6ca`。下一步核對 Git tree、部署 Preview，驗證匯入與發布紀錄 UI、匿名隔離和回退，再決定正式入口是否可切換。網站保持受保護，切勿因測試而關閉 SSO。
+
 ## 2026-11-17 最新交接（Asia/Taipei；優先讀本節）
+
+**11/18 單杯熱飲與固定文字完整預覽驗收（最新）**：小潔授權一路測到完成。功能來源本機提交 `bd1e761`、tree `7dfeabe385b2f7056cad73b7bb460d15f162d9a5`，與 GitHub `preview/admin-workspace-v2-20261117` 提交 `3b837e3d4df04c4b6016e18ddb9616cef08aa6ca` 的上傳 tree 相同。受保護 Vercel Preview `dpl_EpBqG4mGcGWfH6SqdSio3QofdgbH` 為 `READY`：`https://copydrink-github-preview-qguqc3o4y-yichiehs-projects-5086e20d.vercel.app/admin`；`target=null`，SSO 保持 `enabled=true`。部署前 style:check、typecheck、20 項 test、format:check、production build 通過。實際登入後台，一沐日下架測試杯的單杯熱飲只在新增選項列顯示一次；停用、重啟、改名、移除最後一筆及快速「這杯可做熱飲」均操作正常，放棄未儲存變更後草稿仍 revision 18。另建隔離店 `Copydrink 規則驗收 11/18`，儲存草稿 revision 4 並發布：僅中杯 $45、甜度固定文字、店家預設冰選項之外只有一筆熱飲。前台實際顯示中杯與唯一熱飲，選熱飲後複製預覽為「驗收熱飲中杯｜中杯｜甜度固定｜熱飲｜1 杯」，按複製看到成功 toast。首次開啟新店曾短暫 404，約一分鐘快取刷新後正常。驗收後已精確刪除該隔離店的 1 筆草稿與 1 筆發布，`public.menu_drafts`／`public.menu_publications` 此店鍵均為 0，該發布的私有快照亦為 0；其他店家和正式站未改。前一個 `dpl_3kJM569jS6ujcvxjmGqMHbgQ9yw9` 是程式回退參考。以下「本機未部署」是當時的歷史進度。
 
 **11/18 單杯選項編輯顯示收斂（本機，未部署）**：一沐日測試杯畫面中，同一筆單杯「熱飲」同時出現在指定選項勾選列與下方新增選項編輯列，看起來像重複。`ItemOptions` 的指定選項列現在只列店家原有選項；`AdditionalChoices` 在「只提供指定選項」模式下，讓每筆單杯新增選項於自己的編輯列勾選「使用」。資料結構和前台投影未改，新增選項仍預設選用，可自行取消、重新啟用、編輯或移除。後續檢查補上移除最後一筆新增選項時 `fixedChoiceId` 的安全回退，避免對不存在的下一筆選項取 `id`。`npm run build`、`npm run typecheck`、20 項 `npm run test`、`npm run format:check`、`git diff --check` 通過；尚未在預覽介面點選驗收，**尚未推送或部署**，線上預覽仍是下方 `dpl_3kJM...`。一沐日草稿／正式版未修改。下一步在收到明確預覽部署要求後更新受保護 Preview，檢查此勾選與單杯新增互動；前台完整規則組合可在下一間新店首次發布時一起驗收。
 
@@ -60,7 +69,7 @@
 | --- | --- |
 | 本回合工作副本 | `/workspace/scratch/745b259be742/copydrink-mobile`，分支 `feature/admin-workspace-v2`；`origin` 是 Sites 來源倉庫 `git.chatgpt-team.site`，GitHub 專案另為 `yichieh10002/copydrink`。先 `git status --short`、`git log -5 --oneline`，不要假定 scratch 路徑在新環境仍存在。 |
 | 交接前功能基線 | `df9179a`：記錄已套用的資料庫修補；前面 `4e566f4` 交易測試、`e94cc7c` 店家選項 ID 修正。這些提交未推送／未重新部署；交接文件提交會再新增一筆 commit。下一次接手先重新核對 HEAD。 |
-| 最新可供使用者檢查的新版後台 | `https://copydrink-github-preview-mzpu16va7-yichiehs-projects-5086e20d.vercel.app/admin`；Vercel deployment `dpl_3kJM569jS6ujcvxjmGqMHbgQ9yw9`，`READY`；GitHub 預覽分支 `preview/admin-workspace-v2-20261117`、提交 `040379bc8c6f649f44ca01ada4a643c3ad408e40`，tree 與本機 `9872456` 完全一致。前一個 `kmf57vjvl` 可作回退參考。 |
+| 最新可供使用者檢查的新版後台 | `https://copydrink-github-preview-qguqc3o4y-yichiehs-projects-5086e20d.vercel.app/admin`；Vercel deployment `dpl_EpBqG4mGcGWfH6SqdSio3QofdgbH`，`READY`；GitHub 預覽分支 `preview/admin-workspace-v2-20261117`、提交 `3b837e3d4df04c4b6016e18ddb9616cef08aa6ca`，tree 與本機功能 `bd1e761` 完全一致。前一個 `dpl_3kJM569jS6ujcvxjmGqMHbgQ9yw9` 可作回退參考。 |
 | Vercel 專案 | Team `yichiehs-projects-5086e20d`／`team_Psh7hzLfJ6JW38xbK1r8IeIK`；project `copydrink-github-preview`／`prj_FewA218UKpJkao7G8BWRigxZw66p`；framework Next.js，root `frontend`，Preview。正式站／別名沒有因新版後台切換。 |
 | 回退 | 原靜態後台 `dist/admin.html` 保留；改版前 tag `admin-v1-before-rebuild-20261117` → `fdd97ad`；舊預覽 `dpl_4WXhjZLifuT1PdLoz1WaBSSNeNHf`。程式回退不能回復已發布資料，發布前仍須備份草稿。 |
 | Supabase | Project `tea-menu`，ID `rdbcwhuhxahekxhrwekd`；原本 `public.menu_drafts`、`public.menu_publications`、`public.menu_admins`，均啟用 RLS。正式 DB 於 11/17 套用 `sanitize_public_menu_publications_20261117`；SQL 檔 `database/harden-publications.sql`，回滾測試 `database/test-publications.sql`。沒有建立新資料庫。 |
@@ -68,10 +77,10 @@
 
 ### 使用者目前的驗收與待做
 
-1. 小潔正在受保護預覽中自行登入、檢查操作；收到她的畫面、錯誤或意見後，先修對應問題。**沒有收到她驗收完成，不要稱新版已正式可用。**
+1. 本輪單杯新增熱飲／固定文字／僅中杯／發布及複製已在受保護預覽完成實際驗收，隔離資料已清理。**這不代表整個新版後台完成驗收或已切換正式入口。**之後收到小潔的畫面、錯誤或意見，先修對應問題。
 2. `e94cc7c` 修正店家預設選項增刪、排序時沿原標籤保留 ID，通過 16 項前後台測試／建置／格式檢查；已包含於最新預覽。讓小潔繼續驗收此版本。
 3. 新版後台選定一家店後，主內容標題右側有「匯出草稿備份」；會在瀏覽器下載 `<store_key>-draft-<revision>.json`，每次只匯出目前選取店家，不是全資料庫備份，也**沒有匯入／覆蓋按鈕**。驗收時已提醒小潔匯出測試店草稿，但未確認她裝置上的下載結果。必要時規劃安全的全店備份／還原演練，勿把私有快照當完整備份。
-4. 隔離店家的新增、儲存、預覽、三次發布、前台顯示、還原草稿及清理已通過；龜記地區價格、溫熱提醒清單唯讀驗收通過，管理員重新登入與未儲存提醒由小潔回報正常，資料庫 revision 未變。得正舊版單杯限制及其他舊選項的後台顯示修正已進入最新受保護預覽，**尚待唯讀畫面驗收**。之後還需驗收其他特殊選項，才決定是否切換正式入口。勿用正式店家測試寫入。
+4. 隔離店家的新增、儲存、預覽、三次發布、前台顯示、還原草稿及清理已通過；本輪另驗證僅熱飲、固定甜度、僅中杯及前台複製。龜記地區價格、溫熱提醒清單唯讀驗收通過，管理員重新登入與未儲存提醒由小潔回報正常。得正舊版單杯限制及其他舊選項的後台顯示修正已進入受保護預覽，**尚待唯讀畫面驗收**。之後還需驗收其他特殊選項，才決定是否切換正式入口。勿用正式店家測試寫入。
 5. 使用者偏好每店保留「目前正式版＋前 5 次發布」，目前**僅記錄決策，未實作清理，也沒刪除舊紀錄**。在發布與還原驗收後才實作與清理。
 6. 安全後續：部署／驗證 Next.js 基本安全標頭和有限 CSP（程式已在本機、線上尚未驗證）、登入保護及資料備份；Supabase advisor 仍有 leaked password protection 未啟用。私有封存表 RLS 無 policy 是刻意不授權客戶端角色。詳見 [SECURITY_REVIEW.md](SECURITY_REVIEW.md)。
 

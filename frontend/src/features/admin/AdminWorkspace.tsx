@@ -25,6 +25,10 @@ import { AdminLogin } from "./components/AdminLogin";
 import { AdminSidebar, type AdminTab } from "./components/AdminSidebar";
 import { StorePicker, NewStoreDialog } from "./components/StorePicker";
 import { ConfirmDialog, type Confirmation } from "./components/ConfirmDialog";
+import {
+  DraftBackupActions,
+  downloadDraftBackup,
+} from "./components/DraftBackupActions";
 
 const client = new AdminClient();
 export function AdminWorkspace() {
@@ -311,6 +315,28 @@ export function AdminWorkspace() {
       },
     });
   }
+  function importBackup(document: AdminDocument, sourceRevision: number) {
+    if (!draft) return;
+    if (
+      (dirtyForm || editing) &&
+      !window.confirm("有尚未儲存的修改，確定改用備份草稿？")
+    )
+      return;
+    const current = draft;
+    setConfirm({
+      title: `匯入 ${current.document.brand.name} 的草稿備份`,
+      message: `備份來源是草稿版本 ${sourceRevision}，目前是版本 ${current.revision}。確認後會先下載目前草稿備份，再建立新草稿版本；網站仍維持目前正式版。`,
+      action: async () => {
+        downloadDraftBackup(current);
+        const succeeded = await save(document, "備份已匯入，");
+        if (succeeded) {
+          setEditing(null);
+          setDirtyForm(false);
+          setTab("items");
+        }
+      },
+    });
+  }
   const matching = useMemo(
     () =>
       headers.filter((h) =>
@@ -378,22 +404,13 @@ export function AdminWorkspace() {
             </p>
           </div>
           {draft && (
-            <button
-              className="admin-btn"
-              onClick={() => {
-                const data = JSON.stringify(draft, null, 2),
-                  blob = new Blob([data], { type: "application/json" }),
-                  href = URL.createObjectURL(blob),
-                  a = window.document.createElement("a");
-                a.href = href;
-                a.download = `${draft.store_key}-draft-${draft.revision}.json`;
-                a.click();
-                setTimeout(() => URL.revokeObjectURL(href), 1000);
-                tell("success", "草稿備份已下載。");
-              }}
-            >
-              匯出草稿備份
-            </button>
+            <DraftBackupActions
+              draft={draft}
+              busy={busy}
+              onImport={importBackup}
+              onError={(message) => tell("error", message)}
+              onSuccess={(message) => tell("success", message)}
+            />
           )}
         </div>
         {warm !== undefined ? (
