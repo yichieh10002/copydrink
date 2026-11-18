@@ -195,6 +195,71 @@ test("複製文字包含選擇與數量，不會帶入未選的欄位", () => {
     "曼非紅茶｜中杯｜三分糖｜熱飲｜1 杯",
   );
 });
+test("固定甜度、單杯熱飲與僅中杯一起輸出正確小抄", () => {
+  const d = document();
+  const item = d.items[0];
+  item.name = "驗收測試飲料";
+  item.cups = [
+    { size: "中杯", prices: { north: { available: true, price: 45 } } },
+  ];
+  item.optionGroups = undefined;
+  item.fixedSugar = "甜度固定";
+  item.optionOverrides = {
+    sweetness: { mode: "fixed-text" },
+    temperature: {
+      mode: "custom",
+      choiceIds: ["drink-hot"],
+      additionalChoices: [
+        { id: "drink-hot", label: "熱飲", price: 0, temperature: "hot" },
+      ],
+    },
+  };
+  const store = storeFromPublication({
+    store_key: "menu-rule-check",
+    document: d,
+    published_at: "2026-11-18",
+  });
+  assert.deepEqual(
+    store?.items.map((drink) => drink.name),
+    ["驗收測試飲料"],
+  );
+  assert.deepEqual(
+    visibleCups(d, item, "north").map((cup) => cup.size),
+    ["中杯"],
+  );
+  const groups = effectiveGroups(d, item, item.cups[0]);
+  assert.deepEqual(
+    groups
+      .filter(
+        (group) => group.role === "sweetness" || group.role === "temperature",
+      )
+      .map((group) => [
+        group.role,
+        group.choices.map((choice) => choice.label),
+      ]),
+    [
+      ["sweetness", ["甜度固定"]],
+      ["temperature", ["熱飲"]],
+    ],
+  );
+  assert.equal(
+    copyDrinkText({
+      item,
+      brand: d.brand.name,
+      size: "中杯",
+      selections: groups.map((group) => ({
+        role: group.role,
+        name: group.name,
+        choices:
+          group.role === "sweetness" || group.role === "temperature"
+            ? group.choices
+            : [],
+      })),
+      quantity: 1,
+    }),
+    "驗收測試飲料｜中杯｜甜度固定｜熱飲｜1 杯",
+  );
+});
 test("舊資料的特殊固定甜度直接顯示原說明，不誤鎖第一個預設選項", () => {
   const d = document(),
     item = d.items[0];

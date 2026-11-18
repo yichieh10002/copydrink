@@ -4,11 +4,15 @@ export function AdditionalChoices({
   group,
   choices,
   usedChoiceIds,
+  selectedChoiceIds,
+  onToggle,
   onChange,
 }: {
   group: OptionGroup;
   choices: Choice[];
   usedChoiceIds: string[];
+  selectedChoiceIds?: string[];
+  onToggle?: (id: string, selected: boolean) => void;
   onChange: (choices: Choice[]) => void;
 }) {
   const add = (hot = false) => {
@@ -40,6 +44,16 @@ export function AdditionalChoices({
       </div>
       {choices.map((choice) => (
         <div className="admin-row" key={choice.id}>
+          {onToggle && (
+            <label className="admin-row self-end min-h-11">
+              <input
+                type="checkbox"
+                checked={selectedChoiceIds?.includes(choice.id) || false}
+                onChange={(event) => onToggle(choice.id, event.target.checked)}
+              />
+              使用
+            </label>
+          )}
           <label className="admin-field grow min-w-40">
             <span className="admin-field-label">
               選項名稱 <span className="text-orange-600">＊</span>

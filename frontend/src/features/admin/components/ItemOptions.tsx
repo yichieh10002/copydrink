@@ -301,25 +301,30 @@ export function ItemOptions({
                 </div>
               )}
               {mode === "custom" && (
-                <div className="admin-row">
-                  {availableChoices.map((choice) => (
-                    <label className="admin-row" key={choice.id}>
-                      <input
-                        type="checkbox"
-                        checked={(override.choiceIds || []).includes(choice.id)}
-                        onChange={(e) =>
-                          setOverride(group.id, {
-                            choiceIds: e.target.checked
-                              ? [...(override.choiceIds || []), choice.id]
-                              : (override.choiceIds || []).filter(
-                                  (id) => id !== choice.id,
-                                ),
-                          })
-                        }
-                      />
-                      {choice.label}
-                    </label>
-                  ))}
+                <div className="grid gap-2">
+                  <strong className="text-sm">店家預設的選項</strong>
+                  <div className="admin-row">
+                    {choices.map((choice) => (
+                      <label className="admin-row" key={choice.id}>
+                        <input
+                          type="checkbox"
+                          checked={(override.choiceIds || []).includes(
+                            choice.id,
+                          )}
+                          onChange={(e) =>
+                            setOverride(group.id, {
+                              choiceIds: e.target.checked
+                                ? [...(override.choiceIds || []), choice.id]
+                                : (override.choiceIds || []).filter(
+                                    (id) => id !== choice.id,
+                                  ),
+                            })
+                          }
+                        />
+                        {choice.label}
+                      </label>
+                    ))}
+                  </div>
                 </div>
               )}
               {mode !== "legacy" &&
@@ -330,6 +335,21 @@ export function ItemOptions({
                   <AdditionalChoices
                     group={group}
                     choices={override.additionalChoices || []}
+                    selectedChoiceIds={
+                      mode === "custom" ? override.choiceIds || [] : undefined
+                    }
+                    onToggle={
+                      mode === "custom"
+                        ? (id, selected) =>
+                            setOverride(group.id, {
+                              choiceIds: selected
+                                ? [...(override.choiceIds || []), id]
+                                : (override.choiceIds || []).filter(
+                                    (choiceId) => choiceId !== id,
+                                  ),
+                            })
+                        : undefined
+                    }
                     usedChoiceIds={item.cups.flatMap((cup) => [
                       ...(cup.showWhenChoiceIds || []),
                       ...Object.values(cup.optionChoiceIds || {}).flat(),
@@ -362,7 +382,7 @@ export function ItemOptions({
                                 (id) => !removed.has(id),
                               ),
                         fixedChoiceId: removed.has(override.fixedChoiceId || "")
-                          ? choices[0].id
+                          ? (choices[0]?.id ?? group.choices[0]?.id)
                           : override.fixedChoiceId,
                       });
                     }}
