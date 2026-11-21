@@ -102,6 +102,35 @@ test("熱飲只在中杯可選，並與加價選項相連", () => {
   assert.equal(priceFor(item.cups[1], "north")! + hot.price!, 40);
 });
 
+test("單杯新增客製化依建立順序顯示在選填配料之前", () => {
+  const d = document();
+  const item = d.items[0];
+  item.optionGroups!.push(
+    {
+      id: "milk-foam",
+      name: "生奶蓋口味",
+      kind: "single",
+      role: "custom",
+      required: true,
+      inheritDefault: false,
+      choices: [{ id: "sea-salt", label: "海鹽生奶蓋", price: 0 }],
+    },
+    {
+      id: "tea-base",
+      name: "茶底",
+      kind: "single",
+      role: "custom",
+      required: false,
+      inheritDefault: false,
+      choices: [{ id: "oolong", label: "烏龍", price: 0 }],
+    },
+  );
+  assert.deepEqual(
+    effectiveGroups(d, item, item.cups[0]).map((group) => group.id),
+    ["sweetness", "temperature", "milk-foam", "tea-base", "topping"],
+  );
+});
+
 test("店家預設沒有熱飲時，只讓指定飲料額外提供熱飲", () => {
   const d = document();
   const target = d.items[0];
