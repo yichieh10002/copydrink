@@ -46,7 +46,6 @@ export default async function Home({
         s.document.brand.categories?.find((c) => c.id === i.categoryId)
           ?.label || i.menuCategory,
       note: i.note,
-      logoUrl: s.document.brand.logoUrl,
       searchTerms: [
         ...(i.tags || []),
         ...(s.document.brand.categories?.find((c) => c.id === i.categoryId)

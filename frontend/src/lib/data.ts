@@ -1,5 +1,5 @@
 import "server-only";
-import { storeFromPublication } from "./menu";
+import { nameForSlug, storeFromPublication } from "./menu";
 import type { Store, StoreSummary } from "./types";
 
 // This public key can only read published snapshots through the existing RLS policy.
@@ -9,11 +9,22 @@ const publishableKey =
   process.env.SUPABASE_PUBLISHABLE_KEY ||
   "sb_publishable_43Eq9sL1L0opGRsjICs-yw_LkzcL12E";
 type Row = { store_key: string; document: unknown; published_at: string };
-async function publications(filter?: string): Promise<Row[]> {
+const PAGE_SIZE = 8;
+async function publications(
+  filter?: string,
+  offset?: number,
+  name?: string,
+): Promise<Row[]> {
   const url = new URL(endpoint + "/rest/v1/menu_publications");
   url.searchParams.set("select", "store_key,document,published_at");
   url.searchParams.set("is_current", "eq.true");
   if (filter) url.searchParams.set("store_key", "eq." + filter);
+  if (name) url.searchParams.set("document->brand->>name", "eq." + name);
+  if (offset !== undefined) {
+    url.searchParams.set("order", "store_key.asc");
+    url.searchParams.set("limit", String(PAGE_SIZE));
+    url.searchParams.set("offset", String(offset));
+  }
   const response = await fetch(url, {
     headers: { apikey: publishableKey },
     next: { revalidate: 60 },
@@ -25,9 +36,13 @@ async function publications(filter?: string): Promise<Row[]> {
   return rows as Row[];
 }
 export async function getStores(): Promise<Store[]> {
-  return (await publications())
-    .map(storeFromPublication)
-    .filter((s): s is Store => !!s);
+  const rows: Row[] = [];
+  for (let offset = 0; ; offset += PAGE_SIZE) {
+    const page = await publications(undefined, offset);
+    rows.push(...page);
+    if (page.length < PAGE_SIZE) break;
+  }
+  return rows.map(storeFromPublication).filter((s): s is Store => !!s);
 }
 export async function getStoreSummaries(): Promise<StoreSummary[]> {
   return (await getStores()).map((s) => ({
@@ -43,14 +58,16 @@ export async function getStoreSummaries(): Promise<StoreSummary[]> {
   }));
 }
 export async function getStore(slug: string): Promise<Store | null> {
-  // The current schema has no separate public summary table, so resolve the stable slug
-  // against the published snapshots. A summary endpoint can replace this later.
-  const rows = await publications();
-  return (
-    rows
-      .map(storeFromPublication)
-      .find((s): s is Store => !!s && s.slug === slug) || null
-  );
+  // Newly created stores use their key as the slug. Fetch that store alone;
+  // only legacy named slugs need the full directory as a fallback.
+  const row = (await publications(`menu-${slug}`))[0];
+  const store = row && storeFromPublication(row);
+  if (store?.slug === slug) return store;
+  const legacyName = nameForSlug(slug);
+  if (!legacyName) return null;
+  const legacyRow = (await publications(undefined, undefined, legacyName))[0];
+  const legacyStore = legacyRow && storeFromPublication(legacyRow);
+  return legacyStore?.slug === slug ? legacyStore : null;
 }
 
 export async function getWarmNotices(): Promise<

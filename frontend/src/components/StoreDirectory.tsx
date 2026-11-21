@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { StoreSummary } from "@/lib/types";
 import { StoreCard } from "./StoreCard";
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 48;
 
 export function StoreDirectory({ stores }: { stores: StoreSummary[] }) {
   const [visible, setVisible] = useState(PAGE_SIZE);

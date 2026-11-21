@@ -17,7 +17,6 @@ export type DrinkSearchEntry = {
   slug: string;
   category: string;
   note?: string;
-  logoUrl?: string;
   searchTerms?: string[];
 };
 const HISTORY_KEY = "copydrink-recent-searches";
@@ -52,6 +51,10 @@ export function HomeSearch({
   const [query, setQuery] = useState("");
   const [activeQuery, setActiveQuery] = useState("");
   const [recent, setRecent] = useState<string[]>([]);
+  const storeLogos = useMemo(
+    () => new Map(stores.map((store) => [store.slug, store.logoUrl])),
+    [stores],
+  );
   useEffect(() => {
     try {
       const saved: unknown = JSON.parse(
@@ -292,8 +295,8 @@ export function HomeSearch({
                 }}
               >
                 <span className="search-result-logo">
-                  {drink.logoUrl ? (
-                    <img src={drink.logoUrl} alt="" />
+                  {storeLogos.get(drink.slug) ? (
+                    <img src={storeLogos.get(drink.slug)} alt="" />
                   ) : (
                     drink.storeName.slice(0, 1)
                   )}

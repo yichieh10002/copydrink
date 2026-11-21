@@ -271,6 +271,9 @@ const knownSlugs: Record<string, string> = {
 export function slugFor(key: string, name: string) {
   return knownSlugs[name] || key.replace(/^menu-/, "");
 }
+export function nameForSlug(slug: string) {
+  return Object.keys(knownSlugs).find((name) => knownSlugs[name] === slug);
+}
 export function formatPrice(price: number | null) {
   return price === null ? "價格未提供" : `$${price}`;
 }
