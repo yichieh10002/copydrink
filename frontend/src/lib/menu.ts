@@ -104,7 +104,7 @@ export function effectiveGroups(
           g.inheritDefault === false && !defaults.some((x) => x.id === g.id),
       ),
     );
-  return candidates.flatMap((g) => {
+  const groups = candidates.flatMap((g) => {
     const override = item.optionOverrides?.[g.id],
       mode = override?.mode || "inherit";
     if (mode === "disabled") return [];
@@ -184,6 +184,15 @@ export function effectiveGroups(
       },
     ];
   });
+  const toppingIndex = groups.findIndex((group) => group.role === "topping");
+  if (toppingIndex < 0) return groups;
+  const beforeTopping = groups.slice(0, toppingIndex);
+  const afterTopping = groups.slice(toppingIndex);
+  return [
+    ...beforeTopping,
+    ...afterTopping.filter((group) => group.role === "custom"),
+    ...afterTopping.filter((group) => group.role !== "custom"),
+  ];
 }
 export function visibleCups(
   document: MenuDocument,
